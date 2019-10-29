@@ -7,7 +7,7 @@ Author@R: c(person(given="Jianhong", family="Ou", email="jianhong.ou@duke.edu",
 Author: Jianhong Ou
 Maintainer: Jianhong Ou <jianhong.ou@duke.edu>
 Description: An R package for quality assessment of ribosome profiling. 
-License: GPL (>=3)
+License: GPL (>=3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 biocViews: RiboSeq, Sequencing, GeneRgulation, Visualization

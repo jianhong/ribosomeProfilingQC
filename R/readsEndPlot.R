@@ -7,7 +7,7 @@
 #' @param window the window of CDS region to plot
 #' @param readLen the reads length used to plot
 #' @return the invisible counts numbers.
-#' @importFrom Rsamtools ScanBamParam scanBamFlag
+#' @importFrom Rsamtools ScanBamParam scanBamFlag scanBamHeader
 #' @importFrom GenomicAlignments readGAlignments qwidth njunc
 #' @importFrom methods as is
 #' @importFrom graphics barplot abline
@@ -46,6 +46,13 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
     which <- promoters(CDS, upstream=abs(window)[1], downstream=abs(window)[2])
     which <- switch.strand(which)
   }
+  h <- scanBamHeader(bamfile)
+  seqs <- h$targets
+  if(length(intersect(seqlevelsStyle(names(seqs)), seqlevelsStyle(which)))==0){
+    seqlevelsStyle(which) <- seqlevelsStyle(names(seqs))[1]
+    which <- which[as.character(seqnames(which)) %in% names(seqs)]
+    seqlevels(which) <- seqlevels(which)[seqlevels(which) %in% names(seqs)]
+  }
   param <-
     ScanBamParam(what=c("qwidth"),
                  tag=character(0),
@@ -63,6 +70,10 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   reads <- reads[qwidth(reads) %in% readLen]
   reads <- reads[njunc(reads)==0]
   reads <- as(reads, "GRanges")
+  if(length(intersect(seqlevelsStyle(reads), seqlevels(CDS)))==0){
+    seqlevelsStyle(reads) <- seqlevelsStyle(CDS)[1]
+    seqlevelsStyle(which) <- seqlevelsStyle(CDS)[1]
+  }
   if(fiveEnd){
     x <- promoters(reads, upstream = 0, downstream = 1)
   }else{
@@ -80,6 +91,9 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   vws <- do.call(cbind, vws)
   at <- seq(-abs(window[1]), abs(window[2]))
   at <- at[at!=0]
+  if(length(dim(vws))!=2){
+    stop("Not enough data available.")
+  }
   height <- rowSums(vws)
   names(height) <- at
   barplot(height, las=3, space = .5, ylab = "counts",

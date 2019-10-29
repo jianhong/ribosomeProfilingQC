@@ -29,6 +29,9 @@ readsDistribution <- function(reads, txdb,
                               plot=TRUE, ...){
   stopifnot(is(txdb, "TxDb"))
   stopifnot(is(reads, "GRanges"))
+  if(length(intersect(seqlevelsStyle(reads), seqlevels(txdb)))==0){
+    seqlevelsStyle(reads) <- seqlevelsStyle(txdb)[1]
+  }
   cdss <- cds(txdb)
   utr5 <- unlist(fiveUTRsByTranscript(txdb))
   utr3 <- unlist(threeUTRsByTranscript(txdb))

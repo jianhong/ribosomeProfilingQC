@@ -26,6 +26,9 @@ PAmotif <- function(reads, genome, plot=TRUE){
     stop("reads must be a result of assignReadingFrame or shiftReadsByFrame")
   }
   stopifnot(is(genome, "BSgenome"))
+  if(length(intersect(seqlevelsStyle(reads), seqlevels(genome)))==0){
+    seqlevelsStyle(reads) <- seqlevelsStyle(genome)[1]
+  }
   reads <- promoters(reads, upstream = 6, downstream = 12)
   seq <- getSeq(genome, reads)
   seq <- translate(seq)

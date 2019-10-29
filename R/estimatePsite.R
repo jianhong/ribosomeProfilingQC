@@ -60,6 +60,9 @@ estimatePsite <- function(bamfile, CDS, genome){
   reads <- reads[qwidth(reads) %in% c(25:30)]
   reads <- reads[njunc(reads)==0]
   x <- as(reads, "GRanges")
+  if(length(intersect(seqlevelsStyle(x), seqlevels(CDS)))==0){
+    seqlevelsStyle(x) <- seqlevelsStyle(CDS)[1]
+  }
   startpos <- getCondonPosition(x, CDS, genome, TRUE)
   stoppos <- getCondonPosition(x, CDS, genome, FALSE)
   stoppos1 <- c(stoppos[-(1:3)], 0, 0, 0)

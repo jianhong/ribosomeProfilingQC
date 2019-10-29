@@ -26,13 +26,16 @@
 strandPlot <- function(reads, CDS, col=c("#009E73", "#D55E00"), ...){
   stopifnot(is(reads, "GRanges"))
   stopifnot(is(CDS, "GRanges"))
+  if(length(intersect(seqlevelsStyle(reads), seqlevels(CDS)))==0){
+    seqlevelsStyle(reads) <- seqlevelsStyle(CDS)[1]
+  }
   ## reads mapped to sense strand
   ol <- findOverlaps(reads, CDS, ignore.strand=FALSE)
-  a <- length(unique(queryHits(ol)))/length(reads) #0.1977514
+  a <- length(unique(queryHits(ol)))/length(reads)
   ## reads mapped to antisense strand
   reads.rev <- switch.strand(reads)
   ol.anti <- findOverlaps(reads.rev, CDS, ignore.strand=FALSE)
-  b <- length(unique(queryHits(ol.anti)))/length(reads) #0.05376414
+  b <- length(unique(queryHits(ol.anti)))/length(reads)
   per <- c(sense=a, antisense=b)*100
   barplot(per, ylab="mapping rate (%)", col=col, ...)
   return(per)

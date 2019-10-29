@@ -8,6 +8,7 @@
 #' @import GenomicRanges
 #' @importFrom methods as is
 #' @importFrom S4Vectors subjectHits queryHits
+#' @importFrom GenomeInfoDb seqlevelsStyle seqlevelsStyle<-
 #' @export
 #' @examples
 #' library(Rsamtools)
@@ -34,6 +35,9 @@ assignReadingFrame <- function(reads, CDS, txdb){
     stop("CDS must be output of prepareCDS")
   }
   stopifnot(is(reads, "GRanges"))
+  if(length(intersect(seqlevelsStyle(reads), seqlevels(CDS)))==0){
+    seqlevelsStyle(reads) <- seqlevelsStyle(CDS)[1]
+  }
   reads$readingFrame <- NA
   reads$position <- NA
   reads$offsetPercentage <- NA

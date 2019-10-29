@@ -204,6 +204,30 @@ The gene cluster could be extracted from gtf/gff files downloaded from [ensembl]
 ```{r eval=FALSE}
 ## documentation: https://useast.ensembl.org/Help/Faq?id=468
 gtf <- import("Danio_rerio.GRCz10.91.gtf.gz")
+```
+The gtf files can be also download via `AnnotationHub`
+
+```{r eval=FALSE}
+BiocManager::install("AnnotationHub")
+library(AnnotationHub)
+ah = AnnotationHub()
+## for human hg38
+hg38 <- query(ah, c("Ensembl", "GRCh38", "gtf"))
+hg38 <- hg38[[length(hg38)]]
+## for mouse mm10
+mm10 <- query(ah, c("Ensembl", "GRCm38", "gtf"))
+mm10 <- mm10[[length(mm10)]]
+## because the gene ids in TxDb.Mmusculus.UCSC.mm10.knownGene and
+## TxDb.Hsapiens.UCSC.hg38.knownGene
+## are entriz_id, the gene_id in mm10 or hg38 need to changed to entriz_id.
+library(ChIPpeakAnno)
+library(org.Mm.eg.db)
+mm10$gene_id <- ChIPpeakAnno::xget(mm10$gene_id, org.Mm.egENSEMBL2EG)
+library(org.Hg.eg.db)
+hg38$gene_id <- ChIPpeakAnno::xget(hg38$gene_id, org.Mm.egENSEMBL2EG)
+```
+
+```{r eval=FALSE}
 gtf <- gtf[!is.na(gtf$gene_id)]
 gtf <- gtf[gtf$gene_id!=""]
 ## protein coding
@@ -373,6 +397,24 @@ gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
 cnts <- countReads(RPFs, gtf=gtf, level="gene")
 ```
 
+To get GTF file, you can download it from [ensembl](http://useast.ensembl.org/info/data/ftp/index.html)
+or get the online file infor via `AnnotationHub`.
+
+```{r eval=FALSE}
+BiocManager::install("AnnotationHub")
+library(AnnotationHub)
+ah = AnnotationHub()
+## for human hg38
+hg38 <- query(ah, c("Ensembl", "GRCh38", "gtf"))
+hg38 <- hg38[length(hg38)]
+gtf <- mcols(hg38)$sourceurl
+## for mouse mm10
+mm10 <- query(ah, c("Ensembl", "GRCm38", "gtf"))
+mm10 <- mm10[length(mm10)]
+gtf <- mcols(mm10)$sourceurl
+```
+
+
 #### Differentail analysis only for RPFs
 
 ```{r}
@@ -412,6 +454,7 @@ gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
 ## make sure that the order or RPFs is corresponded to RNAs.
 cnts <- countReads(RPFs, RNAs, gtf, level="tx")
 ```
+
 
 ##### Translational Efficiency (TE)
 
