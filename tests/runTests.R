@@ -1,0 +1,5 @@
+require("ribosomeProfilingQC") || stop("unable to load Package:ribosomeProfilingQC")
+require("GenomicAlignments") || stop("unalbe to load Package:GenomicAlignments")
+require("utils") || stop("unable to load Package:utils")
+require("testthat") || stop("unable to load testthat")
+test_check("ribosomeProfilingQC")
