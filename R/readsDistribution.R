@@ -4,7 +4,7 @@
 #' @param txdb an TxDb object
 #' @param upstreamRegion,downstreamRegion the range for promoter region and downstream region.
 #' @param plot plot the distribution or not
-#' @param ... parameters pass to barplot
+#' @param ... not use.
 #' @return the reads with distribution assignment
 #' @importFrom GenomicFeatures cds fiveUTRsByTranscript threeUTRsByTranscript exons genes promoters
 #' @import GenomicRanges
@@ -63,7 +63,9 @@ readsDistribution <- function(reads, txdb,
   InterGenic <- rowSums(type) == 0
   type <- cbind(type, upstream, downstream, InterGenic)
   per <- 100*colSums(type)/length(reads)
-  if(plot) barplot(per, ylab="percentage (%)", ...)
+  if(plot) {
+    ggBar(per, ylab="percentage (%)", postfix = "%", xlab="")
+  }
   mcols(reads) <- cbind(mcols(reads), type)
   return(reads)
 }

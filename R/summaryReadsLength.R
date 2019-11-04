@@ -3,7 +3,7 @@
 #' @param reads output of getPsiteCoordinates
 #' @param widthRange the reads range to be plot
 #' @param plot do plot or not
-#' @param ... parameters passed to barplot
+#' @param ... not use.
 #' @return the reads length distribution
 #' @importFrom methods as is
 #' @importFrom graphics barplot
@@ -17,7 +17,7 @@ summaryReadsLength <- function(reads, widthRange=c(20:35), plot=TRUE, ...){
   stopifnot(is(reads, "GRanges"))
   stopifnot(length(reads$qwidth)==length(reads))
   distribution <- table(reads$qwidth)/sum(table(reads$qwidth))
-  barplot(distribution[names(distribution) %in% as.character(widthRange)]*100,
-          ylab="percentage (%)", xlab="reads length", ...)
+  per <- distribution[names(distribution) %in% as.character(widthRange)]*100
+  ggBar(per, ylab="percentage (%)", xlab="reads length", draw = plot)
   return(sort(distribution, decreasing = TRUE))
 }

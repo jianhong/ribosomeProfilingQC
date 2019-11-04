@@ -5,7 +5,7 @@
 #' @param CDS output of \link{prepareCDS}
 #' @param col coloar for sense and antisense strand.
 #' @param ... parameter passed to barplot
-#' @return percentage of distribution
+#' @return ggplot object.
 #' @import GenomicRanges
 #' @importFrom methods as is
 #' @importFrom graphics barplot
@@ -37,8 +37,7 @@ strandPlot <- function(reads, CDS, col=c("#009E73", "#D55E00"), ...){
   ol.anti <- findOverlaps(reads.rev, CDS, ignore.strand=FALSE)
   b <- length(unique(queryHits(ol.anti)))/length(reads)
   per <- c(sense=a, antisense=b)*100
-  barplot(per, ylab="mapping rate (%)", col=col, ...)
-  return(per)
+  ggBar(per, ylab="mapping rate (%)", xlab="", fill=col, postfix = "%")
 }
 
 switch.strand <- function(x){

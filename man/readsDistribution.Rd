@@ -16,7 +16,7 @@ readsDistribution(reads, txdb, upstreamRegion = 3000,
 
 \item{plot}{plot the distribution or not}
 
-\item{...}{parameters pass to barplot}
+\item{...}{not use.}
 }
 \value{
 the reads with distribution assignment

@@ -5,7 +5,6 @@
 #' @param col colors for reading frames
 #' @return reading frame density
 #' @importFrom methods as is
-#' @importFrom graphics barplot
 #' @export
 #' @examples
 #' pcs <- readRDS(system.file("extdata", "samplePc.rds",
@@ -21,8 +20,7 @@ plotFrameDensity <- function(reads, density=TRUE,
   }
   data <- table(reads$readingFrame)
   if(density) data <- data/sum(data)
-  barplot(height=data, xlab="Frame",
-          ylab=ifelse(density, "Relative Read Density", "Read Count"),
-          border=NA, col=col)
-  return(data)
+  ggBar(height = data*100, xlab="Frame",
+        ylab=ifelse(density, "Relative Read Density (%)", "Read Count"),
+        fill = col, postfix = ifelse(density, "%", FALSE))
 }

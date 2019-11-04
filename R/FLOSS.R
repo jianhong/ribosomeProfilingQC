@@ -14,8 +14,10 @@
 #' @return a data frame with colnames as id, FLOSS, totalReads, wilcox.test.pval, cook's distance.
 #' @importFrom IRanges findOverlaps
 #' @importFrom S4Vectors queryHits subjectHits
-#' @importFrom graphics points
 #' @importFrom stats cooks.distance lm wilcox.test
+#' @importFrom ggplot2 geom_point geom_smooth scale_x_log10 scale_y_log10 annotation_logticks
+#' @importFrom ggrepel geom_label_repel
+#' @importFrom scales trans_breaks trans_format math_format
 #' @export
 #' @examples
 #' library(Rsamtools)
@@ -93,15 +95,24 @@ FLOSS <- function(reads, ref, CDS, readLengths=c(26:34), level=c("tx", "gene"), 
   df$cooks.distance <- 0
   df$cooks.distance[df$FLOSS!=0] <- cooksd
   if(draw){
-    plot(log2(df$totalReads), log2(df$FLOSS), pch = 16, cex = .5,
-         xlab = "log2 transformed total reads",
-         ylab = "log2 transformed FLOSS")
-    abline(fit, col="red", lty=3)
-    highlight <- which(df$cooks.distance>4*mean(cooksd, na.rm=TRUE))
-    points(log2(df$totalReads)[highlight], log2(df$FLOSS[highlight]),
-           pch=21, col="red")
-    #text(log2(df$totalReads)[highlight], log2(df$FLOSS[highlight]),
-   #      labels = df$id[highlight], adj = c(1, 1))
+    ggdf <- df[df$FLOSS!=0, c("id", "totalReads", "FLOSS", "cooks.distance"), drop=FALSE]
+    ggdf$highlight <- ggdf$cooks.distance>4*mean(cooksd, na.rm=TRUE)
+    colnames(ggdf) <- c("ggid", "ggx", "ggy", "ggcd", "gghighlight")
+    ggid <- ggx <- ggy <- ggcd <- gghighlight <- .x <- NULL
+    plot <- ggplot(ggdf, aes(x=ggx, y=ggy)) +
+      geom_point(pch = 16, cex = .5) +
+      geom_smooth(method = "lm", formula = y~0+x, color="red", lty=3) +
+      xlab("total reads") +
+      ylab("FLOSS") +
+      geom_label_repel(data = subset(ggdf, gghighlight), aes(label=ggid)) +
+      geom_point(data = subset(ggdf, gghighlight), pch=21, color="red") +
+      scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                    labels = trans_format("log10", math_format(10^.x))) +
+      scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                    labels = trans_format("log10", math_format(10^.x))) +
+      annotation_logticks() +
+      theme_classic()
+    print(plot)
   }
   df <- cbind(df,
               matrix(as.numeric(f.tab[id, ]),
@@ -111,8 +122,5 @@ FLOSS <- function(reads, ref, CDS, readLengths=c(26:34), level=c("tx", "gene"), 
                  p.value=1, cooks.distance=0, t(unlist(as.list(f.ref))), row.names = "ref",
                  stringsAsFactors = FALSE, check.names = FALSE)
   df <- rbind(df.ref, df)
-
-
-
   return(df)
 }

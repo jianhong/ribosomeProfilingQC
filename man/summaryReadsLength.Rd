@@ -13,7 +13,7 @@ summaryReadsLength(reads, widthRange = c(20:35), plot = TRUE, ...)
 
 \item{plot}{do plot or not}
 
-\item{...}{parameters passed to barplot}
+\item{...}{not use.}
 }
 \value{
 the reads length distribution

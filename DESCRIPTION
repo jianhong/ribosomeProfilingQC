@@ -1,7 +1,7 @@
 Package: ribosomeProfilingQC
 Type: Package
 Title: Ribosome Profiling Quality Control
-Version: 0.0.1
+Version: 0.0.2
 Author@R: c(person(given="Jianhong", family="Ou", email="jianhong.ou@duke.edu", 
         role=c("aut", "cre"), comment=c(ORCID="0000-0002-8652-2488")))
 Author: Jianhong Ou
@@ -17,6 +17,6 @@ Depends: R (>= 3.6), GenomicRanges
 Imports: AnnotationDbi, BiocGenerics, Biostrings, BSgenome, EDASeq,
          GenomicAlignments, GenomicFeatures, GenomeInfoDb,
          IRanges, methods, motifStack, rtracklayer, Rsamtools, RUVSeq, Rsubread,
-         S4Vectors, XVector
+         S4Vectors, XVector, ggplot2, ggfittext, scales, ggrepel
 Suggests: RUnit, BiocStyle, knitr, BSgenome.Drerio.UCSC.danRer10, 
           edgeR, limma, testthat

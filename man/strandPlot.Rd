@@ -16,7 +16,7 @@ strandPlot(reads, CDS, col = c("#009E73", "#D55E00"), ...)
 \item{...}{parameter passed to barplot}
 }
 \value{
-percentage of distribution
+ggplot object.
 }
 \description{
 plot the distribution of reads in sense and antisense strand to

@@ -87,6 +87,8 @@ getCodon <- function(CDS.sub, genome, start=TRUE){
     start(CDS.sub[strand(CDS.sub)=="+"]) <- end(CDS.sub[strand(CDS.sub)=="+"]) - 2
     end(CDS.sub[strand(CDS.sub)=="-"]) <- start(CDS.sub[strand(CDS.sub)=="-"]) + 2
   }
+  CDS.sub <- CDS.sub[as.character(seqnames(CDS.sub)) %in% seqlevels(genome)]
+  seqlevels(CDS.sub) <- seqlevels(CDS.sub)[seqlevels(CDS.sub) %in% seqlevels(genome)]
   seq <- getSeq(genome, CDS.sub)
   seq <- table(seq)
   seq <- seq[!grepl("N", names(seq))]
