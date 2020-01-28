@@ -4,8 +4,14 @@
 \alias{ribosomeReleaseScore}
 \title{Ribosome Release Score (RRS)}
 \usage{
-ribosomeReleaseScore(cdsTE, utr3TE, CDSsampleOrder, UTR3sampleOrder,
-  pseudocount = 0, log2 = FALSE)
+ribosomeReleaseScore(
+  cdsTE,
+  utr3TE,
+  CDSsampleOrder,
+  UTR3sampleOrder,
+  pseudocount = 0,
+  log2 = FALSE
+)
 }
 \arguments{
 \item{cdsTE, utr3TE}{translational efficiency of CDS and UTR3 region. Output of \link{translationalEfficiency}}

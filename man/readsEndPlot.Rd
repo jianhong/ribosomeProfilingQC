@@ -4,8 +4,14 @@
 \alias{readsEndPlot}
 \title{plot start/stop windows}
 \usage{
-readsEndPlot(bamfile, CDS, toStartCodon = TRUE, fiveEnd = TRUE,
-  window = c(-29, 30), readLen = 25:30)
+readsEndPlot(
+  bamfile,
+  CDS,
+  toStartCodon = TRUE,
+  fiveEnd = TRUE,
+  window = c(-29, 30),
+  readLen = 25:30
+)
 }
 \arguments{
 \item{bamfile}{an BamFile object.}
@@ -28,7 +34,7 @@ plot the reads shifted from start/stop position of CDS.
 }
 \examples{
 library(Rsamtools)
-bamfilename <- system.file("extdata", "tophat2.danRer10.RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.chr1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)

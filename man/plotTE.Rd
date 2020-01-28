@@ -4,8 +4,15 @@
 \alias{plotTE}
 \title{plot translational efficiency}
 \usage{
-plotTE(TE, sample, xaxis = c("mRNA", "RPFs"), removeZero = TRUE,
-  log2 = TRUE, breaks.length = 50, ...)
+plotTE(
+  TE,
+  sample,
+  xaxis = c("mRNA", "RPFs"),
+  removeZero = TRUE,
+  log2 = TRUE,
+  breaks.length = 50,
+  ...
+)
 }
 \arguments{
 \item{TE}{output of \link{translationalEfficiency}}

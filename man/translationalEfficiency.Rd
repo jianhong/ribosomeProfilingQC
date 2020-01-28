@@ -4,8 +4,14 @@
 \alias{translationalEfficiency}
 \title{Translational Efficiency}
 \usage{
-translationalEfficiency(x, window, RPFsampleOrder, mRNAsampleOrder,
-  pseudocount = 1, log2 = FALSE)
+translationalEfficiency(
+  x,
+  window,
+  RPFsampleOrder,
+  mRNAsampleOrder,
+  pseudocount = 1,
+  log2 = FALSE
+)
 }
 \arguments{
 \item{x}{output of \link{getFPKM} or \link{normByRUVs}.

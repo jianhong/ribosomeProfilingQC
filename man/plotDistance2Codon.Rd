@@ -4,8 +4,12 @@
 \alias{plotDistance2Codon}
 \title{Metaplot of P site distribution}
 \usage{
-plotDistance2Codon(reads, start = TRUE, anchor = 50, col = c(Frame_0
-  = "#009E73", Frame_1 = "#D55E00", Frame_2 = "#0072B2"))
+plotDistance2Codon(
+  reads,
+  start = TRUE,
+  anchor = 50,
+  col = c(Frame_0 = "#009E73", Frame_1 = "#D55E00", Frame_2 = "#0072B2")
+)
 }
 \arguments{
 \item{reads}{output of \link{assignReadingFrame}}

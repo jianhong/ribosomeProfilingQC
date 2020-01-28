@@ -4,12 +4,14 @@
 \alias{getPsiteCoordinates}
 \title{get P site coordinates}
 \usage{
-getPsiteCoordinates(bamfile, bestpsite)
+getPsiteCoordinates(bamfile, bestpsite, anchor = "5end")
 }
 \arguments{
 \item{bamfile}{an BamFile object.}
 
 \item{bestpsite}{P site postion. See \link{estimatePsite}}
+
+\item{anchor}{5end or 3end. Default is 5end.}
 }
 \value{
 A GRanges object with qwidth metadata which indicates the width of reads.
@@ -19,7 +21,7 @@ read in all reads from a bamfile and extract P site coordinates.
 }
 \examples{
 library(Rsamtools)
-bamfilename <- system.file("extdata", "tophat2.danRer10.RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.chr1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)

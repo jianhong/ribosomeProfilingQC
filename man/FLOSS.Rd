@@ -4,8 +4,14 @@
 \alias{FLOSS}
 \title{Fragment Length Organization Similarity Score (FLOSS)}
 \usage{
-FLOSS(reads, ref, CDS, readLengths = c(26:34), level = c("tx", "gene"),
-  draw = FALSE)
+FLOSS(
+  reads,
+  ref,
+  CDS,
+  readLengths = c(26:34),
+  level = c("tx", "gene"),
+  draw = FALSE
+)
 }
 \arguments{
 \item{reads}{output of \link{getPsiteCoordinates}}
@@ -28,7 +34,7 @@ The FLOSS will be calculated from a histogram of read lengths for footprints on 
 }
 \examples{
 library(Rsamtools)
-bamfilename <- system.file("extdata", "tophat2.danRer10.RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.chr1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)

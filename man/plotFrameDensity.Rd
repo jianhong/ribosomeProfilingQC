@@ -4,8 +4,11 @@
 \alias{plotFrameDensity}
 \title{plot density for each reading frame}
 \usage{
-plotFrameDensity(reads, density = TRUE, col = c(Frame_0 = "#009E73",
-  Frame_1 = "#D55E00", Frame_2 = "#0072B2"))
+plotFrameDensity(
+  reads,
+  density = TRUE,
+  col = c(Frame_0 = "#009E73", Frame_1 = "#D55E00", Frame_2 = "#0072B2")
+)
 }
 \arguments{
 \item{reads}{output of \link{assignReadingFrame}}

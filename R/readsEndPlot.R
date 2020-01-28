@@ -15,7 +15,7 @@
 #' @export
 #' @examples
 #' library(Rsamtools)
-#' bamfilename <- system.file("extdata", "tophat2.danRer10.RPF.chr1.bam",
+#' bamfilename <- system.file("extdata", "RPF.chr1.bam",
 #'                            package="ribosomeProfilingQC")
 #' yieldSize <- 10000000
 #' bamfile <- BamFile(bamfilename, yieldSize = yieldSize)

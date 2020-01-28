@@ -4,8 +4,11 @@
 \alias{plotTranscript}
 \title{plot reads P site abundance for a specific transcript}
 \usage{
-plotTranscript(reads, tx_name, col = c(Frame_0 = "#009E73", Frame_1 =
-  "#D55E00", Frame_2 = "#0072B2"))
+plotTranscript(
+  reads,
+  tx_name,
+  col = c(Frame_0 = "#009E73", Frame_1 = "#D55E00", Frame_2 = "#0072B2")
+)
 }
 \arguments{
 \item{reads}{output of \link{assignReadingFrame}}

@@ -4,15 +4,24 @@
 \alias{coverageDepth}
 \title{extract coverage depth for gene level or transcript level}
 \usage{
-coverageDepth(RPFs, RNAs, gtf, level = c("tx", "gene"), bestpsite = 13,
-  readsLen = c(28, 29), region = "cds", ...)
+coverageDepth(
+  RPFs,
+  RNAs,
+  gtf,
+  level = c("tx", "gene"),
+  bestpsite = 13,
+  readsLen = c(28, 29),
+  region = "cds",
+  ext = 5000,
+  ...
+)
 }
 \arguments{
 \item{RPFs}{Bam file names of RPFs.}
 
 \item{RNAs}{Bam file names of RNAseq.}
 
-\item{gtf}{GTF file name for annotation.}
+\item{gtf}{GTF file name for annotation or a TxDb object.}
 
 \item{level}{transcript or gene level.}
 
@@ -20,9 +29,11 @@ coverageDepth(RPFs, RNAs, gtf, level = c("tx", "gene"), bestpsite = 13,
 
 \item{readsLen}{reads length to keep.}
 
-\item{region}{annotation region. It could be "cds", "utr5", "utr3" or "exon".}
+\item{region}{annotation region. It could be "cds", "utr5", "utr3", "exon", "transcripts", "feature with extension".}
 
-\item{...}{parameters pass to \link[Rsubread:featureCounts]{featureCounts}}
+\item{ext}{extesion region for "feature with extension".}
+
+\item{...}{parameters pass to \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}}
 }
 \value{
 a list with reads counts.

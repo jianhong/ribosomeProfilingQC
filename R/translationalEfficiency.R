@@ -47,13 +47,13 @@ translationalEfficiency <- function(x, window, RPFsampleOrder, mRNAsampleOrder,
     }
     return(x)
   }else{
-    if(!is(RPFs, "list") | !is(mRNA, "list")){
+    if(!is(RPFs, "cvgd") | !is(mRNA, "cvgd")){
       stop("x must be output of coverageDepth and must contain RPFs and mRNA.")
     }
-    if(missing(RPFsampleOrder)) RPFsampleOrder <- seq.int(length(x[["RPFs"]]))
-    if(missing(mRNAsampleOrder)) mRNAsampleOrder <- seq.int(length(x[["mRNA"]]))
-    RPFs <- RPFs[RPFsampleOrder]
-    mRNA <- mRNA[mRNAsampleOrder]
+    if(missing(RPFsampleOrder)) RPFsampleOrder <- seq.int(length(x[["RPFs"]][["coverage"]]))
+    if(missing(mRNAsampleOrder)) mRNAsampleOrder <- seq.int(length(x[["mRNA"]][["coverage"]]))
+    RPFs <- RPFs[["coverage"]][RPFsampleOrder]
+    mRNA <- mRNA[["coverage"]][mRNAsampleOrder]
     if(length(mRNA)!=length(RPFs)){
       stop("The length of sample of mRNA is not identical to the length of RPFs.")
     }

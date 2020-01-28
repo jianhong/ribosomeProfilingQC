@@ -4,12 +4,18 @@
 \alias{metaPlot}
 \title{metagene analysis plot}
 \usage{
-metaPlot(UTR5coverage, CDScoverage, UTR3coverage, sample,
-  xaxis = c("RPFs", "mRNA"), bins = c(UTR5 = 100, CDS = 500, UTR3 =
-  100), ...)
+metaPlot(
+  UTR5coverage,
+  CDScoverage,
+  UTR3coverage,
+  sample,
+  xaxis = c("RPFs", "mRNA"),
+  bins = c(UTR5 = 100, CDS = 500, UTR3 = 100),
+  ...
+)
 }
 \arguments{
-\item{UTR5coverage, CDScoverage, UTR3coverage}{translational efficiency of CDS and UTR3 region.
+\item{UTR5coverage, CDScoverage, UTR3coverage}{coverages of UTR5, CDS, and UTR3 region.
 Output of \link{coverageDepth}}
 
 \item{sample}{character(1). Sample name to plot.}

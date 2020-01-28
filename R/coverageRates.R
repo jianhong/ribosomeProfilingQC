@@ -23,6 +23,7 @@ coverageRates <- function(cvgs, RPFsampleOrder, mRNAsampleOrder){
     stop("cvgs must be output of coverageDepth.")
   }
   cr <- lapply(cvgs, function(.ele){
+    .ele <- .ele[["coverage"]]
     covered <- lapply(.ele, function(.e){
       sapply(.e>0, sum)/lengths(.e)
     })

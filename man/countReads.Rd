@@ -4,8 +4,15 @@
 \alias{countReads}
 \title{extract counts for RPFs and RNAs}
 \usage{
-countReads(RPFs, RNAs, gtf, level = c("tx", "gene"), bestpsite = 13,
-  readsLen = c(28, 29), ...)
+countReads(
+  RPFs,
+  RNAs,
+  gtf,
+  level = c("tx", "gene"),
+  bestpsite = 13,
+  readsLen = c(28, 29),
+  ...
+)
 }
 \arguments{
 \item{RPFs}{Bam file names of RPFs.}

@@ -4,8 +4,14 @@
 \alias{readsDistribution}
 \title{plot reads distribution in genomic elements}
 \usage{
-readsDistribution(reads, txdb, upstreamRegion = 3000,
-  downstreamRegion = 3000, plot = TRUE, ...)
+readsDistribution(
+  reads,
+  txdb,
+  upstreamRegion = 3000,
+  downstreamRegion = 3000,
+  plot = TRUE,
+  ...
+)
 }
 \arguments{
 \item{reads}{output of \link{getPsiteCoordinates}}
@@ -26,7 +32,7 @@ Plot the percentage of reads in CDS, 5'UTR, 3'UTR, introns, and other elements.
 }
 \examples{
 library(Rsamtools)
-bamfilename <- system.file("extdata", "tophat2.danRer10.RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.chr1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)

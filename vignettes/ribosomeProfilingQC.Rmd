@@ -145,7 +145,7 @@ Because the library type of ribo-seq usally is strand-specific, please make sure
 
 ```{r}
 ## input the bamFile from the ribosomeProfilingQC package 
-bamfilename <- system.file("extdata", "tophat2.danRer10.RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.chr1.bam",
                            package="ribosomeProfilingQC")
 ## For your own data, please set bamfilename as your file path.
 yieldSize <- 10000000
@@ -315,6 +315,18 @@ Most of the reads should located in CDS region. `readsDistribution` function wil
 pc.sub <- readsDistribution(pc.sub, txdb, las=2)
 ```
 
+## Metagene analysis plot for UTR5/CDS/UTR3
+
+```{r}
+gtf <- system.file("extdata", "Danio_rerio.GRCz10.91.chr1.gtf.gz", 
+                   package="ribosomeProfilingQC")
+cvgs.utr5 <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="utr5")
+cvgs.CDS <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="cds")
+cvgs.utr3 <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="utr3")
+metaPlot(cvgs.utr5, cvgs.CDS, cvgs.utr3, sample=1)
+```
+
+
 ## Reading frame
 
 Function `assignReadingFrame` is used to set the reading frame for the P sites located within known CDS.
@@ -328,6 +340,15 @@ plotDistance2Codon(pc.sub)
 plotDistance2Codon(pc.sub, start=FALSE)
 plotFrameDensity(pc.sub)
 ```
+
+To determine how many of my raw reads are mapping with a P site in frame 0.
+
+```{r}
+pc <- assignReadingFrame(pc, CDS)
+plotFrameDensity(pc)
+```
+
+
 
 Function `plotTranscript` can be used to view the reading frame distribution for given transcript.
 
@@ -394,7 +415,8 @@ head(cnts.gene)
 path <- system.file("extdata", package="ribosomeProfilingQC")
 RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-cnts <- countReads(RPFs, gtf=gtf, level="gene")
+cnts <- countReads(RPFs, gtf=gtf, level="gene",
+                   bestpsite=13, readsLen=c(28,29))
 ```
 
 To get GTF file, you can download it from [ensembl](http://useast.ensembl.org/info/data/ftp/index.html)
@@ -437,6 +459,27 @@ fit <- glmFit(y, design)
 lrt.KD2vsWT <- glmLRT(fit, contrast = contrast.matrix[, "KD2-WT"])
 topTags(lrt.KD2vsWT)
 ```
+
+#### Alternative splicing, translation initiation and polyadenylation
+
+
+```{r}
+coverage <- coverageDepth(RPFs[grepl("KD1|WT", RPFs)], gtf=gtf, 
+                          level="gene", region="feature with extension")
+group1 <- c("RPF.KD1.1", "RPF.KD1.2")
+group2 <- c("RPF.WT.1", "RPF.WT.2")
+## subset the data
+coverage <- lapply(coverage, function(.ele){
+  .ele$coverage <- lapply(.ele$coverage, `[`, i=seq.int(50))
+  .ele$granges <- .ele$granges[seq.int(50)]
+  .ele
+}) ## do not run this step for real data
+se <- spliceEvent(coverage, group1, group2)
+head(se)
+table(se$type)
+plotSpliceEvent(se, se$feature[1], coverage, group1, group2)
+```
+
 
 ### RPFs and RNA-seq
 
@@ -574,7 +617,7 @@ metaPlot(cvgs.utr5, cvgs, cvgs.utr3, sample=2, xaxis = "mRNA")
 Here I show a bad case.
 
 ```{r}
-bamfilename <- system.file("extdata", "tophat2.danRer10.RPF.chr1.bad.bam",
+bamfilename <- system.file("extdata", "RPF.chr1.bad.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)

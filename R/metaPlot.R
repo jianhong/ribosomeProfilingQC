@@ -1,6 +1,6 @@
 #' metagene analysis plot
 #' @description Plot the average coverage of UTR5, CDS and UTR3.
-#' @param UTR5coverage,CDScoverage,UTR3coverage translational efficiency of CDS and UTR3 region.
+#' @param UTR5coverage,CDScoverage,UTR3coverage coverages of UTR5, CDS, and UTR3 region.
 #' Output of \link{coverageDepth}
 #' @param sample character(1). Sample name to plot.
 #' @param xaxis what to plot for x-axis.
@@ -44,9 +44,9 @@ metaPlot <- function(UTR5coverage, CDScoverage, UTR3coverage, sample,
   if(!all(c("UTR5", "CDS", "UTR3") %in% names(bins))){
     stop("bins should be a integer vector with names UTR5, CDS and UTR3.")
   }
-  regions <- list(UTR5=UTR5coverage[[xaxis]][[sample]],
-                  CDS=CDScoverage[[xaxis]][[sample]],
-                  UTR3=UTR3coverage[[xaxis]][[sample]])
+  regions <- list(UTR5=UTR5coverage[[xaxis]][["coverage"]][[sample]],
+                  CDS=CDScoverage[[xaxis]][["coverage"]][[sample]],
+                  UTR3=UTR3coverage[[xaxis]][["coverage"]][[sample]])
   bins <- bins[names(regions)]
   regions <- mapply(regions, bins, FUN=function(.ele, .len){
     .ele[lengths(.ele)>=.len]

@@ -4,8 +4,12 @@
 \alias{frameCounts}
 \title{extract counts for gene level or transcript level}
 \usage{
-frameCounts(reads, level = c("tx", "gene"), frame0only = TRUE,
-  coverageRate = FALSE)
+frameCounts(
+  reads,
+  level = c("tx", "gene"),
+  frame0only = TRUE,
+  coverageRate = FALSE
+)
 }
 \arguments{
 \item{reads}{output of \link{assignReadingFrame}.}
