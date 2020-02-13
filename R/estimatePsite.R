@@ -65,16 +65,16 @@ estimatePsite <- function(bamfile, CDS, genome){
   }
   startpos <- getCondonPosition(x, CDS, genome, TRUE)
   stoppos <- getCondonPosition(x, CDS, genome, FALSE)
-  stoppos1 <- c(stoppos[-(1:3)], 0, 0, 0)
+  stoppos1 <- c(stoppos[-(1:2)], 0, 0)
   pos <- startpos + stoppos1
   x <- assignReadingFrame(promoters(x, upstream = 0, downstream = 1), CDS)
   x <- table(x$readingFrame)
   x <- names(x)[which.max(x)]
-  x <- c("0"=13, "1"=14, "2"=12)[x]
+  x <- c("0"=13, "1"=12, "2"=14)[x]
   return(list("start codon position"=startpos,
               "stop codon position"=stoppos,
               summary=pos,
-              Psite=x))
+              Psite=as.numeric(x)))
 }
 
 getCodon <- function(CDS.sub, genome, start=TRUE){
@@ -108,7 +108,7 @@ bestPsite <- function(psite){
   best.id <- psite$Psite
   psite <- psite[-4]
   mapply(psite, names(psite), FUN=function(.ele, .name){
-    xlim <- if(.name == "stop codon position") c(1, 26) else c(-2, 23)
+    xlim <- if(.name == "stop codon position") c(1, 25) else c(-1, 23)
     plot(.ele, main=.name, ylab="count", xlim = xlim)
   })
   x <- seq(from=best.id-3*10, to=23, by=3)

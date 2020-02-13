@@ -1,6 +1,6 @@
 ---
 title: "ribosomeProfilingQC Guide"
-author: "Jianhong Ou"
+author: "Jianhong Ou, Mariah Hoye"
 date: "`r BiocStyle::doc_date()`"
 package: "`r BiocStyle::pkg_ver('ribosomeProfilingQC')`"
 bibliography: bibliography.bib
@@ -61,12 +61,13 @@ library(BiocManager)
 BiocManager::install(c("ribosomeProfilingQC", 
                        "AnnotationDbi", "Rsamtools",
                        "BSgenome.Drerio.UCSC.danRer10",
+                       "TxDb.Drerio.UCSC.danRer10.refGene",
                        "motifStack"))
 ```
 
 
 ```{r}
-## load the library
+## load library
 library(ribosomeProfilingQC)
 library(AnnotationDbi)
 library(Rsamtools)
@@ -77,7 +78,7 @@ Here we use fish genome.
 
 ```{r}
 library(BSgenome.Drerio.UCSC.danRer10)
-## set genome
+## set genome, Drerio is a shortname for BSgenome.Drerio.UCSC.danRer10
 genome <- Drerio
 ```
 
@@ -170,6 +171,11 @@ bestpsite <- bestPsite(psite)
 ## Plot start/stop windows
 
 `readsEndPlot` function plot the 5' end or 3' end reads shifted from start/stop position of CDS.
+There is no difference for most of the reads if you set best P site to 13 or 10. `readsEndPlot`
+can help user to determine the real best Psite. 
+It is shown here that the start codon is enriched in position -9 from 5' end of reads and
+in position 19 from 3' end of reads. That means there are lots of ribosome are docking at translation start position.
+![Ribosome docking at TSS](TSSdocking.png){weight=50%}
 
 
 ```{r}
@@ -177,7 +183,8 @@ readsEndPlot(bamfile, CDS, toStartCodon=TRUE)
 readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
 readsEndPlot(bamfile, CDS, toStartCodon=FALSE)
 ```
-
+If you see following distribution, that means lots of gene are in active expression.
+![Active expression](activeExpression.png)
 
 ## Read all P site coordinates
 
@@ -196,7 +203,93 @@ To check the fragment size distribution can help researcher to make sure the fra
 readsLen <- summaryReadsLength(pc)
 ```
 
-### Fragment Length Organization Similarity Score (FLOSS) [@ingolia2014ribosome]
+### Filter the reads by fragment size
+
+```{r}
+## for QC we only use reads length 28-29
+pc.sub <- pc[pc$qwidth %in% c(28, 29)]
+```
+
+
+## Sense/antisense strand plot
+
+Because the library is strand-specific, most of the reads should be mapped to sense strand.
+
+```{r}
+strandPlot(pc.sub, CDS)
+```
+
+## Genomic element distribution
+
+Most of the reads should located in CDS region. `readsDistribution` function will show the P site locations in different genoic elements: CDS, 5'UTR, 3'UTR, other type exon, intron, promoter, downstream or intergenic region.
+High downstream percentage indicates the high percentage of alternative polyAdenylation sites usage from annotation data.
+High percentage in intron region indicates the possibility of intron-retaining transcripts.
+```{r}
+pc.sub <- readsDistribution(pc.sub, txdb, las=2)
+```
+
+## Metagene analysis plot for 5'UTR/CDS/3'UTR
+
+Metagene plot can indicates the reads distribution in 5'UTR, CDS and 3'UTR region.
+
+```{r}
+gtf <- system.file("extdata", "Danio_rerio.GRCz10.91.chr1.gtf.gz", 
+                   package="ribosomeProfilingQC")
+cvgs.utr5 <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="utr5")
+cvgs.CDS <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="cds")
+cvgs.utr3 <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="utr3")
+metaPlot(cvgs.utr5, cvgs.CDS, cvgs.utr3, sample=1)
+```
+
+
+## Reading frame
+
+Function `assignReadingFrame` is used to set the reading frame for the P sites located within known CDS.
+And then `plotDistance2Codon` function can be used to plot the reading frame usage in transcription initiation or termination sites.
+Function `plotFrameDensity` can be used to collapse all the RPFs in each frame.
+These plots can help you to double check the p-site position is correct or not. If it is correct, most of the reads should be assigned to frame0.
+
+
+```{r}
+pc.sub <- assignReadingFrame(pc.sub, CDS)
+plotDistance2Codon(pc.sub)
+plotDistance2Codon(pc.sub, start=FALSE)
+plotFrameDensity(pc.sub)
+```
+
+To determine how many of my raw reads are mapping with a P site in frame 0.
+
+```{r}
+pc <- assignReadingFrame(pc, CDS)
+plotFrameDensity(pc)
+```
+
+
+
+Function `plotTranscript` can be used to view the reading frame distribution for given transcript.
+
+```{r}
+plotTranscript(pc.sub, c("ENSDART00000161781", "ENSDART00000166968",
+                         "ENSDART00000040204", "ENSDART00000124837"))
+```
+
+## ORFscore vs coverageRate
+
+ORFscore[@bazzini2014identification] can be used to quantify the biased distribution of RPFs toward the first frame of a given CDS. 
+And coverage rate for whole CDS can help research to check the RPFs distribution along whole CDS. 
+Coverage is dtermined by measuring the proportion of in-frame CDS positions with >= 1 reads.
+If coverage is about 1, the whole CDS is covered by active ribosomes.
+
+```{r}
+cvg <- frameCounts(pc.sub, coverageRate=TRUE)
+
+ORFscore <- getORFscore(pc.sub)
+plot(cvg[names(ORFscore)], ORFscore,
+     xlab="coverage ORF1", ylab="ORF score",
+     type="p", pch=16, cex=.5, xlim=c(0, 1))
+```
+
+## Fragment Length Organization Similarity Score (FLOSS) [@ingolia2014ribosome]
 
 FLOSS can be used to compare the distribution of reads length to a background such as a cluster of genes.
 The gene cluster could be extracted from gtf/gff files downloaded from [ensembl](http://useast.ensembl.org/info/data/ftp/index.html).
@@ -289,88 +382,6 @@ matplot(fl.max, type = "l", x=readsLengths,
         col = c("gray", "red"), lwd = 2, lty = 1)
 legend("topright",  legend = c("ref", "selected gene"), 
        col = c("gray", "red"), lwd = 2, lty = 1)
-```
-
-### Filter the reads by fragment size
-
-```{r}
-## for QC we only use reads length 28-29
-pc.sub <- pc[pc$qwidth %in% c(28, 29)]
-```
-
-
-## Sense/antisense strand plot
-
-Because the library is strand-specific, most of the reads should be mapped to sense strand.
-
-```{r}
-strandPlot(pc.sub, CDS)
-```
-
-## Genomic element distribution
-
-Most of the reads should located in CDS region. `readsDistribution` function will show the P site locations in different genoic elements: CDS, 5'UTR, 3'UTR, other type exon, intron, promoter, downstream or intergenic region.
-
-```{r}
-pc.sub <- readsDistribution(pc.sub, txdb, las=2)
-```
-
-## Metagene analysis plot for UTR5/CDS/UTR3
-
-```{r}
-gtf <- system.file("extdata", "Danio_rerio.GRCz10.91.chr1.gtf.gz", 
-                   package="ribosomeProfilingQC")
-cvgs.utr5 <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="utr5")
-cvgs.CDS <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="cds")
-cvgs.utr3 <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="utr3")
-metaPlot(cvgs.utr5, cvgs.CDS, cvgs.utr3, sample=1)
-```
-
-
-## Reading frame
-
-Function `assignReadingFrame` is used to set the reading frame for the P sites located within known CDS.
-And then `plotDistance2Codon` function can be used to plot the reading frame usage in transcription initiation or termination sites.
-Function `plotFrameDensity` can be used to collapse all the RPFs in each frame.
-
-
-```{r}
-pc.sub <- assignReadingFrame(pc.sub, CDS)
-plotDistance2Codon(pc.sub)
-plotDistance2Codon(pc.sub, start=FALSE)
-plotFrameDensity(pc.sub)
-```
-
-To determine how many of my raw reads are mapping with a P site in frame 0.
-
-```{r}
-pc <- assignReadingFrame(pc, CDS)
-plotFrameDensity(pc)
-```
-
-
-
-Function `plotTranscript` can be used to view the reading frame distribution for given transcript.
-
-```{r}
-plotTranscript(pc.sub, c("ENSDART00000161781", "ENSDART00000166968",
-                         "ENSDART00000040204", "ENSDART00000124837"))
-```
-
-## ORFscore vs coverageRate
-
-ORFscore[@bazzini2014identification] can be used to quantify the biased distribution of RPFs toward the first frame of a given CDS. 
-And coverage rate for whole CDS can help research to check the RPFs distribution along whole CDS. 
-Coverage is dtermined by measuring the proportion of in-frame CDS positions with >= 1 reads.
-If coverage is about 1, the whole CDS is covered by active ribosomes.
-
-```{r}
-cvg <- frameCounts(pc.sub, coverageRate=TRUE)
-
-ORFscore <- getORFscore(pc.sub)
-plot(cvg[names(ORFscore)], ORFscore,
-     xlab="coverage ORF1", ylab="ORF score",
-     type="p", pch=16, cex=.5, xlim=c(0, 1))
 ```
 
 ## Prepare for downstream analysis

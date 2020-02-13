@@ -32,7 +32,8 @@ ggBar <- function(height, fill="gray80", draw=TRUE, xlab, ylab, postfix){
   plot <- ggplot(data=df, aes(x=x, y=y)) +
     geom_bar(stat = "identity", fill=fill) +
     theme_classic()
-  if(postfix) plot <- plot + geom_bar_text(aes(label=label), grow = FALSE, contrast = TRUE)
+  if(!missing(postfix)) suppressWarnings(
+    plot <- plot + geom_bar_text(aes(label=label), grow = FALSE, contrast = TRUE))
   if(!missing(xlab)) plot <- plot+xlab(xlab)
   if(!missing(ylab)) plot <- plot+ylab(ylab)
   if(draw) {
