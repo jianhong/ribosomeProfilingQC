@@ -63,4 +63,10 @@ library(GenomicFeatures)
 txdb <- loadDb(system.file("extdata", "danRer10.chr1.txdb",
                package="ribosomeProfilingQC"))
 simulateRPF(txdb, samples=1, readsPerSample = 1e3)
+\dontrun{
+cds <- prepareCDS(txdb, withUTR = TRUE)
+cds <- cds[width(cds)>100]
+DEregions <- cds[sample(seq_along(cds), 500)]
+simulateRPF(txdb, samples=6, readsPerSample = 1e5, DEregions=DEregions)
+}
 }

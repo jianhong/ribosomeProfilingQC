@@ -60,3 +60,16 @@ test_that("assignReadingFrame works not correct", {
   }
 })
 
+pcs <- lapply(pcs, readsDistribution, txdb=txdb, plot=FALSE)
+test_that("readsDistribution works not correct", {
+  for(psite in c(12, 13, 14)){
+    cs <- mcols(pcs[[as.character(psite)]])[, c("Intron",
+                                                "upstream",
+                                                "downstream",
+                                                "InterGenic")]
+    cs <- as.data.frame(cs)
+    cs <- colSums(cs)
+    expect_true(all(cs==0))
+  }
+})
+
