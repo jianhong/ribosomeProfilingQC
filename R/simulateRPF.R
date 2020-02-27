@@ -21,7 +21,7 @@
 #' @importFrom BSgenome getSeq
 #' @importFrom S4Vectors runLength
 #' @importFrom stats rnbinom rnorm runif
-#' @importFrom Biostrings DNAStringSet
+#' @importFrom Biostrings DNAStringSet reverseComplement
 #' @importFrom GenomeInfoDb seqlengths `seqlengths<-`
 #' @export
 #' @examples
