@@ -11,16 +11,15 @@
 #' @importFrom graphics hist barplot
 #' @export
 #' @examples
-#' \dontrun{
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
-#' RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
-#' RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
-#' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' cnts <- countReads(RPFs, RNAs, gtf, level="gene")
+#' #RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
+#' #RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
+#' #gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
+#' #cnts <- countReads(RPFs, RNAs, gtf, level="gene")
+#' cnts <- readRDS(file.path(path, "cnts.rds"))
 #' fpkm <- getFPKM(cnts)
 #' te <- translationalEfficiency(fpkm)
 #' plotTE(te, 1)
-#' }
 
 plotTE <- function(TE, sample, xaxis=c("mRNA", "RPFs"),
                    removeZero=TRUE, log2=TRUE, breaks.length=50, ...){

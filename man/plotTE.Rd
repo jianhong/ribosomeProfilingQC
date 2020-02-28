@@ -36,14 +36,13 @@ invisible data.frame with x, y of points.
 Scatterplot of RNA/RPFs level compared to the translational efficiency.
 }
 \examples{
-\dontrun{
 path <- system.file("extdata", package="ribosomeProfilingQC")
-RPFs <- dir(path, "RPF.*?\\\\.[12].bam$", full.names=TRUE)
-RNAs <- dir(path, "mRNA.*?\\\\.[12].bam$", full.names=TRUE)
-gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-cnts <- countReads(RPFs, RNAs, gtf, level="gene")
+#RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
+#RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
+#gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
+#cnts <- countReads(RPFs, RNAs, gtf, level="gene")
+cnts <- readRDS(file.path(path, "cnts.rds"))
 fpkm <- getFPKM(cnts)
 te <- translationalEfficiency(fpkm)
 plotTE(te, 1)
-}
 }

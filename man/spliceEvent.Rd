@@ -11,6 +11,9 @@ spliceEvent(coverage, group1, group2)
 
 \item{group1, group2}{the sample names of group 1 and group 2}
 }
+\value{
+A GRanges object of splice events.
+}
 \description{
 Get differentical usage of alternative Translation Initiation Sites,
 alternative Polyadenylation Sites or

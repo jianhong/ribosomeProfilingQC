@@ -20,6 +20,9 @@ plotDistance2Codon(
 
 \item{col}{colors for different reading frame.}
 }
+\value{
+invisible height of the barplot.
+}
 \description{
 Metaplot of P site distribution in all the CDS aligned by
 the start codon or stop codon.

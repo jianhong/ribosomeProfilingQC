@@ -9,6 +9,7 @@
 #' reset the region with no read to minimal width.
 #' @importFrom ggplot2 geom_segment geom_rect theme element_blank
 #' @export
+#' @return a ggplot object.
 #' @examples
 #' \dontrun{
 #' path <- system.file("extdata", package="ribosomeProfilingQC")

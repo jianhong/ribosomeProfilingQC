@@ -8,9 +8,11 @@
 #' @param level transcript or gene level.
 #' @param bestpsite P site postion.
 #' @param readsLen reads length to keep.
-#' @param region annotation region. It could be "cds", "utr5", "utr3", "exon", "transcripts", "feature with extension".
+#' @param region annotation region. It could be "cds", "utr5", "utr3",
+#' "exon", "transcripts", "feature with extension".
 #' @param ext extesion region for "feature with extension".
-#' @param ... parameters pass to \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}
+#' @param ... parameters pass to
+#' \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}
 #' @return a list with reads counts.
 #' @importFrom methods as is
 #' @importFrom GenomicFeatures makeTxDbFromGFF coverageByTranscript transcripts
@@ -20,13 +22,10 @@
 #' @importFrom IRanges disjoin
 #' @export
 #' @examples
-#' \dontrun{
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
 #' RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
-#' RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
 #' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' cvgs <- coverageDepth(RPFs, RNAs, gtf, level="tx")
-#' }
+#' cvgs <- coverageDepth(RPFs[1], gtf=gtf, level="gene")
 
 coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
                           bestpsite=13, readsLen=c(28,29), region="cds",
@@ -35,8 +34,10 @@ coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
   stopifnot(is.character(gtf))
   level <- match.arg(level)
   region <- region[1]
-  if(!region %in% c("cds", "utr5", "utr3", "exon", "transcripts", "feature with extension")){
-    stop("region must be cds, utr5, utr3, exon, transcripts, feature with extension")
+  if(!region %in% c("cds", "utr5", "utr3", "exon",
+                    "transcripts", "feature with extension")){
+    stop("region must be cds, utr5, utr3, exon,
+         transcripts, feature with extension")
   }
   gtf <- gtf[1]
   cvgs <- list()
@@ -98,8 +99,10 @@ getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
       f <- fiveUTRsByTranscript(txdb, use.name=TRUE)
       fs <- unlist(f)
       mcols(fs) <- DataFrame(tx_name=rep(names(f), lengths(f)))
-      suppressMessages(id_map <- select(txdb, keys=unique(fs$tx_name),
-                                        columns = c("TXNAME", "GENEID"), keytype="TXNAME"))
+      suppressMessages(id_map <-
+                         select(txdb, keys=unique(fs$tx_name),
+                                columns = c("TXNAME", "GENEID"),
+                                keytype="TXNAME"))
       fs$gene_id <- id_map[match(fs$tx_name, id_map$TXNAME), "GENEID"]
       fs
     },
@@ -107,8 +110,10 @@ getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
       f <- threeUTRsByTranscript(txdb, use.name=TRUE)
       fs <- unlist(f)
       mcols(fs) <- DataFrame(tx_name=rep(names(f), lengths(f)))
-      suppressMessages(id_map <- select(txdb, keys=unique(fs$tx_name),
-                                        columns = c("TXNAME", "GENEID"), keytype="TXNAME"))
+      suppressMessages(id_map <-
+                         select(txdb, keys=unique(fs$tx_name),
+                                columns = c("TXNAME", "GENEID"),
+                                keytype="TXNAME"))
       fs$gene_id <- id_map[match(fs$tx_name, id_map$TXNAME), "GENEID"]
       fs
     },
@@ -169,20 +174,23 @@ getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
                        f[!is.na(f$feature_id)]
                      })
   cvgs <- lapply(reads, coverage)
-  seqs <- lapply(cvgs, function(.ele) names(.ele)[sapply(.ele, sum)>0])
+  seqs <- lapply(cvgs, function(.ele) names(.ele)[vapply(.ele, sum, FUN.VALUE = 0)>0])
   seqs <- unique(unlist(seqs))
   seqs <- intersect(seqlevels(features), seqs)
   features <- features[as.character(seqnames(features)) %in% seqs]
   seqlevels(features) <- seqlevels(features)[seqlevels(features) %in% seqs]
   features1 <- disjoin(features, with.revmap=TRUE)
   f <- rep(features1, lengths(features1$revmap))
-  f$feature_id <- unlist(lapply(features1$revmap, function(.ele) features$feature_id[.ele]))
+  f$feature_id <-
+    unlist(lapply(features1$revmap, function(.ele) features$feature_id[.ele]))
   f$revmap <- NULL
   f <- f[!duplicated(f) | !duplicated(f$feature_id)]
+  ## make sure that all features are sorted by start position.
   f <- f[order(f$feature_id, as.character(seqnames(f)),
-               ifelse(as.character(strand(f))=="-", -1, 1)*start(f))] ## make sure that all features are sorted by start position.
+               ifelse(as.character(strand(f))=="-", -1, 1)*start(f))]
   f <- split(f, f$feature_id)
-  coverages <- lapply(reads, coverageByTranscript, transcripts=f, ignore.strand=ignore.strand)
+  coverages <- lapply(reads, coverageByTranscript, transcripts=f,
+                      ignore.strand=ignore.strand)
   cd <- cvgd(coverage=coverages, granges=f)
   return(cd)
 }

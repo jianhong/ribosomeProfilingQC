@@ -9,8 +9,9 @@ coverageRates(cvgs, RPFsampleOrder, mRNAsampleOrder)
 \arguments{
 \item{cvgs}{output of \link{coverageDepth}}
 
-\item{RPFsampleOrder, mRNAsampleOrder}{sample order of RPFs and mRNAs. The parameters
-are used to make sure that the order of RPFs and mRNAs in cvgs is corresponding samples.}
+\item{RPFsampleOrder, mRNAsampleOrder}{sample order of RPFs and mRNAs.
+The parameters are used to make sure that the order of RPFs and mRNAs
+in cvgs is corresponding samples.}
 }
 \value{
 a list with coverage rate
@@ -20,12 +21,8 @@ calculate coverage rate for RPFs and mRNAs
 Coverage will be calculated based on best P sites for RPFs and 5'end for RNA-seq.
 }
 \examples{
-\dontrun{
 path <- system.file("extdata", package="ribosomeProfilingQC")
 RPFs <- dir(path, "RPF.*?\\\\.[12].bam$", full.names=TRUE)
-RNAs <- dir(path, "mRNA.*?\\\\.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-cvgs <- coverageDepth(RPFs, RNAs, gtf, level="tx")
-cr <- coverageRates(cvgs)
-}
+cvgs <- coverageDepth(RPFs[1], gtf=gtf, level="gene")
 }

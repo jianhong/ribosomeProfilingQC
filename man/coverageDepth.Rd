@@ -29,11 +29,13 @@ coverageDepth(
 
 \item{readsLen}{reads length to keep.}
 
-\item{region}{annotation region. It could be "cds", "utr5", "utr3", "exon", "transcripts", "feature with extension".}
+\item{region}{annotation region. It could be "cds", "utr5", "utr3",
+"exon", "transcripts", "feature with extension".}
 
 \item{ext}{extesion region for "feature with extension".}
 
-\item{...}{parameters pass to \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}}
+\item{...}{parameters pass to
+\link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}}
 }
 \value{
 a list with reads counts.
@@ -44,11 +46,8 @@ Coverage for RPFs will be the best P site coverage.
 Coverage for RNAs will be the coverage for 5'end of reads.
 }
 \examples{
-\dontrun{
 path <- system.file("extdata", package="ribosomeProfilingQC")
 RPFs <- dir(path, "RPF.*?\\\\.[12].bam$", full.names=TRUE)
-RNAs <- dir(path, "mRNA.*?\\\\.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-cvgs <- coverageDepth(RPFs, RNAs, gtf, level="tx")
-}
+cvgs <- coverageDepth(RPFs[1], gtf=gtf, level="gene")
 }

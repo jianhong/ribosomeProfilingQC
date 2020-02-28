@@ -28,6 +28,9 @@ plotSpliceEvent(
 \item{resetIntronWidth}{logical value. If set to true,
 reset the region with no read to minimal width.}
 }
+\value{
+a ggplot object.
+}
 \description{
 Plot the splice event
 }

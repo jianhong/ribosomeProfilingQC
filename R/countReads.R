@@ -15,13 +15,11 @@
 #' @importFrom S4Vectors DataFrame
 #' @export
 #' @examples
-#' \dontrun{
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
 #' RPFs <- dir(path, "RPF.*?.[12].bam$", full.names=TRUE)
-#' RNAs <- dir(path, "mRNA.*?.[12].bam$", full.names=TRUE)
 #' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' cnts <- countReads(RPFs, RNAs, gtf, level="tx")
-#' }
+#' cnts <- countReads(RPFs[1], gtf=gtf, level="gene")
+#'
 
 countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
                        bestpsite=13, readsLen=c(28,29),
@@ -45,7 +43,9 @@ countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
     suppressMessages(
       cnts.RNAs <- featureCounts(files = RNAs,
                                  annot.ext = gtf,
-                                 GTF.attrType=ifelse(level=="gene", "gene_id", "transcript_id"),
+                                 GTF.attrType=ifelse(level=="gene",
+                                                     "gene_id",
+                                                     "transcript_id"),
                                  isGTFAnnotationFile = TRUE,
                                  ...)
     )
@@ -85,7 +85,8 @@ getFeatureLen <- function(txdb, level=c("gene", "tx")){
   features <- switch(level,
                      gene={
                        f <- rep(features, lengths(features$gene_id))
-                       mcols(f) <- DataFrame(feature_id=unlist(features$gene_id))
+                       mcols(f) <-
+                         DataFrame(feature_id=unlist(features$gene_id))
                        f[!is.na(f$feature_id)]
                      },
                      tx={
@@ -99,11 +100,11 @@ getFeatureLen <- function(txdb, level=c("gene", "tx")){
   foo <- function(.ele, n){
     paste(as.character(.ele[, n]), collapse = ";")
   }
-  Chr <- sapply(f, foo, n="seqnames")
-  Start <- sapply(f, foo, n="start")
-  End <- sapply(f, foo, "end")
-  Strand <- sapply(f, foo, "strand")
-  Length <- sapply(f, function(.ele) sum(.ele$width))
+  Chr <- unlist(lapply(f, foo, n="seqnames"))
+  Start <- unlist(lapply(f, foo, n="start"))
+  End <- unlist(lapply(f, foo, "end"))
+  Strand <- unlist(lapply(f, foo, "strand"))
+  Length <- unlist(lapply(f, function(.ele) sum(.ele$width)))
   data.frame(GeneID=GeneID, Chr=Chr, Start=Start, End=End,
              Strand=Strand, Length=Length, stringsAsFactors = FALSE)
 }

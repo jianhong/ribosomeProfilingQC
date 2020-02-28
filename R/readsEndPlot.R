@@ -83,11 +83,11 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   }
   cvg <- coverage(x)
   w <- split(which, seqnames(which))
-  cvg.sub <- sapply(cvg, sum)
+  cvg.sub <- unlist(lapply(cvg, sum))
   cvg <- cvg[cvg.sub>0]
   seq <- intersect(names(cvg), names(w))
   vws <- Views(cvg[seq], w[seq])
-  vws <- lapply(vws, function(.ele) viewApply(.ele[width(.ele)==sum(abs(window)[1:2])], as.numeric))
+  vws <- lapply(vws, function(.ele) viewApply(.ele[width(.ele)==sum(abs(window)[c(1, 2)])], as.numeric))
   vws <- do.call(cbind, vws)
   at <- seq(-abs(window[1]), abs(window[2]))
   at <- at[at!=0]

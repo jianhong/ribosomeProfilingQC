@@ -3,7 +3,7 @@
 #' @param reads output of \link{assignReadingFrame}
 #' @param tx_name transcript name.
 #' @param col colors for reading frames
-#' @return NULL
+#' @return invisible heights of the barplot.
 #' @importFrom methods as is
 #' @importFrom graphics barplot legend par
 #' @export
@@ -25,10 +25,12 @@ plotTranscript <- function(reads, tx_name,
   l <- length(tx_name)
   op <- par(mfrow = c(ceiling(l/floor(sqrt(l))), floor(sqrt(l))))
   on.exit(par(op))
+  heights <- list()
   for(i in tx_name){
     x.sub <- reads[reads$tx_name %in% i]
     if(length(x.sub)<1){
       warning("No reads in ", i)
+      heights[[i]] <- numeric()
     }else{
       d <- table(mcols(x.sub)[, c("readingFrame", "position")])
       CDS.size <- x.sub[1]$position + x.sub[1]$posToStop + 3
@@ -48,6 +50,8 @@ plotTranscript <- function(reads, tx_name,
               col = cols, border=cols,  main = i)
       legend("topleft", legend = names(col),
              fill = col, border = col, bg = NA, box.col = NA)
+      heights[[i]] <- height
     }
   }
+  return(invisible(heights))
 }

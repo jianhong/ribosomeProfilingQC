@@ -5,7 +5,7 @@
 #' @param start plot for start codon or stop codon
 #' @param anchor xlim position for plot
 #' @param col colors for different reading frame.
-#' @return NULL
+#' @return invisible height of the barplot.
 #' @importFrom methods as is
 #' @importFrom graphics barplot axis legend segments
 #' @export
@@ -56,4 +56,5 @@ plotDistance2Codon <- function(reads, start=TRUE, anchor=50,
   segments(x0 = idx, x1 = idx, y0 = 0, y1 = max(position), lty = 3, col = 'gray80')
   legend("topleft", legend = names(col),
          fill = col, border = col, bg = NA, box.col = NA)
+  return(invisible(position))
 }

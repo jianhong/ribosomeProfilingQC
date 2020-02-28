@@ -25,7 +25,7 @@ getORFscore <- function(reads){
   }
   Fs <- split(reads$readingFrame, reads$tx_name)
   Fs <- lapply(Fs, table)
-  ORFscore <- sapply(Fs, function(.ele){
+  ORFscore <- lapply(Fs, function(.ele){
     .ele <- .ele[c("0", "1", "2")]
     .ele[is.na(.ele)] <- 0
     names(.ele) <- c("0", "1", "2")
@@ -33,5 +33,5 @@ getORFscore <- function(reads){
     s <- .ele["0"] < .ele["1"] || .ele["0"] < .ele["2"]
     log2(sum((.ele-m)^2/m)+1) * ifelse(s, -1, 1)
   })
-  ORFscore
+  unlist(ORFscore)
 }

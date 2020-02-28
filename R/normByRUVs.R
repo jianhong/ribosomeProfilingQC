@@ -9,12 +9,13 @@
 #' @importFrom EDASeq betweenLaneNormalization newSeqExpressionSet counts normCounts
 #' @export
 #' @examples
-#' \dontrun{
+#' \dontrun{##waiting for EDASeq fix the issue.
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
-#' RPFs <- dir(path, "RPF.*?.[12].bam$", full.names=TRUE)
-#' RNAs <- dir(path, "mRNA.*?.[12].bam$", full.names=TRUE)
-#' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' cnts <- countReads(RPFs, RNAs, gtf, level="gene")
+#' #RPFs <- dir(path, "RPF.*?.[12].bam$", full.names=TRUE)
+#' #RNAs <- dir(path, "mRNA.*?.[12].bam$", full.names=TRUE)
+#' #gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
+#' #cnts <- countReads(RPFs, RNAs, gtf, level="gene")
+#' cnts <- readRDS(file.path(path, "cnts.rds"))
 #' gp <- c("KD1", "KD1", "KD2", "KD2", "WT", "WT")
 #' norm <- normByRUVs(cnts, gp, gp)
 #' }

@@ -17,6 +17,9 @@ plotTranscript(
 
 \item{col}{colors for reading frames}
 }
+\value{
+invisible heights of the barplot.
+}
 \description{
 Plot the bundances of P site on a transcript.
 }

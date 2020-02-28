@@ -2,19 +2,16 @@
 #' @description calculate coverage rate for RPFs and mRNAs
 #' Coverage will be calculated based on best P sites for RPFs and 5'end for RNA-seq.
 #' @param cvgs output of \link{coverageDepth}
-#' @param RPFsampleOrder,mRNAsampleOrder sample order of RPFs and mRNAs. The parameters
-#' are used to make sure that the order of RPFs and mRNAs in cvgs is corresponding samples.
+#' @param RPFsampleOrder,mRNAsampleOrder sample order of RPFs and mRNAs.
+#' The parameters are used to make sure that the order of RPFs and mRNAs
+#' in cvgs is corresponding samples.
 #' @return a list with coverage rate
 #' @export
 #' @examples
-#' \dontrun{
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
 #' RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
-#' RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
 #' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' cvgs <- coverageDepth(RPFs, RNAs, gtf, level="tx")
-#' cr <- coverageRates(cvgs)
-#' }
+#' cvgs <- coverageDepth(RPFs[1], gtf=gtf, level="gene")
 coverageRates <- function(cvgs, RPFsampleOrder, mRNAsampleOrder){
   if(!is.list(cvgs)){
     stop("cvgs must be output of coverageDepth.")
@@ -25,7 +22,7 @@ coverageRates <- function(cvgs, RPFsampleOrder, mRNAsampleOrder){
   cr <- lapply(cvgs, function(.ele){
     .ele <- .ele[["coverage"]]
     covered <- lapply(.ele, function(.e){
-      sapply(.e>0, sum)/lengths(.e)
+      vapply(.e>0, sum, FUN.VALUE = 0)/lengths(.e)
     })
     ids <- unique(unlist(lapply(covered, names)))
     covered <- lapply(covered, function(.e){
@@ -42,7 +39,8 @@ coverageRates <- function(cvgs, RPFsampleOrder, mRNAsampleOrder){
     if(missing(RPFsampleOrder)) RPFsampleOrder <- seq.int(ncol(cr[["RPFs"]]))
     if(missing(mRNAsampleOrder)) mRNAsampleOrder <- seq.int(ncol(cr[["mRNA"]]))
     ids <- intersect(rownames(cr[["RPFs"]]), rownames(cr[["mRNA"]]))
-    cr[["coverageRatio"]] <- cr[["RPFs"]][ids, RPFsampleOrder]/cr[["mRNA"]][ids, mRNAsampleOrder]
+    cr[["coverageRatio"]] <-
+      cr[["RPFs"]][ids, RPFsampleOrder]/cr[["mRNA"]][ids, mRNAsampleOrder]
   }
   cr
 }

@@ -65,7 +65,7 @@ estimatePsite <- function(bamfile, CDS, genome){
   }
   startpos <- getCondonPosition(x, CDS, genome, TRUE)
   stoppos <- getCondonPosition(x, CDS, genome, FALSE)
-  stoppos1 <- c(stoppos[-(1:2)], 0, 0)
+  stoppos1 <- c(stoppos[-c(1, 2)], 0, 0)
   pos <- startpos + stoppos1
   x <- assignReadingFrame(promoters(x, upstream = 0, downstream = 1), CDS)
   x <- table(x$readingFrame)

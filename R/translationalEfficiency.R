@@ -102,7 +102,7 @@ translationalEfficiency <- function(x, window, RPFsampleOrder, mRNAsampleOrder,
           (r+pseudocount)/(m+pseudocount)
         }
       }, SIMPLIFY = FALSE)
-      ids <- sapply(ratios, which.max)
+      ids <- unlist(lapply(ratios, which.max))
       ratios <- mapply(ratios, ids, FUN=function(value, key){
         value[key]
       })

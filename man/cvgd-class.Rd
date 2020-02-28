@@ -38,6 +38,9 @@ cvgd(...)
 
 \item{object}{cvgd object.}
 }
+\value{
+A cvgd object.
+}
 \description{
 An object of class \code{"cvgd"}
 represents output of \code{coverageDepth}.

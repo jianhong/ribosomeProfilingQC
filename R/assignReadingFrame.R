@@ -50,7 +50,8 @@ assignReadingFrame <- function(reads, CDS, txdb){
   ol <- findOverlaps(reads, CDS, ignore.strand=FALSE)
   sh <- CDS[subjectHits(ol)]
   qh <- reads[queryHits(ol)]
-  dist <- distance(qh, promoters(sh, upstream = 1, downstream = 0), ignore.strand=FALSE)
+  dist <- distance(qh, promoters(sh, upstream = 1, downstream = 0),
+                   ignore.strand=FALSE)
   if(!missing(txdb)){
     sh.rev <- switch.strand(sh)
     p <- promoters(sh.rev, upstream = 1, downstream = 0)

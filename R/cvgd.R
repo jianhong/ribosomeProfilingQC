@@ -23,7 +23,7 @@ setClass(Class = "cvgd",
            granges  = GRangesList(compress = TRUE)
          ),
          validity=function(object){
-           sapply(object@coverage, function(.ele){
+           lapply(object@coverage, function(.ele){
              if(!is(.ele, "CompressedRleList")){
                return("coverage should be a list of CompressedRleList.")
              }
@@ -41,6 +41,7 @@ setClass(Class = "cvgd",
 
 #' @rdname cvgd-class
 #' @param \dots Each argument in \dots becomes an slot in the new \code{"cvgd"}-class.
+#' @return A cvgd object.
 #' @export
 cvgd <- function(...){
   new("cvgd", ...)

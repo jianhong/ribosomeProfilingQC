@@ -38,7 +38,7 @@
 #' }
 
 simulateRPF <- function(txdb, outPath, genome, samples = 6,
-                        group1 = 1:3, group2 = 4:6,
+                        group1 = c(1, 2, 3), group2 = c(4, 5, 6),
                         readsPerSample = 1e6, readsLen = 28,
                         psite = 13,
                         frame0=.90, frame1=.05, frame2=.05,
@@ -91,7 +91,8 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
   names(u5Len) <- unique(cds$tx_name)
   u5Len[u5$tx_name] <- abs(u5$wid.cumsum)
   fullLen <- split(cds, cds$tx_name)
-  fullLen <- sapply(fullLen, function(.ele) sum(width(.ele)))
+  fullLen <- lapply(fullLen, function(.ele) sum(width(.ele)))
+  fullLen <- unlist(fullLen)
   fullLen <- fullLen - readsLen
 
   ## random model, negative binomial distribution
@@ -355,8 +356,8 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
                          cigar = cigar,
                          pos = st,
                          names = paste(as.character(seqnames(.sample)),
-                                       unlist(sapply(runLength(seqnames(.sample)),
-                                              seq.int, simplify = FALSE)),
+                                       unlist(lapply(runLength(seqnames(.sample)),
+                                              seq.int)),
                                        sep = "_"),
                          tx = as.character(seqnames(.sample)))
     seqinfo(reads) <- seqinfo(txdb)[seqlevels(reads)]
@@ -388,7 +389,7 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
   # re <- start(p[[1]][seqnames(p[[1]]) %in% "ENSDART00000166393"])
   # seq <- getSeq(genome, tx)
   # seq0 <- paste(as.character(seq), collapse="")
-  # seq01 <- sapply(re, function(.re) substr(seq0, start = .re, stop = .re+readsLen-1))
+  # seq01 <- unlist(lapply(re, function(.re) substr(seq0, start = .re, stop = .re+readsLen-1)))
   # grn <- gl[[1]]
   # seq2 <- as.character(mcols(grn[mcols(grn)$tx %in% "ENSDART00000166393"])$seq)
   # all(seq01==seq2)
@@ -396,7 +397,7 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
   # re <- start(p[[1]][seqnames(p[[1]]) %in% "ENSDART00000159144"]) #ENSDART00000164359
   # seq <- getSeq(genome, tx)
   # seq0 <- paste(as.character(seq), collapse="")
-  # seq01 <- sapply(re, function(.re) substr(seq0, start = .re, stop = .re+readsLen-1))
+  # seq01 <- unlist(lapply(re, function(.re) substr(seq0, start = .re, stop = .re+readsLen-1)))
   # seq2 <- as.character(mcols(grn[mcols(grn)$tx %in% "ENSDART00000159144"])$seq)
   # all(seq01==seq2)
   if(!missing(outPath)){

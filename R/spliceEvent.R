@@ -7,6 +7,7 @@
 #' @importFrom cluster silhouette
 #' @importFrom stats fisher.test dist kmeans p.adjust
 #' @export
+#' @return A GRanges object of splice events.
 #' @examples
 #' \dontrun{
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
@@ -49,7 +50,7 @@ spliceEvent <- function(coverage, group1, group2){
   gp1rd <- Reduce(`+`, gp1)
   gp2rd <- Reduce(`+`, gp2)
   rd <- gp1rd + gp2rd
-  rds <- sapply(rd, sum)
+  rds <- vapply(rd, sum, FUN.VALUE = 0)
   keep <- rds>lengths(gr) ## reason? average reads number per exon smaller than 1.
   #message("filtered events: ", sum(!keep))
   cvg <- cvg[keep]
@@ -156,14 +157,14 @@ spliceEvent <- function(coverage, group1, group2){
           min(start(r_new[r_new$feature_id=="aTIS"]))
     }
     wid <- width(r_new)
-    pvalue <- sapply(idx, function(i){
+    pvalue <- vapply(idx, function(i){
       v <- rbind(xs1[i, , drop=FALSE], mu)*wid[i]
       v <- round(2^v)
       tryCatch(fisher.test(v)$p.value,
                error = function(e){
                  1
                })
-    })
+    }, FUN.VALUE = 0.0)
     out <- r_new[idx]
     mcols(out) <- data.frame(gp1=sel[, 1], gp2=sel[, 2],
                              mu_gp1=mu[1], mu_gp2=mu[2],

@@ -6,14 +6,13 @@
 #' @return a list with FPKMs
 #' @export
 #' @examples
-#' \dontrun{
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
-#' RPFs <- dir(path, "RPF.*?.[12].bam$", full.names=TRUE)
-#' RNAs <- dir(path, "mRNA.*?.[12].bam$", full.names=TRUE)
-#' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' cnts <- countReads(RPFs, RNAs, gtf, level="gene")
+#' #RPFs <- dir(path, "RPF.*?.[12].bam$", full.names=TRUE)
+#' #RNAs <- dir(path, "mRNA.*?.[12].bam$", full.names=TRUE)
+#' #gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
+#' #cnts <- countReads(RPFs, RNAs, gtf, level="gene")
+#' cnts <- readRDS(file.path(path, "cnts.rds"))
 #' fpkm <- getFPKM(cnts)
-#' }
 getFPKM <- function(counts, gtf, level=c("gene", "tx")){
   if(!is.list(counts)){
     stop("counts must be output of countReads or normByRUVs")
