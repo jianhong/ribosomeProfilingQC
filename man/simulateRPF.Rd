@@ -18,8 +18,9 @@ simulateRPF(
   frame1 = 0.05,
   frame2 = 0.05,
   DEregions = GRanges(),
-  size = 2,
-  sd = 0.05,
+  size = 1,
+  sd = 0.02,
+  minDElevel = log2(2),
   includeReadsSeq = FALSE
 )
 }
@@ -50,6 +51,8 @@ utr5 and utr3.}
 
 \item{sd}{standard deviations.}
 
+\item{minDElevel}{minimal differential level. default: log2(2).}
+
 \item{includeReadsSeq}{logical. Include reads sequence or not.}
 }
 \value{
@@ -65,7 +68,7 @@ txdb <- loadDb(system.file("extdata", "danRer10.chr1.txdb",
 simulateRPF(txdb, samples=1, readsPerSample = 1e3)
 \dontrun{
 cds <- prepareCDS(txdb, withUTR = TRUE)
-cds <- cds[width(cds)>100]
+cds <- cds[width(cds)>200]
 DEregions <- cds[sample(seq_along(cds), 500)]
 simulateRPF(txdb, samples=6, readsPerSample = 1e5, DEregions=DEregions)
 }

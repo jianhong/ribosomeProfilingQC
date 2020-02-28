@@ -33,15 +33,16 @@ The size of RPFs is around 28-nt, where the P-site of the ribosome is in positio
 ![Schematic representation of ribosome profiling.](schematic.ribosome.profiling.png)
 
 There are several packages available in Bioconductor already, riboSeqR [@chung2015use], RiboProfiling [@popa2016riboprofiling] and ORFik[@tjeldnes2018atlas].
-These packages are powerful in analyze the ribosome profiling data. 
-And ORFik package can also find the new transcription start site with the use of CageSeq data.
+These packages are powerful in analyzing the ribosome profiling data. 
+ORFik package can also seek the new transcription start site using CageSeq data.
 
-To help researchers quickly assess the quality of ribosome profiling data, We have
-developed the ribosomeProfilingQC package for easily making diagnostic plots to check
-the mapping quality and frameshifts. In addition, it has functions to preprocess 
-ribosome profiling data for subsequent differentical analysis. 
+To help researchers quickly assess the quality of ribosome profiling data, we have
+developed the ribosomeProfilingQC package. 
+The `ribosomeProfilingQC` package can easily make diagnostic plots to check
+the mapping quality and frameshifts. In addition, it can preprocess 
+ribosome profiling data for subsequent differential analysis. 
 
-Please note that all analysis is based on known annoation.
+Please note that all following analyses are based on known annotation.
 
 # Quick start
 
@@ -155,10 +156,10 @@ bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 
 ## Estimate P site
 
-As it shown in above figure, P site of the ribosome is in position 13. However, 
+As it shown in the above figure, P site of the ribosome is in position 13. However, 
 in different experiments, the P site may shift caused by experiment conditions such as enzyme.
 `estimatePsite` function can be used to check the P site. 
-`estimatePsite` function will search start/stop codon occured in reads and 
+`estimatePsite` function will search start/stop codon occurred in reads and 
 `bestPsite` function will meta-plot the distribution for each position.
 The `estimatePsite` will only use 12, 13 or 14 as best P site candidates.
 
@@ -172,9 +173,9 @@ bestpsite <- bestPsite(psite)
 
 `readsEndPlot` function plot the 5' end or 3' end reads shifted from start/stop position of CDS.
 There is no difference for most of the reads if you set best P site to 13 or 10. `readsEndPlot`
-can help user to determine the real best Psite. 
+can help users to determine the real best Psite. 
 It is shown here that the start codon is enriched in position -9 from 5' end of reads and
-in position 19 from 3' end of reads. That means there are lots of ribosome are docking at translation start position.
+in position 19 from 3' end of reads. That means there are lots of ribosome are docking at translation start position and most of the reads length are 28 nt.
 ![Ribosome docking at TSS](TSSdocking.png){weight=50%}
 
 
@@ -196,8 +197,8 @@ pc <- getPsiteCoordinates(bamfile, bestpsite = 13)
 
 ## Fragment size distribution
 
-Ribosome-protected fragments ideally is 27 to 29-nt long. 
-To check the fragment size distribution can help researcher to make sure the fragment size is correct.
+Ribosome-protected fragments ideally are 27 to 29-nt long. 
+To check the fragment size distribution can help researchers to make sure the fragment size is correct.
 
 ```{r}
 readsLen <- summaryReadsLength(pc)
@@ -221,7 +222,7 @@ strandPlot(pc.sub, CDS)
 
 ## Genomic element distribution
 
-Most of the reads should located in CDS region. `readsDistribution` function will show the P site locations in different genoic elements: CDS, 5'UTR, 3'UTR, other type exon, intron, promoter, downstream or intergenic region.
+Most of the reads should locate in CDS region. `readsDistribution` function will show the P site locations in different genomic elements: CDS, 5'UTR, 3'UTR, other type exon, intron, promoter, downstream or intergenic region.
 High downstream percentage indicates the high percentage of alternative polyAdenylation sites usage from annotation data.
 High percentage in intron region indicates the possibility of intron-retaining transcripts.
 ```{r}
@@ -230,7 +231,7 @@ pc.sub <- readsDistribution(pc.sub, txdb, las=2)
 
 ## Metagene analysis plot for 5'UTR/CDS/3'UTR
 
-Metagene plot can indicates the reads distribution in 5'UTR, CDS and 3'UTR region.
+Metagene plot can indicate the reads distribution in 5'UTR, CDS and 3'UTR region.
 
 ```{r}
 gtf <- system.file("extdata", "Danio_rerio.GRCz10.91.chr1.gtf.gz", 
@@ -245,9 +246,10 @@ metaPlot(cvgs.utr5, cvgs.CDS, cvgs.utr3, sample=1)
 ## Reading frame
 
 Function `assignReadingFrame` is used to set the reading frame for the P sites located within known CDS.
-And then `plotDistance2Codon` function can be used to plot the reading frame usage in transcription initiation or termination sites.
+The `plotDistance2Codon` function can be used to plot the reading frame usage in transcription initiation or termination sites.
 Function `plotFrameDensity` can be used to collapse all the RPFs in each frame.
-These plots can help you to double check the p-site position is correct or not. If it is correct, most of the reads should be assigned to frame0.
+These plots can help you to double check if the p-site position is correct or not. 
+If it is correct, most of the reads should be assigned to frame0.
 
 
 ```{r}
@@ -257,7 +259,7 @@ plotDistance2Codon(pc.sub, start=FALSE)
 plotFrameDensity(pc.sub)
 ```
 
-To determine how many of my raw reads are mapping with a P site in frame 0.
+To determine how many of raw reads are mapping with P sites in frame 0.
 
 ```{r}
 pc <- assignReadingFrame(pc, CDS)
@@ -266,7 +268,7 @@ plotFrameDensity(pc)
 
 
 
-Function `plotTranscript` can be used to view the reading frame distribution for given transcript.
+Function `plotTranscript` can be used to view the reading frame distribution for given transcripts.
 
 ```{r}
 plotTranscript(pc.sub, c("ENSDART00000161781", "ENSDART00000166968",
@@ -275,9 +277,10 @@ plotTranscript(pc.sub, c("ENSDART00000161781", "ENSDART00000166968",
 
 ## ORFscore vs coverageRate
 
-ORFscore[@bazzini2014identification] can be used to quantify the biased distribution of RPFs toward the first frame of a given CDS. 
-And coverage rate for whole CDS can help research to check the RPFs distribution along whole CDS. 
-Coverage is dtermined by measuring the proportion of in-frame CDS positions with >= 1 reads.
+ORFscore[@bazzini2014identification] can be used to quantify the biased distribution 
+of RPFs toward the first frame of a given CDS. 
+Coverage rate for whole CDS can help researchers to check the RPFs distribution along whole CDS. 
+Coverage is determined by measuring the proportion of in-frame CDS positions with >= 1 reads.
 If coverage is about 1, the whole CDS is covered by active ribosomes.
 
 ```{r}
@@ -389,7 +392,7 @@ legend("topright",  legend = c("ref", "selected gene"),
 ### RPFs only
 
 #### Count for RPFs
-As we know, the P site is determined by arbitory value 13 for quality control. 
+As we know, the P site is determined by arbitrary value 13 for quality control. 
 For downstream analysis, we should adjust the reads to fit every reading frame located at 0.
 
 ```{r}
@@ -409,7 +412,7 @@ PAmotif(pc.sub, genome)
 ```
 
 Downstream analysis including differential analysis, comparison with RNAseq, and so on. 
-Function `frameCounts` will generate a count vector for each transcripts or genes, which can be used for differentical analysis.
+Function `frameCounts` will generate a count vector for each transcript or gene, which can be used for differential analysis.
 
 ```{r}
 cnts <- frameCounts(pc.sub)
@@ -431,7 +434,7 @@ cnts <- countReads(RPFs, gtf=gtf, level="gene",
 ```
 
 To get GTF file, you can download it from [ensembl](http://useast.ensembl.org/info/data/ftp/index.html)
-or get the online file infor via `AnnotationHub`.
+or get the online file info via `AnnotationHub`.
 
 ```{r eval=FALSE}
 BiocManager::install("AnnotationHub")
@@ -480,11 +483,11 @@ coverage <- coverageDepth(RPFs[grepl("KD1|WT", RPFs)], gtf=gtf,
 group1 <- c("RPF.KD1.1", "RPF.KD1.2")
 group2 <- c("RPF.WT.1", "RPF.WT.2")
 ## subset the data
-coverage <- lapply(coverage, function(.ele){
+coverage <- lapply(coverage, function(.ele){ ## do not run this step for real data
   .ele$coverage <- lapply(.ele$coverage, `[`, i=seq.int(50))
   .ele$granges <- .ele$granges[seq.int(50)]
   .ele
-}) ## do not run this step for real data
+})
 se <- spliceEvent(coverage, group1, group2)
 head(se)
 table(se$type)
@@ -513,9 +516,9 @@ cnts <- countReads(RPFs, RNAs, gtf, level="tx")
 ##### Translational Efficiency (TE)
 
 Because the absolute level of ribosome occupancy is strongly correlated with RNA levels 
-for both coding and noncoding transcripts, transslational efficiency is introduced[@ingolia2009genome].
+for both coding and noncoding transcripts, translational efficiency is introduced[@ingolia2009genome].
 TE is the ratio of normalized ribosome footprint abundance to mRNA density.
-The normalization method usally is using Fragments Per Kilobase of transcript per Million mapped reads (FPKM).
+A common normalization method is using Fragments Per Kilobase of transcript per Million mapped reads (FPKM).
 
 
 ```{r}
@@ -525,8 +528,9 @@ TE <- translationalEfficiency(fpkm)
 
 ##### Differentail analysis for TE
 
-We suppose that the log2 transformed translational efficiency we calculated by the ratios of the levels of RPFs and mRNAs has linear correlation with real translational efficiency. 
-We use limma to test the differential translational efficiency.
+We suppose that the log2 transformed translational efficiency that 
+we calculated by the ratios of RPFs to mRNAs has linear correlation with real translational efficiency. 
+We use _limma_ package to test the differential translational efficiency.
 
 ```{r}
 library(limma)
@@ -550,8 +554,8 @@ topTable(fit2, coef = "KD2-WT")
 
 ##### Coverage ratio (CR)
 
-Coverage is a measure as percentage of postion with reads along the CDS. CR is the rato of 
-ribosome coverage to mRNA coverage. Coverage will be calculated based on best P sites for RPFs 
+Coverage is a measure as percentage of position with reads along the CDS. CR is the ratio of 
+ribosome coverage to mRNA coverage. Coverage will be calculated based on the best P sites for RPFs 
 and 5'end for RNA-seq.
 
 ```{r}
@@ -571,15 +575,17 @@ plot(cr$coverageRatio[, 1], cr$coverageRatio[, 5],
 
 ##### Maximum N-mer translational efficiency
 
-If we plot the correlation of level of mRNAs or RPFs to the levels translational efficiency calculated by all counts within a transcript,
-we will find that TE is not well normalized. It shows higher value in low level transcripts 
-while low value in high level transcripts.
+If we plot the correlation of mRNAs or RPFs to translational efficiency that is 
+calculated by all counts within a transcript,
+we will find that TE is not well normalized. It shows higher values in low level transcripts 
+while low values in high level transcripts.
 ```{r}
 plotTE(TE, sample=2, xaxis="mRNA", log2=TRUE, pch=16, cex=.5)
 plotTE(TE, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
 ```
 
-This issue can be fixed by calculate maximum value (TE max) in the most highly ribosome-occupied 90 nt window within a feature[@ingolia2009genome].
+This issue can be fixed by calculating maximum value (TE max) in the most highly
+ribosome-occupied 90 nt window within a feature[@ingolia2009genome].
 
 ```{r}
 TE90 <- translationalEfficiency(cvgs, window = 90)
@@ -587,7 +593,7 @@ plotTE(TE90, sample=2, xaxis="mRNA", log2=TRUE, pch=16, cex=.5)
 plotTE(TE90, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
 ```
 
-Above examples are TE90 for CDS region. Following codes show how to calculate TE90 for 3'UTR region.
+Above examples are TE90 for CDS region. Following codes show how to calculate TE90 for 3'UTR regions.
 
 ```{r}
 cvgs.utr3 <- coverageDepth(RPFs, RNAs, gtf, region="utr3")
@@ -599,7 +605,7 @@ plotTE(TE90.utr3, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
 
 ##### Ribosome Release Score (RRS)
 
-RRS is calculated as the ratio of RPFs (normalized by RNA-seq reads) in the CDS with RPFs in the 3'UTR.
+RRS is calculated as the ratio of RPFs (normalized by RNA-seq reads) in the CDS to RPFs in the 3'UTR.
 Because it is hard to define the CDS region for non-coding RNAs, RRS can not be calculated by Function `ribosomeReleaseScore`.
 
 ```{r}

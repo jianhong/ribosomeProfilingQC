@@ -14,6 +14,7 @@
 #' utr5 and utr3.
 #' @param size dispersion parameter. Must be strictly positive, need not be integer.
 #' @param sd standard deviations.
+#' @param minDElevel minimal differential level. default: log2(2).
 #' @param includeReadsSeq logical. Include reads sequence or not.
 #' @return an invisible list of GAlignments.
 #' @importFrom rtracklayer export
@@ -31,7 +32,7 @@
 #' simulateRPF(txdb, samples=1, readsPerSample = 1e3)
 #' \dontrun{
 #' cds <- prepareCDS(txdb, withUTR = TRUE)
-#' cds <- cds[width(cds)>100]
+#' cds <- cds[width(cds)>200]
 #' DEregions <- cds[sample(seq_along(cds), 500)]
 #' simulateRPF(txdb, samples=6, readsPerSample = 1e5, DEregions=DEregions)
 #' }
@@ -42,7 +43,7 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
                         psite = 13,
                         frame0=.90, frame1=.05, frame2=.05,
                         DEregions=GRanges(),
-                        size = 2, sd = .05,
+                        size = 1, sd = .02, minDElevel=log2(2),
                         includeReadsSeq = FALSE){
   cds <- prepareCDS(txdb, withUTR = TRUE)
   stopifnot(sum(c(frame0, frame1, frame2))==1)
@@ -130,6 +131,7 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
     pos <- shift(pos, shift = offset-psite+1)
   })
 
+  real_de_evt <- NULL
   if(length(samples)>1){
     cds_de <- cds[subjectHits(ol_DE)]
     cds_de <- split(cds_de, cds_de$feature)
@@ -151,8 +153,10 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
       tx_avg_exp <- lengths(split(pp, seqnames(pp)))
       tx_avg_full <- tx_avg_exp/fullLen[names(tx_avg_exp)]
       de_times <- sign(rnorm(length(de_evt), sd = sd)) *
-        (rnbinom(length(de_evt), size=size, prob = .5) + log2(1.5)) +
+        (rnbinom(length(de_evt), size=size, prob = .5) + minDElevel) +
         rnorm(length(de_evt), sd = sd)
+      de_evt$score <- de_times
+      real_de_evt <- de_evt
       ## low value
       de_aliq <- abs(de_times) + 1
       de_aliq <- tx_avg_full[de_evt$tx_name]*width(de_evt)/de_aliq
@@ -224,12 +228,14 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
       de_evt_rg <- de_evt_rg[!execpt]
       de_cnt <- suppressWarnings(countOverlaps(de_evt_rg, pp)/2)
       de_times <- sign(rnorm(length(de_cnt), sd = sd)) *
-        (rnbinom(length(de_cnt), size=size, prob = .5) + log2(1.5)) +
+        (rnbinom(length(de_cnt), size=size, prob = .5) + minDElevel) +
         rnorm(length(de_cnt), sd = sd)
+      de_evt$score <- de_times
       de_aliq <- abs(de_times) + 1
       de_aliq <- 2*de_cnt/de_aliq
       de_to_move <- round((de_aliq*abs(de_times)-de_cnt)*sign(de_times))
       de_evt_ol <- suppressWarnings(findOverlaps(de_evt_rg, pp))
+      ## split the all reads in the event and to be moved reads to by de_evt index
       de_evt_reads <- split(pp[subjectHits(de_evt_ol)], queryHits(de_evt_ol))
       de_to_move <- de_to_move[as.numeric(names(de_evt_reads))]
       notsig <- abs(de_to_move) > lengths(de_evt_reads) | de_to_move == 0
@@ -239,6 +245,7 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
       renameM <- samples[c(group1, group2)]
       names(renameM) <- samples[c(group2, group1)]
       de_evt_reads <- de_evt_reads[!notsig]
+      real_de_evt <- c(real_de_evt, de_evt[!notsig])
       de_evt_reads <- mapply(de_to_move[!notsig], de_evt_reads,
                              FUN=function(.n, .reads){
                                .size <- abs(.n)
@@ -403,6 +410,15 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
         }
       )
     })
+    if(length(real_de_evt)>0){
+      tryCatch(
+        export(real_de_evt, file.path(outPath, paste0("DEregions.bed"))),
+        error = function(e){
+          message("Got error when export the DEregions.")
+          message(e)
+        }
+      )
+    }
   }
   return(invisible(gl))
 }

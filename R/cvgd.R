@@ -85,9 +85,9 @@ setMethod("show", "cvgd", function(object){
   cat(paste(length(samples), "samples:",
               paste(samples, collapse = ", ")))
   if(length(samples)>0){
-    cat(paste("head of coverage for sample", samples[1]))
+    cat(paste("\nhead of coverage for sample\n", samples[1]))
     head(object@coverage[[samples[1]]])
   }
-  cat("head of granges")
+  cat("\nhead of granges\n")
   head(object@granges)
 })

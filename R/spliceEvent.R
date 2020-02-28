@@ -50,7 +50,8 @@ spliceEvent <- function(coverage, group1, group2){
   gp2rd <- Reduce(`+`, gp2)
   rd <- gp1rd + gp2rd
   rds <- sapply(rd, sum)
-  keep <- rds>lengths(gr)
+  keep <- rds>lengths(gr) ## reason? average reads number per exon smaller than 1.
+  #message("filtered events: ", sum(!keep))
   cvg <- cvg[keep]
   gr <- gr[keep]
   gp1 <- gp1[keep]
@@ -89,17 +90,25 @@ spliceEvent <- function(coverage, group1, group2){
     if(nc.max==1) return(NULL)
     v <- rep(0, nc.max)
     for (i in seq.int(nc.max)[-1]) {
-      clust <- kmeans(xs, i)
-      ss <- silhouette(clust$cluster, diss)
-      v[i] <- mean(ss[, 3])
+      if(nrow(xs)==i){
+        v[i] <- i
+      }else{
+        clust <- kmeans(xs, i)
+        ss <- silhouette(clust$cluster, diss)
+        v[i] <- mean(ss[, 3])
+      }
     }
     k <- min(which.max(v), n)
     getKm <- function(a){
-      km <- kmeans(a, centers = k)
-      oid <- order(km$centers)
-      nid <- seq_along(oid)
-      names(nid) <- oid
-      nid[as.character(km$cluster)]
+      if(length(a)==k){
+        order(a)
+      }else{
+        km <- kmeans(a, centers = k)
+        oid <- order(km$centers)
+        nid <- seq_along(oid)
+        names(nid) <- oid
+        nid[as.character(km$cluster)]
+      }
     }
     km_x <- getKm(xs[, "x"])
     km_y <- getKm(xs[, "y"])
