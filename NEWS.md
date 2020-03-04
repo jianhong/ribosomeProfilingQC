@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 0.99.
+
+* remove .DS_Store
+
 # CHANGES IN VERSION 0.99.1
 
 * decrease the size of the package
