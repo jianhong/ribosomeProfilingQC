@@ -27,10 +27,12 @@ FLOSS(
 \item{draw}{plot FLOSS vs total reads or not.}
 }
 \value{
-a data frame with colnames as id, FLOSS, totalReads, wilcox.test.pval, cook's distance.
+a data frame with colnames as id, FLOSS, totalReads,
+wilcox.test.pval, cook's distance.
 }
 \description{
-The FLOSS will be calculated from a histogram of read lengths for footprints on a transcript or reading frame.
+The FLOSS will be calculated from a histogram of
+read lengths for footprints on a transcript or reading frame.
 }
 \examples{
 library(Rsamtools)
@@ -39,22 +41,25 @@ bamfilename <- system.file("extdata", "RPF.WT.1.bam",
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 pc <- getPsiteCoordinates(bamfile, bestpsite=13)
-library(GenomicFeatures)
+#library(GenomicFeatures)
 library(BSgenome.Drerio.UCSC.danRer10)
-txdb <- makeTxDbFromGFF(system.file("extdata",
-          "Danio_rerio.GRCz10.91.chr1.gtf.gz",
-          package="ribosomeProfilingQC"),
-          organism = "Danio rerio",
-          chrominfo = seqinfo(Drerio)["chr1"],
-          taxonomyId = 7955)
-CDS <- prepareCDS(txdb)
+#txdb <- makeTxDbFromGFF(system.file("extdata",
+ #         "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+ #         package="ribosomeProfilingQC"),
+ #         organism = "Danio rerio",
+ #         chrominfo = seqinfo(Drerio)["chr1"],
+ #         taxonomyId = 7955)
+#CDS <- prepareCDS(txdb)
+CDS <- readRDS(system.file("extdata", "CDS.rds",
+                           package="ribosomeProfilingQC"))
 set.seed(123)
 ref <- sample(unique(CDS$gene_id), 100)
 fl <- FLOSS(pc, ref, CDS, level="gene")
 }
 \references{
-1: Ingolia NT, Brar GA, Stern-Ginossar N, Harris MS, Talhouarne GJ, Jackson SE,
-Wills MR, Weissman JS. Ribosome profiling reveals pervasive translation outside
+1: Ingolia NT, Brar GA, Stern-Ginossar N, Harris MS,
+Talhouarne GJ, Jackson SE, Wills MR, Weissman JS. Ribosome profiling
+reveals pervasive translation outside
 of annotated protein-coding genes. Cell Rep. 2014 Sep 11;8(5):1365-79. doi:
 10.1016/j.celrep.2014.07.045. Epub 2014 Aug 21. PubMed PMID: 25159147; PubMed
 Central PMCID: PMC4216110.

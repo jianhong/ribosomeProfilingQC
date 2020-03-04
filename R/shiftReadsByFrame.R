@@ -1,5 +1,6 @@
 #' shift reads by reading frame
-#' @description shift reads P site position by reading frame. After shifting, all reading frame will be set as 0
+#' @description shift reads P site position by reading frame. After shifting,
+#' all reading frame will be set as 0
 #' @param reads output of \link{getPsiteCoordinates}
 #' @param txdb TxDb object.
 #' @return reads with reading frame information

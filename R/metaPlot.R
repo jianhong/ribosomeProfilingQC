@@ -1,6 +1,7 @@
 #' metagene analysis plot
 #' @description Plot the average coverage of UTR5, CDS and UTR3.
-#' @param UTR5coverage,CDScoverage,UTR3coverage coverages of UTR5, CDS, and UTR3 region.
+#' @param UTR5coverage,CDScoverage,UTR3coverage coverages of UTR5, CDS, and
+#' UTR3 region.
 #' Output of \link{coverageDepth}
 #' @param sample character(1). Sample name to plot.
 #' @param xaxis what to plot for x-axis.
@@ -23,16 +24,21 @@
 #' metaPlot(cvgs.utr5, cvgs, cvgs.utr3, sample=1)
 #' }
 metaPlot <- function(UTR5coverage, CDScoverage, UTR3coverage, sample,
-                     xaxis=c("RPFs", "mRNA"), bins=c(UTR5=100, CDS=500, UTR3=100),
+                     xaxis=c("RPFs", "mRNA"),
+                     bins=c(UTR5=100, CDS=500, UTR3=100),
                      ...){
   xaxis <- match.arg(xaxis)
-  if(!is.list(UTR5coverage) || !is.list(UTR3coverage) || !is.list(CDScoverage)){
-    stop("UTR5coverage, CDScoverage and UTR3coverage must be output of coverageDepth")
+  if(!is.list(UTR5coverage) ||
+     !is.list(UTR3coverage) ||
+     !is.list(CDScoverage)){
+    stop("UTR5coverage, CDScoverage and UTR3coverage must be
+         output of coverageDepth")
   }
   if(!xaxis %in% names(UTR5coverage) ||
      !xaxis %in% names(UTR3coverage) ||
      !xaxis %in% names(CDScoverage)){
-    stop("UTR5coverage, CDScoverage and UTR3coverage must be output of coverageDepth.",
+    stop("UTR5coverage, CDScoverage and UTR3coverage must be
+         output of coverageDepth.",
          "And RPFs or mRNA must be available.")
   }
   if(!is.numeric(sample)){

@@ -2,7 +2,8 @@
 #' @description Plot the splice event
 #' @param se output of \link{spliceEvent}
 #' @param tx_name transcript name.
-#' @param coverage coverages of feature region with extensions. Output of \link{coverageDepth}
+#' @param coverage coverages of feature region with extensions.
+#' Output of \link{coverageDepth}
 #' @param group1,group2 the sample names of group 1 and group 2
 #' @param cutoffFDR cutoff of FDR
 #' @param resetIntronWidth logical value. If set to true,
@@ -15,14 +16,16 @@
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
 #' RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
 #' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' coverage <- coverageDepth(RPFs, gtf=gtf, level="gene", region="feature with extension")
+#' coverage <- coverageDepth(RPFs, gtf=gtf, level="gene",
+#'                           region="feature with extension")
 #' group1 <- c("RPF.KD1.1", "RPF.KD1.2")
 #' group2 <- c("RPF.WT.1", "RPF.WT.2")
 #' se <- spliceEvent(coverage, group1, group2)
 #' plotSpliceEvent(se, se$feature[1], coverage, group1, group2)
 #' }
 
-plotSpliceEvent <- function(se, tx_name, coverage, group1, group2, cutoffFDR=0.05, resetIntronWidth=TRUE){
+plotSpliceEvent <- function(se, tx_name, coverage, group1, group2,
+                            cutoffFDR=0.05, resetIntronWidth=TRUE){
   stopifnot(length(tx_name)==1)
   if(!is(se, "GRanges") || length(se$feature)==0){
     stop("se must be output of spliceEvent")
@@ -60,10 +63,13 @@ plotSpliceEvent <- function(se, tx_name, coverage, group1, group2, cutoffFDR=0.0
   height <- group <- xmax <- xmin <- ymax <- ymin <- NULL
   df <- data.frame(height=log2(as.numeric(cvg.s)+1),
                    sample = rep(colnames(cvg.s), each = nrow(cvg.s)),
-                   group = ifelse(rep(colnames(cvg.s), each = nrow(cvg.s)) %in% group1, "group1", "group2"),
+                   group = ifelse(rep(colnames(cvg.s),
+                                      each = nrow(cvg.s)) %in% group1,
+                                  "group1", "group2"),
                    x = x,
                    xend = xend)
-  p <- ggplot(data = df, aes(x=x, xend=xend, y=height, yend=height, color = group, fill = sample)) +
+  p <- ggplot(data = df, aes(x=x, xend=xend, y=height, yend=height,
+                             color = group, fill = sample)) +
     geom_segment() +
     xlab("") + ylab("log2 transformed reads count") +
     theme_classic() +

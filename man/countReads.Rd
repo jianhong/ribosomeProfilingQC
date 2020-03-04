@@ -11,6 +11,7 @@ countReads(
   level = c("tx", "gene"),
   bestpsite = 13,
   readsLen = c(28, 29),
+  anchor = "5end",
   ...
 )
 }
@@ -26,6 +27,8 @@ countReads(
 \item{bestpsite}{numeric(1). P site postion.}
 
 \item{readsLen}{numeric(1). reads length to keep.}
+
+\item{anchor}{5end or 3end. Default is 5end.}
 
 \item{...}{parameters pass to \link[Rsubread:featureCounts]{featureCounts}}
 }

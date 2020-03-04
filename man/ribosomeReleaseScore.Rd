@@ -14,10 +14,12 @@ ribosomeReleaseScore(
 )
 }
 \arguments{
-\item{cdsTE, utr3TE}{translational efficiency of CDS and UTR3 region. Output of \link{translationalEfficiency}}
+\item{cdsTE, utr3TE}{translational efficiency of CDS and UTR3 region.
+Output of \link{translationalEfficiency}}
 
-\item{CDSsampleOrder, UTR3sampleOrder}{sample order of cdsTE and utr3TE The parameters
-are used to make sure that the order of CDS and UTR3 in TE is corresponding samples.}
+\item{CDSsampleOrder, UTR3sampleOrder}{sample order of cdsTE and utr3TE.
+The parameters are used to make sure that the order of CDS and UTR3 in TE
+ is corresponding samples.}
 
 \item{pseudocount}{the number will be add to sum of reads count to avoid X/0.}
 
@@ -27,10 +29,12 @@ are used to make sure that the order of CDS and UTR3 in TE is corresponding samp
 a vector of RRS.
 }
 \description{
-RRS is calculated as the ratio of translational efficiency in the CDS with RPFs in the 3'UTR.
+RRS is calculated as the ratio of translational efficiency in
+ the CDS with RPFs in the 3'UTR.
 }
 \examples{
 
+\dontrun{
 path <- system.file("extdata", package="ribosomeProfilingQC")
 RPFs <- dir(path, "RPF.*?\\\\.[12].bam$", full.names=TRUE)
 RNAs <- dir(path, "mRNA.*?\\\\.[12].bam$", full.names=TRUE)
@@ -40,5 +44,6 @@ cvgs.utr3 <- coverageDepth(RPFs, RNAs, gtf, region="utr3")
 TE90 <- translationalEfficiency(cvgs, window = 90)
 TE90.utr3 <- translationalEfficiency(cvgs.utr3, window = 90)
 rrs <- ribosomeReleaseScore(TE90, TE90.utr3)
+}
 
 }

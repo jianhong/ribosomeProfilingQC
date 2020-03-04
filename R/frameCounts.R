@@ -1,6 +1,8 @@
 #' extract counts for gene level or transcript level
-#' @description Calculate the reads counts or coverage rate for gene level or transcript level.
-#' Coverage is determined by measuring the proportion of in-frame CDS positions with >= 1 reads.
+#' @description Calculate the reads counts or coverage rate for gene level or
+#' transcript level.
+#' Coverage is determined by measuring the proportion of in-frame CDS
+#'  positions with >= 1 reads.
 #' @param reads output of \link{assignReadingFrame}.
 #' @param level transcript or gene level
 #' @param frame0only only count for reading frame 0 or not
@@ -14,11 +16,14 @@
 #' cnts <- frameCounts(pcs)
 #' cnts.gene <- frameCounts(pcs, level="gene")
 #' cvg <- frameCounts(pcs, coverageRate=TRUE)
-frameCounts <- function(reads, level=c("tx", "gene"), frame0only=TRUE, coverageRate=FALSE){
+frameCounts <- function(reads, level=c("tx", "gene"),
+                        frame0only=TRUE, coverageRate=FALSE){
   level <- match.arg(level)
   stopifnot(is(reads, "GRanges"))
-  if(length(reads$tx_name)!=length(reads) || length(reads$position)!=length(reads) ||
-     length(reads$posToStop)!=length(reads) || length(reads$readingFrame)!=length(reads) ||
+  if(length(reads$tx_name)!=length(reads) ||
+     length(reads$position)!=length(reads) ||
+     length(reads$posToStop)!=length(reads) ||
+     length(reads$readingFrame)!=length(reads) ||
      length(reads$gene_id)!=length(reads)){
     stop("reads must be a result of assignReadingFrame")
   }

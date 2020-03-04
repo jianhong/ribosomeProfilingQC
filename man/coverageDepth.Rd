@@ -11,6 +11,7 @@ coverageDepth(
   level = c("tx", "gene"),
   bestpsite = 13,
   readsLen = c(28, 29),
+  anchor = "5end",
   region = "cds",
   ext = 5000,
   ...
@@ -28,6 +29,8 @@ coverageDepth(
 \item{bestpsite}{P site postion.}
 
 \item{readsLen}{reads length to keep.}
+
+\item{anchor}{5end or 3end. Default is 5end.}
 
 \item{region}{annotation region. It could be "cds", "utr5", "utr3",
 "exon", "transcripts", "feature with extension".}

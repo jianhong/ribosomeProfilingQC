@@ -1,12 +1,15 @@
 #' plot reads distribution in genomic elements
-#' @description Plot the percentage of reads in CDS, 5'UTR, 3'UTR, introns, and other elements.
+#' @description Plot the percentage of reads in CDS, 5'UTR, 3'UTR, introns, and
+#'  other elements.
 #' @param reads output of \link{getPsiteCoordinates}
 #' @param txdb an TxDb object
-#' @param upstreamRegion,downstreamRegion the range for promoter region and downstream region.
+#' @param upstreamRegion,downstreamRegion the range for promoter region and
+#'  downstream region.
 #' @param plot plot the distribution or not
 #' @param ... not use.
 #' @return the reads with distribution assignment
-#' @importFrom GenomicFeatures cds fiveUTRsByTranscript threeUTRsByTranscript exons genes promoters
+#' @importFrom GenomicFeatures cds fiveUTRsByTranscript threeUTRsByTranscript
+#' exons genes promoters
 #' @import GenomicRanges
 #' @importFrom methods as is
 #' @importFrom S4Vectors subjectHits queryHits
@@ -61,7 +64,9 @@ readsDistribution <- function(reads, txdb,
   Promoters <- promoters(genes, upstream = upstreamRegion, downstream = 0)
   ol <- findOverlaps(reads, Promoters, ignore.strand=FALSE)
   upstream <- seq_along(reads) %in% queryHits(ol) & notInExon
-  Downstreams <- promoters(switch.strand(genes), upstream = downstreamRegion, downstream = 0)
+  Downstreams <- promoters(switch.strand(genes),
+                           upstream = downstreamRegion,
+                           downstream = 0)
   Downstreams <- switch.strand(Downstreams)
   ol <- findOverlaps(reads, Downstreams, ignore.strand=FALSE)
   downstream <- seq_along(reads) %in% queryHits(ol) & notInExon

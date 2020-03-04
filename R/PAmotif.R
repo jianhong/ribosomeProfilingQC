@@ -20,8 +20,10 @@
 #'
 PAmotif <- function(reads, genome, plot=TRUE){
   stopifnot(is(reads, "GRanges"))
-  if(length(reads$tx_name)!=length(reads) || length(reads$position)!=length(reads) ||
-     length(reads$posToStop)!=length(reads) || length(reads$readingFrame)!=length(reads) ||
+  if(length(reads$tx_name)!=length(reads) ||
+     length(reads$position)!=length(reads) ||
+     length(reads$posToStop)!=length(reads) ||
+     length(reads$readingFrame)!=length(reads) ||
      length(reads$gene_id)!=length(reads)){
     stop("reads must be a result of assignReadingFrame or shiftReadsByFrame")
   }
@@ -37,7 +39,8 @@ PAmotif <- function(reads, genome, plot=TRUE){
   if(plot){
     p <- plotMotifLogo(pcm, draw = FALSE, ic.scale = FALSE, ylab = "percentage")
     child <- p[[1]]$children
-    child[[which(grepl("xaxis", names(child)))]]$label <- c("-2", "-1", "P",  "A",  "1",  "2")
+    child[[which(grepl("xaxis", names(child)))]]$label <-
+      c("-2", "-1", "P",  "A",  "1",  "2")
     child[[which(grepl("xaxis", names(child)))]]$children$labels$label <-
       c("-2", "-1", "P",  "A",  "1",  "2")
     p[[1]]$children <- child

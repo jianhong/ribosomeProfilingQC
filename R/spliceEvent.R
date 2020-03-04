@@ -1,8 +1,10 @@
 #' get splicing events
-#' @description Get differentical usage of alternative Translation Initiation Sites,
+#' @description Get differentical usage of alternative
+#' Translation Initiation Sites,
 #' alternative Polyadenylation Sites or
 #' alternative splicing sites
-#' @param coverage coverages of feature region with extensions. Output of \link{coverageDepth}
+#' @param coverage coverages of feature region with extensions.
+#' Output of \link{coverageDepth}
 #' @param group1,group2 the sample names of group 1 and group 2
 #' @importFrom cluster silhouette
 #' @importFrom stats fisher.test dist kmeans p.adjust
@@ -13,7 +15,8 @@
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
 #' RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
 #' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' coverage <- coverageDepth(RPFs, gtf=gtf, level="gene", region="feature with extension")
+#' coverage <- coverageDepth(RPFs, gtf=gtf,
+#'                   level="gene", region="feature with extension")
 #' group1 <- c("RPF.KD1.1", "RPF.KD1.2")
 #' group2 <- c("RPF.WT.1", "RPF.WT.2")
 #' se <- spliceEvent(coverage, group1, group2)
@@ -51,7 +54,7 @@ spliceEvent <- function(coverage, group1, group2){
   gp2rd <- Reduce(`+`, gp2)
   rd <- gp1rd + gp2rd
   rds <- vapply(rd, sum, FUN.VALUE = 0)
-  keep <- rds>lengths(gr) ## reason? average reads number per exon smaller than 1.
+  keep <- rds>lengths(gr) #reason? average reads number per exon smaller than 1.
   #message("filtered events: ", sum(!keep))
   cvg <- cvg[keep]
   gr <- gr[keep]
@@ -131,15 +134,19 @@ spliceEvent <- function(coverage, group1, group2){
     xs1 <- xs
     if(any(r_new$feature_id %in% "aTIS")){
       xs1[r_new$feature_id=="aTIS", "x"] <-
-        cumsum(rev(xs[r_new$feature_id=="aTIS", "x"]))/sum(r_new$feature_id=="aTIS")
+        cumsum(rev(xs[r_new$feature_id=="aTIS", "x"]))/
+        sum(r_new$feature_id=="aTIS")
       xs1[r_new$feature_id=="aTIS", "y"] <-
-        cumsum(rev(xs[r_new$feature_id=="aTIS", "y"]))/sum(r_new$feature_id=="aTIS")
+        cumsum(rev(xs[r_new$feature_id=="aTIS", "y"]))/
+        sum(r_new$feature_id=="aTIS")
     }
     if(any(r_new$feature_id %in% "aPAS")){
       xs1[r_new$feature_id=="aPAS", "x"] <-
-        cumsum(xs[r_new$feature_id=="aPAS", "x"])/sum(r_new$feature_id=="aPAS")
+        cumsum(xs[r_new$feature_id=="aPAS", "x"])/
+        sum(r_new$feature_id=="aPAS")
       xs1[r_new$feature_id=="aPAS", "y"] <-
-        cumsum(xs[r_new$feature_id=="aPAS", "y"])/sum(r_new$feature_id=="aPAS")
+        cumsum(xs[r_new$feature_id=="aPAS", "y"])/
+        sum(r_new$feature_id=="aPAS")
     }
     if(as.character(strand(r_new)[1])!="-") {
       if(any(r_new$feature_id %in% "aTIS"))

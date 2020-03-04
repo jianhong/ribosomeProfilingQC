@@ -2,11 +2,12 @@
 #' @description Normalization by RUVSeq:RUVs methods
 #' @param counts output of \link{countReads}
 #' @param RPFgroup,mRNAgroup groups for RPF and mRNA files
-#' @param k The number of factor of unwanted variation to be estimated from the data.
-#' See \link[RUVSeq:RUVs-methods]{RUVs}
+#' @param k The number of factor of unwanted variation to be estimated from
+#' the data. See \link[RUVSeq:RUVs]{RUVs}
 #' @return normalized counts list
 #' @importFrom RUVSeq RUVs makeGroups
-#' @importFrom EDASeq betweenLaneNormalization newSeqExpressionSet counts normCounts
+#' @importFrom EDASeq betweenLaneNormalization newSeqExpressionSet counts
+#'  normCounts
 #' @export
 #' @examples
 #' \dontrun{##waiting for EDASeq fix the issue.
@@ -22,12 +23,13 @@
 #'
 
 #### Normalization by RUVSeq
-#RUVSeq can be used to remove unwanted variation form RNA-Seq data[@risso2014normalization].
-#Here we can also use the power of RUVSeq to normalize the count number before we calculate
-#translational efficiency.
+#RUVSeq can be used to remove unwanted variation form
+#RNA-Seq data[@risso2014normalization].
+#Here we can also use the power of RUVSeq to normalize the count number
+#before we calculate translational efficiency.
 #
 #```{r}
-#gp <- c("KD1", "KD1", "KD2", "KD2", "WT", "WT")
+#gp <- c("KD1", "KD1", "WT", "WT")
 #norm <- normByRUVs(cnts, gp)
 #```
 

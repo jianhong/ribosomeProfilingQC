@@ -17,7 +17,8 @@ getFPKM(counts, gtf, level = c("gene", "tx"))
 a list with FPKMs
 }
 \description{
-Calculate Fragments Per Kilobase of transcript per Million mapped reads (FPKM) for counts.
+Calculate Fragments Per Kilobase of transcript per
+Million mapped reads (FPKM) for counts.
 }
 \examples{
 path <- system.file("extdata", package="ribosomeProfilingQC")

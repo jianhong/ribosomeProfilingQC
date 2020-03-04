@@ -14,7 +14,8 @@ getPsiteCoordinates(bamfile, bestpsite, anchor = "5end")
 \item{anchor}{5end or 3end. Default is 5end.}
 }
 \value{
-A GRanges object with qwidth metadata which indicates the width of reads.
+A GRanges object with qwidth metadata which indicates the width
+of reads.
 }
 \description{
 read in all reads from a bamfile and extract P site coordinates.

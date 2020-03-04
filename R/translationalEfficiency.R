@@ -3,15 +3,17 @@
 #' @param x output of \link{getFPKM} or \link{normByRUVs}.
 #' if window is set, it must be output of \link{coverageDepth}.
 #' @param window numeric(1). window size for maximal counts.
-#' @param RPFsampleOrder,mRNAsampleOrder sample order of RPFs and mRNAs. The parameters
-#' are used to make sure that the order of RPFs and mRNAs in cvgs is corresponding samples.
+#' @param RPFsampleOrder,mRNAsampleOrder sample order of RPFs and mRNAs.
+#' The parameters are used to make sure that the order of RPFs and mRNAs in
+#' cvgs is corresponding samples.
 #' @param pseudocount the number will be add to sum of reads count to avoid X/0.
 #' @param log2 Do log2 transform or not.
 #' @param normByLibSize normlization by library size or not.
 #' If window size is provied and normByLibSize is set to TRUE,
 #' the coverage will be normalized by library size.
-#' @return a list with RPFs, mRNA levels and TE as a matrix with translational efficiency
-#' @importFrom IRanges RleList IRanges IRangesList viewSums
+#' @return a list with RPFs, mRNA levels and TE as a matrix with
+#' translational efficiency
+#' @importFrom IRanges RleList IRanges IRangesList viewSums slidingWindows
 #' @export
 #' @examples
 #' \dontrun{
@@ -38,7 +40,8 @@ translationalEfficiency <- function(x, window,
   mRNA <- x[["mRNA"]]
   if(missing(window)){
     if(length(dim(RPFs))!=2 | length(dim(mRNA))!=2){
-      stop("x must be output of getFPKM or normByRUVs and must contain RPFs and mRNA.")
+      stop("x must be output of getFPKM or normByRUVs and
+           must contain RPFs and mRNA.")
     }
     if(missing(RPFsampleOrder))
       RPFsampleOrder <- seq.int(ncol(x[["RPFs"]]))
@@ -65,7 +68,8 @@ translationalEfficiency <- function(x, window,
     RPFs <- RPFs[["coverage"]][RPFsampleOrder]
     mRNA <- mRNA[["coverage"]][mRNAsampleOrder]
     if(length(mRNA)!=length(RPFs)){
-      stop("The length of sample of mRNA is not identical to the length of RPFs.")
+      stop("The length of sample of mRNA is not identical to
+           the length of RPFs.")
     }
     if(normByLibSize){
       mRNALibSize <- lapply(mRNA, sum, na.rm=TRUE)
@@ -99,18 +103,11 @@ translationalEfficiency <- function(x, window,
     rm(features2)
 
     cvg <- mapply(RPFs, mRNA, FUN = function(a, b){
-      from <- lapply(lengths(a), function(.l){
-        seq.int(.l-window+1)
-      })
-      from[lengths(a)<=window] <- 1
-      to <- lapply(from, function(.f){
-        .f + window - 1
-      })
-      to[lengths(a)<=window] <- lengths(a)[lengths(a)<=window]
-      ir <- mapply(from, to, FUN = function(f, t){
-        IRanges(start = f, end = t)
-      })
-      ir <- IRangesList(ir)
+      la <- lengths(a)
+      lb <- lengths(b)
+      stopifnot(identical(la, lb))
+      ir <- IRanges(1, la, names = names(la))
+      ir <- slidingWindows(ir, window, step = 1L)
       vw.a <- Views(a, ir[names(a)])
       vw.b <- Views(b[names(a)], ir[names(a)])
       sum.a <- viewSums(vw.a, na.rm = TRUE)

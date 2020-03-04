@@ -3,10 +3,12 @@
 #' @param bamfile an BamFile object.
 #' @param bestpsite P site postion. See \link{estimatePsite}
 #' @param anchor 5end or 3end. Default is 5end.
-#' @return A GRanges object with qwidth metadata which indicates the width of reads.
+#' @return A GRanges object with qwidth metadata which indicates the width
+#' of reads.
 #' @import GenomicRanges
 #' @importFrom Rsamtools ScanBamParam scanBamFlag
-#' @importFrom GenomicAlignments readGAlignments cigar cigarNarrow cigarQNarrow GAlignments
+#' @importFrom GenomicAlignments readGAlignments cigar cigarNarrow
+#' cigarQNarrow GAlignments
 #' @importFrom methods as is
 #' @importFrom S4Vectors metadata<-
 #' @importClassesFrom Rsamtools BamFile

@@ -24,7 +24,8 @@ cvgd(...)
 \S4method{show}{cvgd}(object)
 }
 \arguments{
-\item{\dots}{Each argument in \dots becomes an slot in the new \code{"cvgd"}-class.}
+\item{\dots}{Each argument in \dots becomes an slot in the new
+\code{"cvgd"}-class.}
 
 \item{x}{cvgd object.}
 
@@ -48,7 +49,8 @@ represents output of \code{coverageDepth}.
 \section{Slots}{
 
 \describe{
-\item{\code{coverage}}{\code{"list"}, list of \link[IRanges:AtomicList]{CompressedRleList},
+\item{\code{coverage}}{\code{"list"}, list of
+\link[IRanges:AtomicList-class]{CompressedRleList},
 specify the coverage of features of each sample.}
 
 \item{\code{granges}}{\link[GenomicRanges:GRangesList-class]{CompressedGRangesList},

@@ -1,4 +1,10 @@
-# CHANGES IN VERSION 0.99.
+# CHANGES IN VERSION 0.99.3
+
+* change the link from AtomicList to AtomicList-class and RUVs-methods to RUVs.
+* shorter lines < 80 characters.
+* spead up coverageDepth
+
+# CHANGES IN VERSION 0.99.2
 
 * remove .DS_Store
 

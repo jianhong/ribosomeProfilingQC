@@ -15,7 +15,8 @@ metaPlot(
 )
 }
 \arguments{
-\item{UTR5coverage, CDScoverage, UTR3coverage}{coverages of UTR5, CDS, and UTR3 region.
+\item{UTR5coverage, CDScoverage, UTR3coverage}{coverages of UTR5, CDS, and
+UTR3 region.
 Output of \link{coverageDepth}}
 
 \item{sample}{character(1). Sample name to plot.}

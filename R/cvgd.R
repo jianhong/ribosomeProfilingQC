@@ -3,7 +3,8 @@
 #' represents output of \code{coverageDepth}.
 #' @aliases cvgd
 #' @rdname cvgd-class
-#' @slot coverage \code{"list"}, list of \link[IRanges:AtomicList]{CompressedRleList},
+#' @slot coverage \code{"list"}, list of
+#' \link[IRanges:AtomicList-class]{CompressedRleList},
 #' specify the coverage of features of each sample.
 #' @slot granges \link[GenomicRanges:GRangesList-class]{CompressedGRangesList},
 #' specify the features.
@@ -34,13 +35,15 @@ setClass(Class = "cvgd",
              return("Lengths of coverage should be identical for each element.")
            }
            if(n!=length(object@granges)){
-             return("Lengths of coverage should be identical to the length of granges.")
+             return("Lengths of coverage should be identical to
+                    the length of granges.")
            }
            return(TRUE)
          })
 
 #' @rdname cvgd-class
-#' @param \dots Each argument in \dots becomes an slot in the new \code{"cvgd"}-class.
+#' @param \dots Each argument in \dots becomes an slot in the new
+#' \code{"cvgd"}-class.
 #' @return A cvgd object.
 #' @export
 cvgd <- function(...){

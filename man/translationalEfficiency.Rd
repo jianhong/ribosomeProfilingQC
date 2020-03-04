@@ -20,8 +20,9 @@ if window is set, it must be output of \link{coverageDepth}.}
 
 \item{window}{numeric(1). window size for maximal counts.}
 
-\item{RPFsampleOrder, mRNAsampleOrder}{sample order of RPFs and mRNAs. The parameters
-are used to make sure that the order of RPFs and mRNAs in cvgs is corresponding samples.}
+\item{RPFsampleOrder, mRNAsampleOrder}{sample order of RPFs and mRNAs.
+The parameters are used to make sure that the order of RPFs and mRNAs in
+cvgs is corresponding samples.}
 
 \item{pseudocount}{the number will be add to sum of reads count to avoid X/0.}
 
@@ -32,7 +33,8 @@ If window size is provied and normByLibSize is set to TRUE,
 the coverage will be normalized by library size.}
 }
 \value{
-a list with RPFs, mRNA levels and TE as a matrix with translational efficiency
+a list with RPFs, mRNA levels and TE as a matrix with
+translational efficiency
 }
 \description{
 calculate translational efficiency.

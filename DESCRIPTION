@@ -1,7 +1,7 @@
 Package: ribosomeProfilingQC
 Type: Package
 Title: Ribosome Profiling Quality Control
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: c(person(given="Jianhong", family="Ou", email="jianhong.ou@duke.edu", 
         role=c("aut", "cre"), comment=c(ORCID="0000-0002-8652-2488")))
 Description: An R package for quality assessment of ribosome profiling. 

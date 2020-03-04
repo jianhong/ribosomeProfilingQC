@@ -20,8 +20,10 @@ plotDistance2Codon <- function(reads, start=TRUE, anchor=50,
                                      "Frame_1" = "#D55E00",
                                      "Frame_2" = "#0072B2")){
   stopifnot(is(reads, "GRanges"))
-  if(length(reads$tx_name)!=length(reads) || length(reads$position)!=length(reads) ||
-     length(reads$posToStop)!=length(reads) || length(reads$readingFrame)!=length(reads) ||
+  if(length(reads$tx_name)!=length(reads) ||
+     length(reads$position)!=length(reads) ||
+     length(reads$posToStop)!=length(reads) ||
+     length(reads$readingFrame)!=length(reads) ||
      length(reads$gene_id)!=length(reads)){
     stop("reads must be a result of assignReadingFrame")
   }
@@ -41,7 +43,8 @@ plotDistance2Codon <- function(reads, start=TRUE, anchor=50,
   position[is.na(position)] <- .1
   names(position) <- idx
   barplot(height=position,
-          ylab="Frequence", xlab=paste("P site relative to", ifelse(start, "start", "stop")),
+          ylab="Frequence",
+          xlab=paste("P site relative to", ifelse(start, "start", "stop")),
           col=this.col, xlim = xlim,
           border=NA, space=.5, xaxt = "n")
   idx <- as.numeric(idx)
@@ -53,7 +56,8 @@ plotDistance2Codon <- function(reads, start=TRUE, anchor=50,
   }else{
     idx <- idx[idx %% 3 == 1] * 1.5 + .25
   }
-  segments(x0 = idx, x1 = idx, y0 = 0, y1 = max(position), lty = 3, col = 'gray80')
+  segments(x0 = idx, x1 = idx, y0 = 0, y1 = max(position),
+           lty = 3, col = 'gray80')
   legend("topleft", legend = names(col),
          fill = col, border = col, bg = NA, box.col = NA)
   return(invisible(position))

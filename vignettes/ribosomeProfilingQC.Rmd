@@ -37,33 +37,42 @@ where the P-site of the ribosome is typically in position 13 from 5' reads.
 In bacteria, Allen et. al. get more accurate ID of P-site 
 from 3' end of reads[@mohammad2019systematically].
 
-![Schematic representation of ribosome profiling.](schematic.ribosome.profiling.jpg)
+![Schematic representation of ribosome profiling.](schematic.ribosome.prof.jpg)
 
-There are several packages available in Bioconductor already, including, _riboSeqR_ [@chung2015use], _RiboProfiling_ [@popa2016riboprofiling] and _ORFik_[@tjeldnes2018atlas].
+There are several packages available in Bioconductor already, including,
+_riboSeqR_ [@chung2015use], _RiboProfiling_ [@popa2016riboprofiling] and
+_ORFik_[@tjeldnes2018atlas].
 These packages are powerful in analyzing the ribosome footprinting data. 
-_ORFik_ package can also seek the new transcription start site using CageSeq data. 
-_RiboWaltz_[@lauria2018ribowaltz] is another popular package which is based on R and Bioconductor.
+_ORFik_ package can also seek the new transcription start site using 
+CageSeq data. 
+_RiboWaltz_[@lauria2018ribowaltz] is another popular package which is based on 
+R and Bioconductor.
 
-To help researchers quickly assess the quality of their ribosome profiling data, we have
-developed the ribosomeProfilingQC package. 
-The _ribosomeProfilingQC_ package can be sued to easily make diagnostic plots to check
-the mapping quality and frameshifts. In addition, it can preprocess 
+To help researchers quickly assess the quality of their ribosome profiling data,
+we have developed the ribosomeProfilingQC package. 
+The _ribosomeProfilingQC_ package can be sued to easily make diagnostic plots 
+to check the mapping quality and frameshifts. In addition, it can preprocess 
 ribosome profiling data for subsequent differential analysis. 
 
-Please note that all following analyses are based on known Open Reading Frame (ORF) annotation.
+Please note that all following analyses are based on known Open Reading Frame 
+(ORF) annotation.
 
 # Quick start
 
 Here is an example using _ribosomeProfilingQC_ with a subset of ribo-seq data.
 
-First install _ribosomeProfilingQC_ and other packages required to run the examples.
-Please note that the example dataset used here is from zebrafish. To run analysis with dataset
-from a different species or different assembly, please install the corresponding Bsgenome and TxDb.
-For example, to analyze mouse data aligned to mm10, please install BSgenome.Mmusculus.UCSC.mm10,
+First install _ribosomeProfilingQC_ and other packages required to run 
+the examples.
+Please note that the example dataset used here is from zebrafish. 
+To run analysis with dataset from a different species or different assembly, 
+please install the corresponding Bsgenome and TxDb.
+For example, to analyze mouse data aligned to mm10, 
+please install BSgenome.Mmusculus.UCSC.mm10, 
 and TxDb.Mmusculus.UCSC.mm10.knownGene. 
-You can also generate a TxDb object by functions `makeTxDbFromGFF` from a local gff file,
-or `makeTxDbFromUCSC`, `makeTxDbFromBiomart`, and `makeTxDbFromEnsembl`, from online resources in
-_GenomicFeatures_ package.
+You can also generate a TxDb object by 
+functions `makeTxDbFromGFF` from a local gff file,
+or `makeTxDbFromUCSC`, `makeTxDbFromBiomart`, and `makeTxDbFromEnsembl`, 
+from online resources in _GenomicFeatures_ package.
 
 ```{r, eval=FALSE}
 library(BiocManager)
@@ -108,10 +117,12 @@ genome <- Mmusculus
 
 ## Prepare annotaiton CDS
 
-The function `prepareCDS` is used to prepare the information for downstream analysis from a `TxDb` object.
+The function `prepareCDS` is used to prepare the information for downstream 
+analysis from a `TxDb` object.
 
 ```{r, eval=FALSE}
-library(TxDb.Drerio.UCSC.danRer10.refGene) ## which is corresponding to BSgenome.Drerio.UCSC.danRer10
+## which is corresponding to BSgenome.Drerio.UCSC.danRer10
+library(TxDb.Drerio.UCSC.danRer10.refGene)
 txdb <- TxDb.Drerio.UCSC.danRer10.refGene ## give it a short name
 CDS <- prepareCDS(txdb)
 ```
@@ -151,12 +162,15 @@ CDS <- prepareCDS(txdb)
 The input of _ribosomeProfilingQC_ is bam file. To prepare bam file,
 different from _riboSeqR_ package which ask reads mapped to transcriptome, 
 _ribosomeProfilingQC_ use the bam file mapped to whole genome. 
-To get correctly mapped reads, first try to map adaptor trimmed sequences to genome assembly by bowtie2
-with following parameters: --local --ma 5 --mp 8,4 --rdg 7,7 --rfg 7,7 --fr --nofw
-and then fileter the reads mapped to rRNA, tRNA, snRNA, snoRNA and misc_RNA from Ensembl and
-Repeatmasker annotations. After that, map the clean reads to genome assembly by tophat2 with 
-following parameters:  --library-type fr-firststrand --transcriptome-index=Transcriptome_data/genome.
-Because the library type of ribo-seq is usally strand-specific, please make sure to map the reads with correct library type.
+To get correctly mapped reads, first try to map adaptor trimmed sequences to 
+genome assembly by bowtie2 with following parameters: 
+--local --ma 5 --mp 8,4 --rdg 7,7 --rfg 7,7 --fr --nofw
+and then fileter the reads mapped to rRNA, tRNA, snRNA, snoRNA and misc_RNA 
+from Ensembl and Repeatmasker annotations. After that, map the clean reads to 
+genome assembly by tophat2 with following parameters: 
+--library-type fr-firststrand --transcriptome-index=Transcriptome_data/genome.
+Because the library type of ribo-seq is usally strand-specific, 
+please make sure to map the reads with correct library type.
 
 ```{r}
 library(Rsamtools)
@@ -170,12 +184,14 @@ bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 
 ## Estimate P site
 
-As it shown in the above figure, P site of the ribosome is in position 13 (if using RNase I).
-However, in different experiments, the P site may be shifted due to various experimental
-conditions such as the choice of enzyme and the cell type.
+As it shown in the above figure, P site of the ribosome is in position 13 
+(if using RNase I).
+However, in different experiments, the P site may be shifted due to various 
+experimental conditions such as the choice of enzyme and the cell type.
 The `estimatePsite` function can be used to check the P site. 
-The `estimatePsite` function will search start/stop codons that occur in the reads and 
-the `bestPsite` function will meta-plot the distribution for each position.
+The `estimatePsite` function will search start/stop codons that occur in the 
+reads and the `bestPsite` function will meta-plot the distribution for 
+each position.
 The `estimatePsite` will only use 12, 13 or 14 as best P site candidates 
 when searching from the 5' end.
 
@@ -213,7 +229,9 @@ readsEndPlot(bamfile, CDS, toStartCodon=TRUE)
 readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
 ```
 
-If you see following distribution, that means lots of gene are in active expression.
+If you see following distribution, that means lots of gene are in
+active expression.
+
 ![Active expression](activeExpression.jpg)
 
 ## Read all P site coordinates
@@ -272,14 +290,15 @@ pc.sub <- readsDistribution(pc.sub, txdb, las=2)
 
 ## Metagene analysis plot for 5'UTR/CDS/3'UTR
 
-A metagene plot can indicate the reads distribution in 5'UTR, CDS and 3'UTR region.
+A metagene plot can indicate the reads distribution in 5'UTR, CDS and
+3'UTR region.
 
 ```{r, fig.width=5, fig.height=4}
 gtf <- system.file("extdata", "Danio_rerio.GRCz10.91.chr1.gtf.gz", 
                    package="ribosomeProfilingQC")
-cvgs.utr5 <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="utr5")
-cvgs.CDS <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="cds")
-cvgs.utr3 <- coverageDepth(RPFs = bamfilename, gtf = gtf, region="utr3")
+cvgs.utr5 <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="utr5")
+cvgs.CDS <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="cds")
+cvgs.utr3 <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="utr3")
 metaPlot(cvgs.utr5, cvgs.CDS, cvgs.utr3, sample=1)
 ```
 
@@ -291,7 +310,8 @@ located within known the annotated CDS.
 The `plotDistance2Codon` function can be used to plot the reading frame usage 
 in transcription initiation or termination sites.
 Function `plotFrameDensity` can be used to collapse all the RPFs in each frame.
-These plots can help you to double check if the p-site position is correct or not. 
+These plots can help you to double check if the p-site position is correct 
+or not. 
 If it is correct, most of the reads should be assigned to frame0.
 
 
@@ -322,15 +342,16 @@ plotTranscript(pc.sub, c("ENSDART00000161781", "ENSDART00000166968",
 
 ## ORFscore vs coverageRate
 
-ORFscore[@bazzini2014identification] can be used to quantify the biased distribution 
-of RPFs toward the first frame of a given CDS. 
-Coverage rate for whole CDS can help researchers to check the RPFs distribution along whole CDS. 
-Coverage is determined by measuring the proportion of in-frame CDS positions with >= 1 reads.
+ORFscore[@bazzini2014identification] can be used to quantify the biased 
+distribution of RPFs toward the first frame of a given CDS. 
+Coverage rate for whole CDS can help researchers to check the RPFs distribution
+along whole CDS. 
+Coverage is determined by measuring the proportion of in-frame CDS positions 
+with >= 1 reads.
 If coverage is about 1, the whole CDS is covered by active ribosomes.
 
-```{r}
+```{r, eval=FALSE}
 cvg <- frameCounts(pc.sub, coverageRate=TRUE)
-
 ORFscore <- getORFscore(pc.sub)
 #plot(cvg[names(ORFscore)], ORFscore,
 #     xlab="coverage ORF1", ylab="ORF score",
@@ -375,7 +396,8 @@ plotFrameDensity(pc.sub)
 
 ### Count for RPFs
 
-Downstream analysis including differential analysis, comparison with RNAseq, and so on. 
+Downstream analysis including differential analysis, comparison with RNAseq,
+and so on. 
 Function `frameCounts` will generate a count vector for each transcript or gene, 
 which can be used for differential analysis.
 `countReads` can be used for count multiple files of ribo-seq.
@@ -433,13 +455,13 @@ topTags(lrt, n=3)
 
 ```{r, fig.width=6, fig.height=4}
 coverage <- coverageDepth(RPFs[grepl("KD1|WT", RPFs)], 
-                          gtf=gtf, 
+                          gtf=txdb, 
                           level="gene",
                           region="feature with extension")
 group1 <- c("RPF.KD1.1", "RPF.KD1.2")
 group2 <- c("RPF.WT.1", "RPF.WT.2")
 ## subset the data
-coverage <- lapply(coverage, function(.ele){ ## do not run this step for real data
+coverage <- lapply(coverage, function(.ele){# do not run this step for real data
   .ele$coverage <- lapply(.ele$coverage, `[`, i=seq.int(50))
   .ele$granges <- .ele$granges[seq.int(50)]
   .ele
@@ -456,7 +478,8 @@ plotSpliceEvent(se, se$feature[1], coverage, group1, group2)
 
 #### Count for RPFs and RNA-seq
 
-The `countReads` function can be used to count multiple files of ribo-seq and RNA-seq data.
+The `countReads` function can be used to count multiple files of ribo-seq and 
+RNA-seq data.
 
 ```{r}
 path <- system.file("extdata", package="ribosomeProfilingQC")
@@ -477,7 +500,8 @@ cnts <- readRDS(file.path(path, "cnts.rds"))
 
 The absolute level of ribosome occupancy is strongly correlated with RNA levels 
 for both coding and noncoding transcripts.
-Translational efficiency is introduced[@ingolia2009genome] to show the correlation.
+Translational efficiency is introduced[@ingolia2009genome] 
+to show the correlation.
 TE is the ratio of normalized ribosome footprint abundance to mRNA density.
 A common normalization method is using 
 Fragments Per Kilobase of transcript per Million mapped reads (FPKM).
@@ -493,7 +517,8 @@ TE <- translationalEfficiency(fpkm)
 We suppose that the log2 transformed translational efficiency that 
 we calculated by the ratios of RPFs to mRNAs 
 has a linear correlation with real translational efficiency. 
-We then use the _limma_ package to test the differential translational efficiency.
+We then use the _limma_ package to test the differential 
+translational efficiency.
 
 ```{r}
 library(limma)
@@ -525,21 +550,26 @@ plotTE(TE, sample=2, xaxis="mRNA", log2=TRUE, pch=16, cex=.5)
 #plotTE(TE, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
 ```
 
-This issue can be fixed by calculating the maximum value (TE max) in the most highly
-ribosome-occupied 90 nt window within a feature[@ingolia2009genome]. 
+This issue can be fixed by calculating the maximum value (TE max) in the most
+highly ribosome-occupied 90 nt window within a feature[@ingolia2009genome]. 
 Please note that the normalization method for TE max is not FPKM any more.
 
 ```{r}
-cvgs <- coverageDepth(RPFs, RNAs, gtf)
+cvgs <- coverageDepth(RPFs, RNAs, txdb)
 TE90 <- translationalEfficiency(cvgs, window = 90, normByLibSize=TRUE)
 plotTE(TE90, sample=2, xaxis="mRNA", log2=TRUE, pch=16, cex=.5)
 #plotTE(TE90, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
 ```
 
-Above examples are TE90 for CDS region. Following codes show how to calculate TE90 for 3'UTR regions.
+Above examples are TE90 for CDS region. Following codes show how to 
+calculate TE90 for 3'UTR regions.
 
-```{r}
-cvgs.utr3 <- coverageDepth(RPFs, RNAs, gtf, region="utr3")
+```{r, include=FALSE}
+cvgs.utr3 <- coverageDepth(RPFs, RNAs, txdb, region="utr3")
+```
+
+```{r, eval=FALSE}
+cvgs.utr3 <- coverageDepth(RPFs, RNAs, txdb, region="utr3")
 TE90.utr3 <- translationalEfficiency(cvgs.utr3, window = 90)
 #plotTE(TE90.utr3, sample=2, xaxis="mRNA", log2=TRUE, pch=16, cex=.5)
 #plotTE(TE90.utr3, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
@@ -548,11 +578,12 @@ TE90.utr3 <- translationalEfficiency(cvgs.utr3, window = 90)
 
 #### Ribosome Release Score (RRS)
 
-RRS is calculated as the ratio of RPFs (normalized by RNA-seq reads) in the CDS to RPFs in the 3'UTR.
+RRS is calculated as the ratio of RPFs (normalized by RNA-seq reads) in 
+the CDS to RPFs in the 3'UTR.
 Because it is hard to define the CDS region for non-coding RNAs, 
 RRS of non-coding RNAs can not be calculated by Function `ribosomeReleaseScore`.
 
-```{r}
+```{r, eval=FALSE}
 RRS <- ribosomeReleaseScore(TE90, TE90.utr3, log2 = TRUE)
 #plot(RRS[, 1], RRS[, 3],
 #     xlab="log2 transformed RRS of KD1", 
@@ -567,7 +598,7 @@ RRS <- ribosomeReleaseScore(TE90, TE90.utr3, log2 = TRUE)
 Plot metagene coverage for CDS, 5'UTR and 3'UTR.
 
 ```{r}
-cvgs.utr5 <- coverageDepth(RPFs, RNAs, gtf, region="utr5")
+cvgs.utr5 <- coverageDepth(RPFs, RNAs, txdb, region="utr5")
 #metaPlot(cvgs.utr5, cvgs, cvgs.utr3, sample=2, xaxis = "RPFs")
 metaPlot(cvgs.utr5, cvgs, cvgs.utr3, sample=2, xaxis = "mRNA")
 ```

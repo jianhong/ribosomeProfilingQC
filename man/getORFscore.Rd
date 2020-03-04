@@ -13,11 +13,14 @@ getORFscore(reads)
 numeric vector with ORFscore.
 }
 \description{
-To calculate the ORFscore, reads were counnted at each position within the ORF.
+To calculate the ORFscore, reads were counnted at each position
+within the ORF.
 \deqn{ORFscore = log_2((\sum_{n=1}^{3}\frac{(F_i-\bar{F})^2}{\bar{F}}) + 1)}
 where \eqn{F_n} is the number of reads in reading frame n,
-\eqn{\bar{F}} is the total number of reads across all three frames divided by 3.
-If \eqn{F_1} is smaller than \eqn{F_2} or \eqn{F_3}, \eqn{ORFscore = -1 X ORFscore}.
+\eqn{\bar{F}} is the total number of reads across all three frames
+divided by 3.
+If \eqn{F_1} is smaller than \eqn{F_2} or \eqn{F_3},
+\eqn{ORFscore = -1 X ORFscore}.
 }
 \examples{
 pcs <- readRDS(system.file("extdata", "samplePc.rds",
@@ -25,9 +28,11 @@ pcs <- readRDS(system.file("extdata", "samplePc.rds",
 ORFscore <- getORFscore(pcs)
 }
 \references{
-1: Bazzini AA, Johnstone TG, Christiano R, Mackowiak SD, Obermayer B, Fleming ES,
-Vejnar CE, Lee MT, Rajewsky N, Walther TC, Giraldez AJ. Identification of small
-ORFs in vertebrates using ribosome footprinting and evolutionary conservation.
-EMBO J. 2014 May 2;33(9):981-93. doi: 10.1002/embj.201488411. Epub 2014 Apr 4.
+1: Bazzini AA, Johnstone TG, Christiano R, Mackowiak SD, Obermayer B,
+Fleming ES, Vejnar CE, Lee MT, Rajewsky N, Walther TC, Giraldez AJ.
+Identification of small ORFs in vertebrates using ribosome footprinting and
+evolutionary conservation.
+EMBO J. 2014 May 2;33(9):981-93.
+doi: 10.1002/embj.201488411. Epub 2014 Apr 4.
 PubMed PMID: 24705786; PubMed Central PMCID: PMC4193932.
 }

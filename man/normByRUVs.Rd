@@ -11,8 +11,8 @@ normByRUVs(counts, RPFgroup, mRNAgroup = RPFgroup, k = 1)
 
 \item{RPFgroup, mRNAgroup}{groups for RPF and mRNA files}
 
-\item{k}{The number of factor of unwanted variation to be estimated from the data.
-See \link[RUVSeq:RUVs-methods]{RUVs}}
+\item{k}{The number of factor of unwanted variation to be estimated from
+the data. See \link[RUVSeq:RUVs]{RUVs}}
 }
 \value{
 normalized counts list

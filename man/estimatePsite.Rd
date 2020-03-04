@@ -16,8 +16,8 @@ estimatePsite(bamfile, CDS, genome, anchor = "5end")
 \item{anchor}{5end or 3end. Default is 5end.}
 }
 \value{
-A list with strart codon position, stop codon position from 5 end of the reads,
-and summary of positions.
+A list with strart codon position, stop codon position from 5 end of
+the reads, and summary of positions.
 }
 \description{
 Estimate P site postion from a subset reads.
@@ -28,22 +28,25 @@ bamfilename <- system.file("extdata", "RPF.WT.1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
-library(GenomicFeatures)
+#library(GenomicFeatures)
 library(BSgenome.Drerio.UCSC.danRer10)
-txdb <- makeTxDbFromGFF(system.file("extdata",
-          "Danio_rerio.GRCz10.91.chr1.gtf.gz",
-          package="ribosomeProfilingQC"),
-          organism = "Danio rerio",
-          chrominfo = seqinfo(Drerio)["chr1"],
-          taxonomyId = 7955)
-CDS <- prepareCDS(txdb)
+#txdb <- makeTxDbFromGFF(system.file("extdata",
+ #         "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+ #         package="ribosomeProfilingQC"),
+ #         organism = "Danio rerio",
+ #         chrominfo = seqinfo(Drerio)["chr1"],
+ #         taxonomyId = 7955)
+#CDS <- prepareCDS(txdb)
+CDS <- readRDS(system.file("extdata", "CDS.rds",
+                           package="ribosomeProfilingQC"))
 estimatePsite(bamfile, CDS, Drerio)
 
 }
 \references{
-1: Bazzini AA, Johnstone TG, Christiano R, Mackowiak SD, Obermayer B, Fleming ES,
-Vejnar CE, Lee MT, Rajewsky N, Walther TC, Giraldez AJ. Identification of small
-ORFs in vertebrates using ribosome footprinting and evolutionary conservation.
-EMBO J. 2014 May 2;33(9):981-93. doi: 10.1002/embj.201488411. Epub 2014 Apr 4.
+1: Bazzini AA, Johnstone TG, Christiano R, Mackowiak SD, Obermayer B,
+Fleming ES, Vejnar CE, Lee MT, Rajewsky N, Walther TC, Giraldez AJ.
+Identification of small ORFs in vertebrates using ribosome footprinting and
+evolutionary conservation. EMBO J. 2014 May 2;33(9):981-93.
+doi: 10.1002/embj.201488411. Epub 2014 Apr 4.
 PubMed PMID: 24705786; PubMed Central PMCID: PMC4193932.
 }

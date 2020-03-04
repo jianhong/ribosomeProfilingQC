@@ -47,7 +47,7 @@ frame0, frame1 and frame2}
 \item{DEregions}{The regions with differential reads in exon,
 utr5 and utr3.}
 
-\item{size}{dispersion parameter. Must be strictly positive, need not be integer.}
+\item{size}{dispersion parameter. Must be strictly positive.}
 
 \item{sd}{standard deviations.}
 

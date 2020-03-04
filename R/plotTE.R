@@ -1,5 +1,6 @@
 #' plot translational efficiency
-#' @description Scatterplot of RNA/RPFs level compared to the translational efficiency.
+#' @description Scatterplot of RNA/RPFs level compared to the
+#' translational efficiency.
 #' @param TE output of \link{translationalEfficiency}
 #' @param sample character(1). Sample name to plot.
 #' @param xaxis what to plot for x-axis.

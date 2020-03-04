@@ -17,8 +17,10 @@ plotTranscript <- function(reads, tx_name,
                                  "Frame_1" = "#D55E00",
                                  "Frame_2" = "#0072B2")){
   stopifnot(is(reads, "GRanges"))
-  if(length(reads$tx_name)!=length(reads) || length(reads$position)!=length(reads) ||
-     length(reads$posToStop)!=length(reads) || length(reads$readingFrame)!=length(reads) ||
+  if(length(reads$tx_name)!=length(reads) ||
+     length(reads$position)!=length(reads) ||
+     length(reads$posToStop)!=length(reads) ||
+     length(reads$readingFrame)!=length(reads) ||
      length(reads$gene_id)!=length(reads)){
     stop("reads must be a result of assignReadingFrame")
   }

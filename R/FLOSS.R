@@ -1,7 +1,9 @@
 #' Fragment Length Organization Similarity Score (FLOSS)
-#' @description The FLOSS will be calculated from a histogram of read lengths for footprints on a transcript or reading frame.
-#' @references 1: Ingolia NT, Brar GA, Stern-Ginossar N, Harris MS, Talhouarne GJ, Jackson SE,
-#' Wills MR, Weissman JS. Ribosome profiling reveals pervasive translation outside
+#' @description The FLOSS will be calculated from a histogram of
+#' read lengths for footprints on a transcript or reading frame.
+#' @references 1: Ingolia NT, Brar GA, Stern-Ginossar N, Harris MS,
+#' Talhouarne GJ, Jackson SE, Wills MR, Weissman JS. Ribosome profiling
+#' reveals pervasive translation outside
 #' of annotated protein-coding genes. Cell Rep. 2014 Sep 11;8(5):1365-79. doi:
 #' 10.1016/j.celrep.2014.07.045. Epub 2014 Aug 21. PubMed PMID: 25159147; PubMed
 #' Central PMCID: PMC4216110.
@@ -11,11 +13,13 @@
 #' @param readLengths read length used for calculation
 #' @param level transcript or gene level
 #' @param draw plot FLOSS vs total reads or not.
-#' @return a data frame with colnames as id, FLOSS, totalReads, wilcox.test.pval, cook's distance.
+#' @return a data frame with colnames as id, FLOSS, totalReads,
+#' wilcox.test.pval, cook's distance.
 #' @importFrom IRanges findOverlaps
 #' @importFrom S4Vectors queryHits subjectHits
 #' @importFrom stats cooks.distance lm wilcox.test
-#' @importFrom ggplot2 geom_point geom_smooth scale_x_log10 scale_y_log10 annotation_logticks
+#' @importFrom ggplot2 geom_point geom_smooth scale_x_log10 scale_y_log10
+#' annotation_logticks
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom scales trans_breaks trans_format math_format
 #' @export
@@ -26,20 +30,23 @@
 #' yieldSize <- 10000000
 #' bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 #' pc <- getPsiteCoordinates(bamfile, bestpsite=13)
-#' library(GenomicFeatures)
+#' #library(GenomicFeatures)
 #' library(BSgenome.Drerio.UCSC.danRer10)
-#' txdb <- makeTxDbFromGFF(system.file("extdata",
-#'           "Danio_rerio.GRCz10.91.chr1.gtf.gz",
-#'           package="ribosomeProfilingQC"),
-#'           organism = "Danio rerio",
-#'           chrominfo = seqinfo(Drerio)["chr1"],
-#'           taxonomyId = 7955)
-#' CDS <- prepareCDS(txdb)
+#' #txdb <- makeTxDbFromGFF(system.file("extdata",
+#'  #         "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+#'  #         package="ribosomeProfilingQC"),
+#'  #         organism = "Danio rerio",
+#'  #         chrominfo = seqinfo(Drerio)["chr1"],
+#'  #         taxonomyId = 7955)
+#' #CDS <- prepareCDS(txdb)
+#' CDS <- readRDS(system.file("extdata", "CDS.rds",
+#'                            package="ribosomeProfilingQC"))
 #' set.seed(123)
 #' ref <- sample(unique(CDS$gene_id), 100)
 #' fl <- FLOSS(pc, ref, CDS, level="gene")
 
-FLOSS <- function(reads, ref, CDS, readLengths=c(26:34), level=c("tx", "gene"), draw=FALSE){
+FLOSS <- function(reads, ref, CDS, readLengths=c(26:34),
+                  level=c("tx", "gene"), draw=FALSE){
   stopifnot(is(reads, "GRanges"))
   stopifnot(length(reads$qwidth)==length(reads))
   level <- match.arg(level)
@@ -54,7 +61,8 @@ FLOSS <- function(reads, ref, CDS, readLengths=c(26:34), level=c("tx", "gene"), 
   }
   stopifnot(is.numeric(readLengths))
   readLengths <- as.integer(readLengths)
-  reads <- reads[reads$qwidth>=min(readLengths) & reads$qwidth<=max(readLengths)]
+  reads <- reads[reads$qwidth>=min(readLengths) &
+                   reads$qwidth<=max(readLengths)]
   if(length(reads)<1){
     stop("No reads is in given readLengths.")
   }
@@ -90,19 +98,23 @@ FLOSS <- function(reads, ref, CDS, readLengths=c(26:34), level=c("tx", "gene"), 
                   if(sum(.id)==0){
                     1
                   }else{
-                    wilcox.test(x = .ele[.id], y = f.ref[.id], paired = TRUE)$p.value
+                    wilcox.test(x = .ele[.id],
+                                y = f.ref[.id], paired = TRUE)$p.value
                   }
                 })
   id <- names(fl)
   df <- data.frame(id=id, FLOSS=fl, totalReads=cnt.tab.sum[id],
                    p.value=pval[id], stringsAsFactors = FALSE)
   fit.data <- log2(df[df$FLOSS!=0, c("totalReads", "FLOSS")])
-  fit <- lm(FLOSS~0+totalReads, log2(df[df$FLOSS!=0, c("totalReads", "FLOSS")]))
+  fit <- lm(FLOSS~0+totalReads,
+            log2(df[df$FLOSS!=0, c("totalReads", "FLOSS")]))
   cooksd <- cooks.distance(fit)
   df$cooks.distance <- 0
   df$cooks.distance[df$FLOSS!=0] <- cooksd
   if(draw){
-    ggdf <- df[df$FLOSS!=0, c("id", "totalReads", "FLOSS", "cooks.distance"), drop=FALSE]
+    ggdf <- df[df$FLOSS!=0,
+               c("id", "totalReads", "FLOSS", "cooks.distance"),
+               drop=FALSE]
     ggdf$highlight <- ggdf$cooks.distance>4*mean(cooksd, na.rm=TRUE)
     colnames(ggdf) <- c("ggid", "ggx", "ggy", "ggcd", "gghighlight")
     ggid <- ggx <- ggy <- ggcd <- gghighlight <- .x <- NULL
@@ -126,7 +138,8 @@ FLOSS <- function(reads, ref, CDS, readLengths=c(26:34), level=c("tx", "gene"), 
                      ncol=ncol(f.tab),
                      dimnames = list(ID=id, len=colnames(f.tab))))
   df.ref=data.frame(id="ref", FLOSS=0, totalReads=cnt.ref.sum,
-                 p.value=1, cooks.distance=0, t(unlist(as.list(f.ref))), row.names = "ref",
+                 p.value=1, cooks.distance=0,
+                 t(unlist(as.list(f.ref))), row.names = "ref",
                  stringsAsFactors = FALSE, check.names = FALSE)
   df <- rbind(df.ref, df)
   return(df)

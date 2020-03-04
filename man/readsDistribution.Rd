@@ -18,7 +18,8 @@ readsDistribution(
 
 \item{txdb}{an TxDb object}
 
-\item{upstreamRegion, downstreamRegion}{the range for promoter region and downstream region.}
+\item{upstreamRegion, downstreamRegion}{the range for promoter region and
+downstream region.}
 
 \item{plot}{plot the distribution or not}
 
@@ -28,7 +29,8 @@ readsDistribution(
 the reads with distribution assignment
 }
 \description{
-Plot the percentage of reads in CDS, 5'UTR, 3'UTR, introns, and other elements.
+Plot the percentage of reads in CDS, 5'UTR, 3'UTR, introns, and
+ other elements.
 }
 \examples{
 library(Rsamtools)

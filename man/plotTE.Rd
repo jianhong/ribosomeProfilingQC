@@ -33,7 +33,8 @@ plotTE(
 invisible data.frame with x, y of points.
 }
 \description{
-Scatterplot of RNA/RPFs level compared to the translational efficiency.
+Scatterplot of RNA/RPFs level compared to the
+translational efficiency.
 }
 \examples{
 path <- system.file("extdata", package="ribosomeProfilingQC")

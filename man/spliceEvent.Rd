@@ -7,7 +7,8 @@
 spliceEvent(coverage, group1, group2)
 }
 \arguments{
-\item{coverage}{coverages of feature region with extensions. Output of \link{coverageDepth}}
+\item{coverage}{coverages of feature region with extensions.
+Output of \link{coverageDepth}}
 
 \item{group1, group2}{the sample names of group 1 and group 2}
 }
@@ -15,7 +16,8 @@ spliceEvent(coverage, group1, group2)
 A GRanges object of splice events.
 }
 \description{
-Get differentical usage of alternative Translation Initiation Sites,
+Get differentical usage of alternative
+Translation Initiation Sites,
 alternative Polyadenylation Sites or
 alternative splicing sites
 }
@@ -24,7 +26,8 @@ alternative splicing sites
 path <- system.file("extdata", package="ribosomeProfilingQC")
 RPFs <- dir(path, "RPF.*?\\\\.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-coverage <- coverageDepth(RPFs, gtf=gtf, level="gene", region="feature with extension")
+coverage <- coverageDepth(RPFs, gtf=gtf,
+                  level="gene", region="feature with extension")
 group1 <- c("RPF.KD1.1", "RPF.KD1.2")
 group2 <- c("RPF.WT.1", "RPF.WT.2")
 se <- spliceEvent(coverage, group1, group2)

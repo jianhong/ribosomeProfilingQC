@@ -15,7 +15,8 @@ shiftReadsByFrame(reads, txdb)
 reads with reading frame information
 }
 \description{
-shift reads P site position by reading frame. After shifting, all reading frame will be set as 0
+shift reads P site position by reading frame. After shifting,
+all reading frame will be set as 0
 }
 \examples{
 library(Rsamtools)

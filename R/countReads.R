@@ -6,6 +6,7 @@
 #' @param level transcript or gene level.
 #' @param bestpsite numeric(1). P site postion.
 #' @param readsLen numeric(1). reads length to keep.
+#' @param anchor 5end or 3end. Default is 5end.
 #' @param ... parameters pass to \link[Rsubread:featureCounts]{featureCounts}
 #' @return a list with reads counts.
 #' @importFrom methods as is
@@ -22,10 +23,11 @@
 #'
 
 countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
-                       bestpsite=13, readsLen=c(28,29),
+                       bestpsite=13, readsLen=c(28,29), anchor="5end",
                        ...){
   stopifnot(is.character(gtf))
   level <- match.arg(level)
+  anchor <- match.arg(anchor, choices = c("5end", "3end"))
   gtf <- gtf[1]
   counts <- list()
   if(!missing(RPFs)){
@@ -36,7 +38,8 @@ countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
     counts[["RPFs"]] <- RPFsCounts(files = RPFs,
                                    txdb = txdb, level = level,
                                    bestpsite = bestpsite,
-                                   readsLen = readsLen)
+                                   readsLen = readsLen,
+                                   anchor = anchor)
   }
   if(!missing(RNAs)){
     stopifnot(is.character(RNAs))
@@ -60,11 +63,13 @@ countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
   counts
 }
 
-RPFsCounts <- function(files, txdb, level, bestpsite, readsLen){
+RPFsCounts <- function(files, txdb, level, bestpsite,
+                       readsLen, anchor){
   yieldSize <- 10000000
   cnts <- lapply(files, function(f){
     bamfile <- BamFile(file = f, yieldSize = yieldSize)
-    pc <- getPsiteCoordinates(bamfile, bestpsite=bestpsite)
+    pc <- getPsiteCoordinates(bamfile, bestpsite=bestpsite,
+                              anchor = anchor)
     pc.sub <- pc[pc$qwidth %in% readsLen]
     pc.sub <- shiftReadsByFrame(pc.sub, txdb)
     frameCounts(pc.sub, level=level)
@@ -82,18 +87,19 @@ getFeatureLen <- function(txdb, level=c("gene", "tx")){
   stopifnot(is(txdb, "TxDb"))
   level <- match.arg(level)
   features <- exons(txdb, columns=c("gene_id", "tx_name"))
-  features <- switch(level,
-                     gene={
-                       f <- rep(features, lengths(features$gene_id))
-                       mcols(f) <-
-                         DataFrame(feature_id=unlist(features$gene_id))
-                       f[!is.na(f$feature_id)]
-                     },
-                     tx={
-                       f <- rep(features, lengths(features$tx_name))
-                       mcols(f) <- DataFrame(unlist(features$tx_name))
-                       f[!is.na(f$feature_id)]
-                     })
+  features <-
+    switch(level,
+           gene={
+             f <- rep(features, lengths(features$gene_id))
+             mcols(f) <-
+               DataFrame(feature_id=unlist(features$gene_id))
+             f[!is.na(f$feature_id)]
+           },
+           tx={
+             f <- rep(features, lengths(features$tx_name))
+             mcols(f) <- DataFrame(unlist(features$tx_name))
+             f[!is.na(f$feature_id)]
+           })
   f <- as.data.frame(features)
   f <- split(f, f$feature_id)
   GeneID <- names(f)
@@ -106,5 +112,6 @@ getFeatureLen <- function(txdb, level=c("gene", "tx")){
   Strand <- unlist(lapply(f, foo, "strand"))
   Length <- unlist(lapply(f, function(.ele) sum(.ele$width)))
   data.frame(GeneID=GeneID, Chr=Chr, Start=Start, End=End,
-             Strand=Strand, Length=Length, stringsAsFactors = FALSE)
+             Strand=Strand, Length=Length,
+             stringsAsFactors = FALSE)
 }

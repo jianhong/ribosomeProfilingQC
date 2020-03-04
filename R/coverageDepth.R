@@ -8,6 +8,7 @@
 #' @param level transcript or gene level.
 #' @param bestpsite P site postion.
 #' @param readsLen reads length to keep.
+#' @param anchor 5end or 3end. Default is 5end.
 #' @param region annotation region. It could be "cds", "utr5", "utr3",
 #' "exon", "transcripts", "feature with extension".
 #' @param ext extesion region for "feature with extension".
@@ -28,25 +29,27 @@
 #' cvgs <- coverageDepth(RPFs[1], gtf=gtf, level="gene")
 
 coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
-                          bestpsite=13, readsLen=c(28,29), region="cds",
+                          bestpsite=13, readsLen=c(28,29), anchor="5end",
+                          region="cds",
                           ext=5000,
                           ...){
-  stopifnot(is.character(gtf))
+  stopifnot(is.character(gtf)||is(gtf, "TxDb"))
   level <- match.arg(level)
+  anchor <- match.arg(anchor, choices = c("5end", "3end"))
   region <- region[1]
   if(!region %in% c("cds", "utr5", "utr3", "exon",
                     "transcripts", "feature with extension")){
     stop("region must be cds, utr5, utr3, exon,
          transcripts, feature with extension")
   }
-  gtf <- gtf[1]
   cvgs <- list()
   txdb <- NULL
-  if(is.character(gtf)){
-    suppressWarnings(suppressMessages(txdb <- makeTxDbFromGFF(gtf, ...)))
+  if(is(gtf, "TxDb")){
+    txdb <- gtf
   }else{
-    if(is(gtf, "TxDb")){
-      txdb <- gtf
+    if(is.character(gtf)){
+      gtf <- gtf[1]
+      suppressWarnings(suppressMessages(txdb <- makeTxDbFromGFF(gtf, ...)))
     }
   }
   if(!is(txdb, "TxDb")){
@@ -60,6 +63,7 @@ coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
                   txdb = txdb, level = level,
                   bestpsite = bestpsite,
                   readsLen = readsLen,
+                  anchor = anchor,
                   region = region,
                   ext = ext)
     cvgs[["RPFs"]] <- cd
@@ -75,13 +79,16 @@ coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
   cvgs
 }
 
-getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
+getCvgs <- function(files, txdb, level,
+                    bestpsite, readsLen, anchor,
+                    region, ext){
   yieldSize <- 10000000
   if(!missing(bestpsite)){##RPFs
     ignore.strand <- FALSE
     reads <- lapply(files, function(f){
       bamfile <- BamFile(file = f, yieldSize = yieldSize)
-      pc <- getPsiteCoordinates(bamfile, bestpsite=bestpsite)
+      pc <- getPsiteCoordinates(bamfile, bestpsite=bestpsite,
+                                anchor = anchor)
       pc.sub <- pc[pc$qwidth %in% readsLen]
       pc.sub <- shiftReadsByFrame(pc.sub, txdb)
     })
@@ -92,7 +99,8 @@ getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
       pc <- getPsiteCoordinates(bamfile, bestpsite=1)
     })
   }
-  names(reads) <- basename(sub(".bam", "", files, ignore.case = TRUE))
+  names(reads) <- basename(sub(".bam", "", files,
+                               ignore.case = TRUE))
   features <- switch(region,
     cds=cds(txdb, columns=c("gene_id", "tx_name")),
     utr5={
@@ -103,7 +111,8 @@ getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
                          select(txdb, keys=unique(fs$tx_name),
                                 columns = c("TXNAME", "GENEID"),
                                 keytype="TXNAME"))
-      fs$gene_id <- id_map[match(fs$tx_name, id_map$TXNAME), "GENEID"]
+      fs$gene_id <-
+        id_map[match(fs$tx_name, id_map$TXNAME), "GENEID"]
       fs
     },
     utr3={
@@ -114,7 +123,8 @@ getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
                          select(txdb, keys=unique(fs$tx_name),
                                 columns = c("TXNAME", "GENEID"),
                                 keytype="TXNAME"))
-      fs$gene_id <- id_map[match(fs$tx_name, id_map$TXNAME), "GENEID"]
+      fs$gene_id <-
+        id_map[match(fs$tx_name, id_map$TXNAME), "GENEID"]
       fs
     },
     exon=exons(txdb, columns=c("gene_id", "tx_name")),
@@ -184,8 +194,7 @@ getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
   seqlevels(features) <- seqlevels(features)[seqlevels(features) %in% seqs]
   features1 <- disjoin(features, with.revmap=TRUE)
   f <- rep(features1, lengths(features1$revmap))
-  f$feature_id <-
-    unlist(lapply(features1$revmap, function(.ele) features$feature_id[.ele]))
+  f$feature_id <- features$feature_id[unlist(features1$revmap)]
   f$revmap <- NULL
   f <- f[!duplicated(f) | !duplicated(f$feature_id)]
   ## make sure that all features are sorted by start position.
