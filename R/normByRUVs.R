@@ -16,7 +16,7 @@
 #' #gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
 #' #cnts <- countReads(RPFs, RNAs, gtf, level="gene")
 #' cnts <- readRDS(file.path(path, "cnts.rds"))
-#' gp <- c("KD1", "KD1", "KD2", "KD2", "WT", "WT")
+#' gp <- c("KD1", "KD1", "WT", "WT")
 #' norm <- normByRUVs(cnts, gp, gp)
 #' }
 #'

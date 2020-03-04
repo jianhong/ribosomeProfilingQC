@@ -34,13 +34,20 @@ The FLOSS will be calculated from a histogram of read lengths for footprints on 
 }
 \examples{
 library(Rsamtools)
-bamfilename <- system.file("extdata", "RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.WT.1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 pc <- getPsiteCoordinates(bamfile, bestpsite=13)
-CDS <- readRDS(system.file("extdata", "sampleCDS.rds",
-               package="ribosomeProfilingQC"))
+library(GenomicFeatures)
+library(BSgenome.Drerio.UCSC.danRer10)
+txdb <- makeTxDbFromGFF(system.file("extdata",
+          "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+          package="ribosomeProfilingQC"),
+          organism = "Danio rerio",
+          chrominfo = seqinfo(Drerio)["chr1"],
+          taxonomyId = 7955)
+CDS <- prepareCDS(txdb)
 set.seed(123)
 ref <- sample(unique(CDS$gene_id), 100)
 fl <- FLOSS(pc, ref, CDS, level="gene")

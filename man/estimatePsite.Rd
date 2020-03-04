@@ -2,12 +2,9 @@
 % Please edit documentation in R/estimatePsite.R
 \name{estimatePsite}
 \alias{estimatePsite}
-\alias{bestPsite}
 \title{estimate P site position}
 \usage{
-estimatePsite(bamfile, CDS, genome)
-
-bestPsite(psite)
+estimatePsite(bamfile, CDS, genome, anchor = "5end")
 }
 \arguments{
 \item{bamfile}{an BamFile object.}
@@ -16,28 +13,32 @@ bestPsite(psite)
 
 \item{genome}{a BSgenome object.}
 
-\item{psite}{output of estimatePsite function.}
+\item{anchor}{5end or 3end. Default is 5end.}
 }
 \value{
 A list with strart codon position, stop codon position from 5 end of the reads,
 and summary of positions.
-
-The Psite postion.
 }
 \description{
 Estimate P site postion from a subset reads.
 }
 \examples{
 library(Rsamtools)
-bamfilename <- system.file("extdata", "RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.WT.1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
+library(GenomicFeatures)
 library(BSgenome.Drerio.UCSC.danRer10)
-CDS <- readRDS(system.file("extdata", "sampleCDS.rds",
-               package="ribosomeProfilingQC"))
-psite <- estimatePsite(bamfile, CDS, Drerio)
-bestPsite(psite)
+txdb <- makeTxDbFromGFF(system.file("extdata",
+          "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+          package="ribosomeProfilingQC"),
+          organism = "Danio rerio",
+          chrominfo = seqinfo(Drerio)["chr1"],
+          taxonomyId = 7955)
+CDS <- prepareCDS(txdb)
+estimatePsite(bamfile, CDS, Drerio)
+
 }
 \references{
 1: Bazzini AA, Johnstone TG, Christiano R, Mackowiak SD, Obermayer B, Fleming ES,

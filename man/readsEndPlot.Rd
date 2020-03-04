@@ -34,13 +34,19 @@ plot the reads shifted from start/stop position of CDS.
 }
 \examples{
 library(Rsamtools)
-bamfilename <- system.file("extdata", "RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.WT.1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
+library(GenomicFeatures)
 library(BSgenome.Drerio.UCSC.danRer10)
-CDS <- readRDS(system.file("extdata", "sampleCDS.rds",
-               package="ribosomeProfilingQC"))
+txdb <- makeTxDbFromGFF(system.file("extdata",
+          "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+          package="ribosomeProfilingQC"),
+          organism = "Danio rerio",
+          chrominfo = seqinfo(Drerio)["chr1"],
+          taxonomyId = 7955)
+CDS <- prepareCDS(txdb)
 readsEndPlot(bamfile, CDS, toStartCodon=TRUE)
 readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
 readsEndPlot(bamfile, CDS, toStartCodon=FALSE)

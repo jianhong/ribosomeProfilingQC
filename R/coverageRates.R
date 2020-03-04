@@ -1,6 +1,9 @@
 #' calculate coverage rate
-#' @description calculate coverage rate for RPFs and mRNAs
-#' Coverage will be calculated based on best P sites for RPFs and 5'end for RNA-seq.
+#' @description Coverage is a measure as percentage of position
+#' with reads along the CDS.
+#' Coverage rate calculate coverage rate for RPFs and mRNAs
+#' Coverage will be calculated based on best P sites
+#' for RPFs and 5'end for RNA-seq.
 #' @param cvgs output of \link{coverageDepth}
 #' @param RPFsampleOrder,mRNAsampleOrder sample order of RPFs and mRNAs.
 #' The parameters are used to make sure that the order of RPFs and mRNAs
@@ -36,11 +39,16 @@ coverageRates <- function(cvgs, RPFsampleOrder, mRNAsampleOrder){
 
   if("RPFs" %in% names(cr)) cr[["RPFs"]] <- cr[["RPFs"]]*3
   if(all(c("RPFs", "mRNA") %in% names(cr))){
-    if(missing(RPFsampleOrder)) RPFsampleOrder <- seq.int(ncol(cr[["RPFs"]]))
-    if(missing(mRNAsampleOrder)) mRNAsampleOrder <- seq.int(ncol(cr[["mRNA"]]))
-    ids <- intersect(rownames(cr[["RPFs"]]), rownames(cr[["mRNA"]]))
+    if(missing(RPFsampleOrder))
+      RPFsampleOrder <- seq.int(ncol(cr[["RPFs"]]))
+    if(missing(mRNAsampleOrder))
+      mRNAsampleOrder <- seq.int(ncol(cr[["mRNA"]]))
+    ids <- intersect(rownames(cr[["RPFs"]]),
+                     rownames(cr[["mRNA"]]))
     cr[["coverageRatio"]] <-
-      cr[["RPFs"]][ids, RPFsampleOrder]/cr[["mRNA"]][ids, mRNAsampleOrder]
+      cr[["RPFs"]][ids,
+                   RPFsampleOrder]/cr[["mRNA"]][ids,
+                                                mRNAsampleOrder]
   }
   cr
 }

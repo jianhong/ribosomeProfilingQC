@@ -4,6 +4,7 @@
 #' @param bamfile an BamFile object.
 #' @param CDS output of \link{prepareCDS}
 #' @param genome a BSgenome object.
+#' @param anchor 5end or 3end. Default is 5end.
 #' @return A list with strart codon position, stop codon position from 5 end of the reads,
 #' and summary of positions.
 #' @references
@@ -25,18 +26,25 @@
 #' @export
 #' @examples
 #' library(Rsamtools)
-#' bamfilename <- system.file("extdata", "RPF.chr1.bam",
+#' bamfilename <- system.file("extdata", "RPF.WT.1.bam",
 #'                            package="ribosomeProfilingQC")
 #' yieldSize <- 10000000
 #' bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
+#' library(GenomicFeatures)
 #' library(BSgenome.Drerio.UCSC.danRer10)
-#' CDS <- readRDS(system.file("extdata", "sampleCDS.rds",
-#'                package="ribosomeProfilingQC"))
-#' psite <- estimatePsite(bamfile, CDS, Drerio)
-#' bestPsite(psite)
+#' txdb <- makeTxDbFromGFF(system.file("extdata",
+#'           "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+#'           package="ribosomeProfilingQC"),
+#'           organism = "Danio rerio",
+#'           chrominfo = seqinfo(Drerio)["chr1"],
+#'           taxonomyId = 7955)
+#' CDS <- prepareCDS(txdb)
+#' estimatePsite(bamfile, CDS, Drerio)
+#'
 
-estimatePsite <- function(bamfile, CDS, genome){
+estimatePsite <- function(bamfile, CDS, genome, anchor='5end'){
   stopifnot(is(bamfile, "BamFile"))
+  anchor <- match.arg(anchor, choices = c("5end", "3end"))
   stopifnot(is(CDS, "GRanges"))
   if(length(CDS$internalPos)!=length(CDS) ||
      length(CDS$isLastExonInCDS)!=length(CDS) ||
@@ -58,97 +66,22 @@ estimatePsite <- function(bamfile, CDS, genome){
   close(bamfile)
 
   reads <- reads[qwidth(reads) %in% c(25:30)]
-  reads <- reads[njunc(reads)==0]
+  reads <- reads[njunc(reads)==0] ## remove junctions
   x <- as(reads, "GRanges")
   if(length(intersect(seqlevelsStyle(x), seqlevels(CDS)))==0){
     seqlevelsStyle(x) <- seqlevelsStyle(CDS)[1]
   }
-  startpos <- getCondonPosition(x, CDS, genome, TRUE)
-  stoppos <- getCondonPosition(x, CDS, genome, FALSE)
-  stoppos1 <- c(stoppos[-c(1, 2)], 0, 0)
-  pos <- startpos + stoppos1
+  if(anchor=="3end"){
+    x <- switch.strand(x)
+    x <- promoters(x, upstream = 0, downstream = 1)
+    x <- switch.strand(x)
+  }
   x <- assignReadingFrame(promoters(x, upstream = 0, downstream = 1), CDS)
   x <- table(x$readingFrame)
   x <- names(x)[which.max(x)]
-  x <- c("0"=13, "1"=12, "2"=14)[x]
-  return(list("start codon position"=startpos,
-              "stop codon position"=stoppos,
-              summary=pos,
-              Psite=as.numeric(x)))
-}
-
-getCodon <- function(CDS.sub, genome, start=TRUE){
-  stopifnot(is(CDS.sub, "GRanges"))
-  stopifnot(is(genome, "BSgenome"))
-  if(start) {
-    end(CDS.sub[strand(CDS.sub)=="+"]) <- start(CDS.sub[strand(CDS.sub)=="+"]) + 2
-    start(CDS.sub[strand(CDS.sub)=="-"]) <- end(CDS.sub[strand(CDS.sub)=="-"]) - 2
-  }else{
-    start(CDS.sub[strand(CDS.sub)=="+"]) <- end(CDS.sub[strand(CDS.sub)=="+"]) - 2
-    end(CDS.sub[strand(CDS.sub)=="-"]) <- start(CDS.sub[strand(CDS.sub)=="-"]) + 2
-  }
-  CDS.sub <- CDS.sub[as.character(seqnames(CDS.sub)) %in% seqlevels(genome)]
-  seqlevels(CDS.sub) <- seqlevels(CDS.sub)[seqlevels(CDS.sub) %in% seqlevels(genome)]
-  seq <- getSeq(genome, CDS.sub)
-  seq <- table(seq)
-  seq <- seq[!grepl("N", names(seq))]
-  seq <- names(sort(seq, decreasing = TRUE)[1])
-  seq
-}
-
-#' @rdname estimatePsite
-#' @aliases bestPsite
-#' @param psite output of estimatePsite function.
-#' @return The Psite postion.
-#' @importFrom graphics plot text segments
-#' @export
-bestPsite <- function(psite){
-  op <- par(mfrow=c(3, 1))
-  on.exit(par(op))
-  best.id <- psite$Psite
-  psite <- psite[-4]
-  mapply(psite, names(psite), FUN=function(.ele, .name){
-    xlim <- if(.name == "stop codon position") c(1, 25) else c(-1, 23)
-    plot(.ele, main=.name, ylab="count", xlim = xlim)
-  })
-  x <- seq(from=best.id-3*10, to=23, by=3)
-  x <- x[x>0]
-  ymax <- max(psite$summary)
-  segments(x0 = x-.5, x1 = x - .5,
-           y0 = ymax*.02, y1 = ymax*.98,
-           lty = 3, col = "gray30")
-  text(x=best.id+.25, y= psite$summary[as.character(best.id)],
-       labels = "*", col = "red", cex = 2)
-  return(best.id)
-}
-
-
-getCondonPosition <- function(x, CDS, genome, start=TRUE){
-  stopifnot(is(x, "GRanges"))
-  x <- x[width(x)>24]
-  x <- unique(x)
-  if(length(x)<1000){
-    stop("The length of input reads is too less.")
-  }
-  stopifnot(is(CDS, "GRanges"))
-  stopifnot(is(genome, "BSgenome"))
-  if(start) {
-    stopifnot(length(CDS$isFirstExonInCDS)==length(CDS))
-    CDS.sub <- CDS[CDS$isFirstExonInCDS]
-  }else{
-    stopifnot(length(CDS$isLastExonInCDS)==length(CDS))
-    CDS.sub <- CDS[CDS$isLastExonInCDS]
-  }
-  x <- subsetByOverlaps(x, CDS.sub)
-  seq <- getSeq(genome, x)
-  seq <- subseq(seq, start = 1, width = 25)
-  mp <- vmatchPattern(getCodon(CDS.sub, genome, start), seq)
-  mp <- unlist(mp)
-  mp <- table(start(mp))
-  idx <- as.character(seq.int(23))
-  mp <- mp[match(idx, names(mp))]
-  mp[is.na(mp)] <- 0
-  names(mp) <- idx
-  mp
+  posMap <- list('5end'=c("0"=13, "1"=12, "2"=14),
+                 '3end'=c("0"=-16, "1"=-17, "2"=-15))
+  x <- posMap[[anchor]][x]
+  as.numeric(x)
 }
 

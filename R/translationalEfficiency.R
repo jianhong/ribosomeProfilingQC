@@ -7,6 +7,9 @@
 #' are used to make sure that the order of RPFs and mRNAs in cvgs is corresponding samples.
 #' @param pseudocount the number will be add to sum of reads count to avoid X/0.
 #' @param log2 Do log2 transform or not.
+#' @param normByLibSize normlization by library size or not.
+#' If window size is provied and normByLibSize is set to TRUE,
+#' the coverage will be normalized by library size.
 #' @return a list with RPFs, mRNA levels and TE as a matrix with translational efficiency
 #' @importFrom IRanges RleList IRanges IRangesList viewSums
 #' @export
@@ -20,13 +23,16 @@
 #' fpkm <- getFPKM(cnts)
 #' te <- translationalEfficiency(fpkm)
 #' }
-translationalEfficiency <- function(x, window, RPFsampleOrder, mRNAsampleOrder,
-                                    pseudocount=1, log2=FALSE){
+translationalEfficiency <- function(x, window,
+                                    RPFsampleOrder, mRNAsampleOrder,
+                                    pseudocount=1, log2=FALSE,
+                                    normByLibSize=FALSE){
   if(!is.list(x)){
     stop("x must be output of getFPKM or normByRUVs or coverageDepth.")
   }
   if(!all(c("RPFs", "mRNA") %in% names(x))){
-    stop("x must be output of getFPKM or normByRUVs or coverageDepth and must contain RPFs and mRNA.")
+    stop("x must be output of getFPKM or normByRUVs or
+         coverageDepth and must contain RPFs and mRNA.")
   }
   RPFs <- x[["RPFs"]]
   mRNA <- x[["mRNA"]]
@@ -34,8 +40,10 @@ translationalEfficiency <- function(x, window, RPFsampleOrder, mRNAsampleOrder,
     if(length(dim(RPFs))!=2 | length(dim(mRNA))!=2){
       stop("x must be output of getFPKM or normByRUVs and must contain RPFs and mRNA.")
     }
-    if(missing(RPFsampleOrder)) RPFsampleOrder <- seq.int(ncol(x[["RPFs"]]))
-    if(missing(mRNAsampleOrder)) mRNAsampleOrder <- seq.int(ncol(x[["mRNA"]]))
+    if(missing(RPFsampleOrder))
+      RPFsampleOrder <- seq.int(ncol(x[["RPFs"]]))
+    if(missing(mRNAsampleOrder))
+      mRNAsampleOrder <- seq.int(ncol(x[["mRNA"]]))
     id <- intersect(rownames(RPFs), rownames(mRNA))
     if(length(id)==0){return(NULL)}
     x[["RPFs"]] <- RPFs[id, RPFsampleOrder, drop=FALSE]
@@ -50,12 +58,24 @@ translationalEfficiency <- function(x, window, RPFsampleOrder, mRNAsampleOrder,
     if(!is(RPFs, "cvgd") | !is(mRNA, "cvgd")){
       stop("x must be output of coverageDepth and must contain RPFs and mRNA.")
     }
-    if(missing(RPFsampleOrder)) RPFsampleOrder <- seq.int(length(x[["RPFs"]][["coverage"]]))
-    if(missing(mRNAsampleOrder)) mRNAsampleOrder <- seq.int(length(x[["mRNA"]][["coverage"]]))
+    if(missing(RPFsampleOrder))
+      RPFsampleOrder <- seq.int(length(x[["RPFs"]][["coverage"]]))
+    if(missing(mRNAsampleOrder))
+      mRNAsampleOrder <- seq.int(length(x[["mRNA"]][["coverage"]]))
     RPFs <- RPFs[["coverage"]][RPFsampleOrder]
     mRNA <- mRNA[["coverage"]][mRNAsampleOrder]
     if(length(mRNA)!=length(RPFs)){
       stop("The length of sample of mRNA is not identical to the length of RPFs.")
+    }
+    if(normByLibSize){
+      mRNALibSize <- lapply(mRNA, sum, na.rm=TRUE)
+      mRNALibSize <- vapply(mRNALibSize, sum, FUN.VALUE = 0.0, na.rm=TRUE)
+      mRNALibFactor <- mean(mRNALibSize)/mRNALibSize
+      mRNA <- mapply(mRNA, mRNALibFactor, FUN=`*`, SIMPLIFY = FALSE)
+      RPFsLibSize <- lapply(RPFs, sum, na.rm=TRUE)
+      RPFsLibSize <- vapply(RPFsLibSize, sum, FUN.VALUE = 0.0, na.rm=TRUE)
+      RPFsLibFactor <- mean(RPFsLibSize)/RPFsLibSize
+      RPFs <- mapply(RPFs, RPFsLibFactor, FUN=`*`, SIMPLIFY = FALSE)
     }
     window <- window[1]
     if(round(window)!=window | window < 3){

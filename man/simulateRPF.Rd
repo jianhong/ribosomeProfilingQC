@@ -63,8 +63,13 @@ simulate the RPFs reads in CDS, 5'UTR and 3'UTR
 }
 \examples{
 library(GenomicFeatures)
-txdb <- loadDb(system.file("extdata", "danRer10.chr1.txdb",
-               package="ribosomeProfilingQC"))
+library(BSgenome.Drerio.UCSC.danRer10)
+txdb <- makeTxDbFromGFF(system.file("extdata",
+          "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+          package="ribosomeProfilingQC"),
+          organism = "Danio rerio",
+          chrominfo = seqinfo(Drerio)["chr1"],
+          taxonomyId = 7955)
 simulateRPF(txdb, samples=1, readsPerSample = 1e3)
 \dontrun{
 cds <- prepareCDS(txdb, withUTR = TRUE)

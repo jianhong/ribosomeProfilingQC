@@ -8,7 +8,7 @@
 #' @param breaks.length length of breaks for histogram.
 #' @param ... parameters pass to \link[graphics:plot]{plot}.
 #' @return invisible data.frame with x, y of points.
-#' @importFrom graphics hist barplot
+#' @importFrom graphics hist barplot plot
 #' @export
 #' @examples
 #' path <- system.file("extdata", package="ribosomeProfilingQC")

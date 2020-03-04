@@ -26,9 +26,14 @@ internalPos: offset position from 1 base;
 prepare CDS library from a TxDb object.
 }
 \examples{
-library(AnnotationDbi)
-txdb <- loadDb(system.file("extdata", "danRer10.chr1.txdb",
-               package="ribosomeProfilingQC"))
+library(GenomicFeatures)
+library(BSgenome.Drerio.UCSC.danRer10)
+txdb <- makeTxDbFromGFF(system.file("extdata",
+          "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+          package="ribosomeProfilingQC"),
+          organism = "Danio rerio",
+          chrominfo = seqinfo(Drerio)["chr1"],
+          taxonomyId = 7955)
 CDS <- prepareCDS(txdb)
 
 }

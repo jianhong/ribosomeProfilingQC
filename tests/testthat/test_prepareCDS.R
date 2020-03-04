@@ -1,6 +1,10 @@
 test_that("prepareCDS works not correct", {
-  txdb <- loadDb(system.file("extdata", "danRer10.chr1.txdb",
-                             package="ribosomeProfilingQC"))
+  txdb <- makeTxDbFromGFF(system.file("extdata",
+                                      "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+                                      package="ribosomeProfilingQC"),
+                          organism = "Danio rerio",
+                          chrominfo = seqinfo(Drerio)["chr1"],
+                          taxonomyId = 7955)
   cds <- cds(txdb)
   CDS <- prepareCDS(txdb)
   ol <- findOverlaps(cds, CDS, type = "equal")

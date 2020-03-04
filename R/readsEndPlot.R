@@ -15,19 +15,26 @@
 #' @export
 #' @examples
 #' library(Rsamtools)
-#' bamfilename <- system.file("extdata", "RPF.chr1.bam",
+#' bamfilename <- system.file("extdata", "RPF.WT.1.bam",
 #'                            package="ribosomeProfilingQC")
 #' yieldSize <- 10000000
 #' bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
+#' library(GenomicFeatures)
 #' library(BSgenome.Drerio.UCSC.danRer10)
-#' CDS <- readRDS(system.file("extdata", "sampleCDS.rds",
-#'                package="ribosomeProfilingQC"))
+#' txdb <- makeTxDbFromGFF(system.file("extdata",
+#'           "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+#'           package="ribosomeProfilingQC"),
+#'           organism = "Danio rerio",
+#'           chrominfo = seqinfo(Drerio)["chr1"],
+#'           taxonomyId = 7955)
+#' CDS <- prepareCDS(txdb)
 #' readsEndPlot(bamfile, CDS, toStartCodon=TRUE)
 #' readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
 #' readsEndPlot(bamfile, CDS, toStartCodon=FALSE)
 #' readsEndPlot(bamfile, CDS, toStartCodon=FALSE, fiveEnd=FALSE)
 readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
-                         fiveEnd=TRUE, window=c(-29, 30), readLen=25:30){
+                         fiveEnd=TRUE, window=c(-29, 30),
+                         readLen=25:30){
   stopifnot(is(bamfile, "BamFile"))
   stopifnot(is(CDS, "GRanges"))
   if(length(CDS$internalPos)!=length(CDS) ||
@@ -39,19 +46,23 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   }
   if(toStartCodon){
     CDS <- CDS[CDS$isFirstExonInCDS]
-    which <- promoters(CDS, upstream=abs(window)[1], downstream=abs(window)[2])
+    which <- promoters(CDS, upstream=abs(window)[1],
+                       downstream=abs(window)[2])
   }else{
     CDS <- CDS[CDS$isLastExonInCDS]
     CDS <- switch.strand(CDS)
-    which <- promoters(CDS, upstream=abs(window)[1], downstream=abs(window)[2])
+    which <- promoters(CDS, upstream=abs(window)[1],
+                       downstream=abs(window)[2])
     which <- switch.strand(which)
   }
   h <- scanBamHeader(bamfile)
   seqs <- h$targets
-  if(length(intersect(seqlevelsStyle(names(seqs)), seqlevelsStyle(which)))==0){
+  if(length(intersect(seqlevelsStyle(names(seqs)),
+                      seqlevelsStyle(which)))==0){
     seqlevelsStyle(which) <- seqlevelsStyle(names(seqs))[1]
     which <- which[as.character(seqnames(which)) %in% names(seqs)]
-    seqlevels(which) <- seqlevels(which)[seqlevels(which) %in% names(seqs)]
+    seqlevels(which) <-
+      seqlevels(which)[seqlevels(which) %in% names(seqs)]
   }
   param <-
     ScanBamParam(what=c("qwidth"),
@@ -87,7 +98,9 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   cvg <- cvg[cvg.sub>0]
   seq <- intersect(names(cvg), names(w))
   vws <- Views(cvg[seq], w[seq])
-  vws <- lapply(vws, function(.ele) viewApply(.ele[width(.ele)==sum(abs(window)[c(1, 2)])], as.numeric))
+  vws <- lapply(vws, function(.ele) {
+    viewApply(.ele[width(.ele)==sum(abs(window)[c(1, 2)])], as.numeric)
+    })
   vws <- do.call(cbind, vws)
   at <- seq(-abs(window[1]), abs(window[2]))
   at <- at[at!=0]
@@ -98,14 +111,17 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   names(height) <- at
   barplot(height, las=3, space = .5, ylab = "counts",
           xlab = paste("distance from", ifelse(fiveEnd, "5'", "3'"),
-                       "of reads to", ifelse(toStartCodon, "start", "stop"), "codon"))
+                       "of reads to",
+                       ifelse(toStartCodon, "start", "stop"),
+                       "codon"))
   at1 <- which(at==-1)
   abline(v=at1*1.5+.25, lty=4)
   at <- seq((at1 %% 3), to = length(at), by = 3)
   at <- at[at!=at1]
   at <- at * 1.5 + .25
   ymax <- max(height)
-  segments(x0 = at, y0 = 0, x1 = at, y1 = ymax * .9, lty = 3, col = "gray80")
+  segments(x0 = at, y0 = 0, x1 = at, y1 = ymax * .9,
+           lty = 3, col = "gray80")
   return(invisible(height))
 }
 

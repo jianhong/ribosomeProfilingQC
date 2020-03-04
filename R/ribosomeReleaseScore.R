@@ -10,15 +10,13 @@
 #' @examples
 #'
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
-#' #RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
-#' #RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
-#' #gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' #cvgs <- coverageDepth(RPFs, RNAs, gtf)
-#' #cvgs.utr3 <- coverageDepth(RPFs, RNAs, gtf, region="utr3")
-#' #TE90 <- translationalEfficiency(cvgs, window = 90)
-#' #TE90.utr3 <- translationalEfficiency(cvgs.utr3, window = 90)
-#' TE90 <- readRDS(file.path(path, "TE90.rds"))
-#' TE90.utr3 <- readRDS(file.path(path, "TE90.utr3.rds"))
+#' RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
+#' RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
+#' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
+#' cvgs <- coverageDepth(RPFs, RNAs, gtf)
+#' cvgs.utr3 <- coverageDepth(RPFs, RNAs, gtf, region="utr3")
+#' TE90 <- translationalEfficiency(cvgs, window = 90)
+#' TE90.utr3 <- translationalEfficiency(cvgs.utr3, window = 90)
 #' rrs <- ribosomeReleaseScore(TE90, TE90.utr3)
 #'
 ribosomeReleaseScore <- function(cdsTE, utr3TE, CDSsampleOrder, UTR3sampleOrder,

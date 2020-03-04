@@ -10,7 +10,8 @@ translationalEfficiency(
   RPFsampleOrder,
   mRNAsampleOrder,
   pseudocount = 1,
-  log2 = FALSE
+  log2 = FALSE,
+  normByLibSize = FALSE
 )
 }
 \arguments{
@@ -25,6 +26,10 @@ are used to make sure that the order of RPFs and mRNAs in cvgs is corresponding 
 \item{pseudocount}{the number will be add to sum of reads count to avoid X/0.}
 
 \item{log2}{Do log2 transform or not.}
+
+\item{normByLibSize}{normlization by library size or not.
+If window size is provied and normByLibSize is set to TRUE,
+the coverage will be normalized by library size.}
 }
 \value{
 a list with RPFs, mRNA levels and TE as a matrix with translational efficiency

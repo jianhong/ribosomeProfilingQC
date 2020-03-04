@@ -6,15 +6,20 @@
 #' @export
 #' @examples
 #' library(Rsamtools)
-#' bamfilename <- system.file("extdata", "RPF.chr1.bam",
+#' bamfilename <- system.file("extdata", "RPF.WT.1.bam",
 #'                            package="ribosomeProfilingQC")
 #' yieldSize <- 10000000
 #' bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 #' pc <- getPsiteCoordinates(bamfile, bestpsite=11)
 #' pc.sub <- pc[pc$qwidth %in% c(29, 30)]
-#' library(AnnotationDbi)
-#' txdb <- loadDb(system.file("extdata", "danRer10.chr1.txdb",
-#'                package="ribosomeProfilingQC"))
+#' library(GenomicFeatures)
+#' library(BSgenome.Drerio.UCSC.danRer10)
+#' txdb <- makeTxDbFromGFF(system.file("extdata",
+#'           "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+#'           package="ribosomeProfilingQC"),
+#'           organism = "Danio rerio",
+#'           chrominfo = seqinfo(Drerio)["chr1"],
+#'           taxonomyId = 7955)
 #' pc.sub <- shiftReadsByFrame(pc.sub, txdb)
 #'
 shiftReadsByFrame <- function(reads, txdb){

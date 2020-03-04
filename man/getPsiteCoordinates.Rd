@@ -21,7 +21,7 @@ read in all reads from a bamfile and extract P site coordinates.
 }
 \examples{
 library(Rsamtools)
-bamfilename <- system.file("extdata", "RPF.chr1.bam",
+bamfilename <- system.file("extdata", "RPF.WT.1.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)

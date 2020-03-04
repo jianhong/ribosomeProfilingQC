@@ -25,7 +25,7 @@ numeric vector with reads counts.
 }
 \description{
 Calculate the reads counts or coverage rate for gene level or transcript level.
-Coverage is dtermined by measuring the proportion of in-frame CDS positions with >= 1 reads.
+Coverage is determined by measuring the proportion of in-frame CDS positions with >= 1 reads.
 }
 \examples{
 pcs <- readRDS(system.file("extdata", "samplePc.rds",

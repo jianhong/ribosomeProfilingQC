@@ -12,6 +12,7 @@
 #' readsLenToKeep(summaryReadsLength(reads, plot=FALSE))
 readsLenToKeep <- function(readsLengthDensity, cutoff=0.8){
   stopifnot(is.table(readsLengthDensity))
+  readsLengthDensity <- sort(readsLengthDensity, decreasing = TRUE)
   x <- cumsum(readsLengthDensity)
   x <- x[seq.int(which(x>cutoff)[1])]
   x <- range(as.numeric(names(x)))

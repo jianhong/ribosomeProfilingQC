@@ -8,9 +8,16 @@
 #' @import GenomicRanges
 #' @importFrom methods as is
 #' @examples
-#' cds <- readRDS(system.file("extdata", "sampleCDS.rds",
-#'                package="ribosomeProfilingQC"))
-#' filterCDS(cds)
+#' library(GenomicFeatures)
+#' library(BSgenome.Drerio.UCSC.danRer10)
+#' txdb <- makeTxDbFromGFF(system.file("extdata",
+#'           "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+#'           package="ribosomeProfilingQC"),
+#'           organism = "Danio rerio",
+#'           chrominfo = seqinfo(Drerio)["chr1"],
+#'           taxonomyId = 7955)
+#' CDS <- prepareCDS(txdb)
+#' filterCDS(CDS)
 filterCDS <- function(CDS, sizeCutoff = 100L){
   sizeCutoff <- sizeCutoff[1]
   stopifnot(is.numeric(sizeCutoff))

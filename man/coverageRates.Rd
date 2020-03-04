@@ -17,8 +17,11 @@ in cvgs is corresponding samples.}
 a list with coverage rate
 }
 \description{
-calculate coverage rate for RPFs and mRNAs
-Coverage will be calculated based on best P sites for RPFs and 5'end for RNA-seq.
+Coverage is a measure as percentage of position
+with reads along the CDS.
+Coverage rate calculate coverage rate for RPFs and mRNAs
+Coverage will be calculated based on best P sites
+for RPFs and 5'end for RNA-seq.
 }
 \examples{
 path <- system.file("extdata", package="ribosomeProfilingQC")

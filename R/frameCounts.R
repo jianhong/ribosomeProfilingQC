@@ -1,6 +1,6 @@
 #' extract counts for gene level or transcript level
 #' @description Calculate the reads counts or coverage rate for gene level or transcript level.
-#' Coverage is dtermined by measuring the proportion of in-frame CDS positions with >= 1 reads.
+#' Coverage is determined by measuring the proportion of in-frame CDS positions with >= 1 reads.
 #' @param reads output of \link{assignReadingFrame}.
 #' @param level transcript or gene level
 #' @param frame0only only count for reading frame 0 or not
@@ -27,7 +27,7 @@ frameCounts <- function(reads, level=c("tx", "gene"), frame0only=TRUE, coverageR
     reads <- reads[reads$readingFrame %in% 0]
   }
   if(coverageRate){
-    reads$CDSwidth <- reads$position + reads$posToStop + 3 # stop codon
+    reads$CDSwidth <- reads$position + reads$posToStop + 2 # stop codon
     if(frame0only){
       reads$CDSwidth <- reads$CDSwidth/3
     }

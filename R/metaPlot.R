@@ -8,6 +8,7 @@
 #' @param ... parameter pass to plot.
 #' @return a list contain the data for plot.
 #' @importFrom IRanges viewMeans Views
+#' @importFrom graphics plot
 #' @export
 #' @examples
 #'

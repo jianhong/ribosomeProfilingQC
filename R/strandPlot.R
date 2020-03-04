@@ -13,14 +13,21 @@
 #' @export
 #' @examples
 #' library(Rsamtools)
-#' bamfilename <- system.file("extdata", "RPF.chr1.bam",
+#' bamfilename <- system.file("extdata", "RPF.WT.1.bam",
 #'                            package="ribosomeProfilingQC")
 #' yieldSize <- 10000000
 #' bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 #' pc <- getPsiteCoordinates(bamfile, bestpsite=11)
 #' pc.sub <- pc[pc$qwidth %in% c(29, 30)]
-#' CDS <- readRDS(system.file("extdata", "sampleCDS.rds",
-#'                package="ribosomeProfilingQC"))
+#' library(GenomicFeatures)
+#' library(BSgenome.Drerio.UCSC.danRer10)
+#' txdb <- makeTxDbFromGFF(system.file("extdata",
+#'           "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+#'           package="ribosomeProfilingQC"),
+#'           organism = "Danio rerio",
+#'           chrominfo = seqinfo(Drerio)["chr1"],
+#'           taxonomyId = 7955)
+#' CDS <- prepareCDS(txdb)
 #' strandPlot(pc.sub, CDS)
 #'
 strandPlot <- function(reads, CDS, col=c("#009E73", "#D55E00"), ...){
@@ -31,12 +38,13 @@ strandPlot <- function(reads, CDS, col=c("#009E73", "#D55E00"), ...){
   }
   ## reads mapped to sense strand
   ol <- findOverlaps(reads, CDS, ignore.strand=FALSE)
-  a <- length(unique(queryHits(ol)))/length(reads)
+  a <- unique(queryHits(ol))
   ## reads mapped to antisense strand
   reads.rev <- switch.strand(reads)
   ol.anti <- findOverlaps(reads.rev, CDS, ignore.strand=FALSE)
-  b <- length(unique(queryHits(ol.anti)))/length(reads)
-  per <- c(sense=a, antisense=b)*100
+  b <- unique(queryHits(ol.anti))
+  b <- b[!b %in% a]
+  per <- c(sense=length(a), antisense=length(b))/length(reads)*100
   ggBar(per, ylab="mapping rate (%)", xlab="", fill=col, postfix = "%")
 }
 

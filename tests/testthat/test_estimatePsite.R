@@ -1,4 +1,9 @@
-txdb <- loadDb(system.file("extdata", "danRer10.chr1.txdb", package="ribosomeProfilingQC"))
+txdb <- makeTxDbFromGFF(system.file("extdata",
+                                    "Danio_rerio.GRCz10.91.chr1.gtf.gz",
+                                    package="ribosomeProfilingQC"),
+                        organism = "Danio rerio",
+                        chrominfo = seqinfo(Drerio)["chr1"],
+                        taxonomyId = 7955)
 CDS <- prepareCDS(txdb)
 tmpbam <- tempdir()
 bamfilenames <- character(0)
@@ -20,9 +25,11 @@ names(bamfile) <- c(12, 13, 14)
 
 test_that("estimatePsite works not correct", {
   for(psite in c(12, 13, 14)){
-    estpsite <- estimatePsite(bamfile[[as.character(psite)]], CDS, Drerio)
-    bestpsite <- bestPsite(estpsite)
+    bestpsite <- estimatePsite(bamfile[[as.character(psite)]], CDS, Drerio)
     expect_equal(bestpsite, psite)
+    ## from 3'end
+    bestpsite <- estimatePsite(bamfile[[as.character(psite)]], CDS, Drerio, anchor='3end')
+    expect_equal(bestpsite, psite-29)
   }
 })
 
@@ -45,6 +52,15 @@ test_that("summaryReadsLength works not correct", {
     expect_equal(readsLen, c("28"=1))
   }
 })
+
+test_that("strandPlot works not correct", {
+  for(psite in c(12, 13, 14)){
+    sP <- strandPlot(pcs[[as.character(psite)]], CDS = CDS)$data
+    sP <- sP[sP$x=="sense", "y"]
+    expect_equal(sP, 100, tolerance=.1)
+  }
+})
+
 
 pcs <- lapply(pcs, assignReadingFrame, CDS=CDS)
 

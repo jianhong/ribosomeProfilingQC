@@ -165,16 +165,19 @@ getCvgs <- function(files, txdb, level, bestpsite, readsLen, region, ext){
   features <- switch(level,
                      gene={
                        f <- rep(features, lengths(features$gene_id))
-                       mcols(f) <- DataFrame(feature_id=unlist(features$gene_id))
+                       mcols(f) <-
+                         DataFrame(feature_id=unlist(features$gene_id))
                        f[!is.na(f$feature_id)]
                      },
                      tx={
                        f <- rep(features, lengths(features$tx_name))
-                       mcols(f) <- DataFrame(feature_id=unlist(features$tx_name))
+                       mcols(f) <-
+                         DataFrame(feature_id=unlist(features$tx_name))
                        f[!is.na(f$feature_id)]
                      })
   cvgs <- lapply(reads, coverage)
-  seqs <- lapply(cvgs, function(.ele) names(.ele)[vapply(.ele, sum, FUN.VALUE = 0)>0])
+  seqs <- lapply(cvgs, function(.ele)
+    names(.ele)[vapply(.ele, sum, FUN.VALUE = 0)>0])
   seqs <- unique(unlist(seqs))
   seqs <- intersect(seqlevels(features), seqs)
   features <- features[as.character(seqnames(features)) %in% seqs]
