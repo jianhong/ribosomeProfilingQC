@@ -1,14 +1,14 @@
-#' plot translational efficiency
+#' Plot translational efficiency
 #' @description Scatterplot of RNA/RPFs level compared to the
 #' translational efficiency.
-#' @param TE output of \link{translationalEfficiency}
+#' @param TE Output of \link{translationalEfficiency}
 #' @param sample character(1). Sample name to plot.
-#' @param xaxis what to plot for x-axis.
+#' @param xaxis What to plot for x-axis.
 #' @param removeZero Remove the 0 values from plots.
-#' @param log2 do log2 transform or not.
-#' @param breaks.length length of breaks for histogram.
-#' @param ... parameters pass to \link[graphics:plot]{plot}.
-#' @return invisible data.frame with x, y of points.
+#' @param log2 Do log2 transform or not.
+#' @param breaks.length Length of breaks for histogram.
+#' @param ... Parameters pass to \link[graphics:plot]{plot}.
+#' @return A invisible data.frame with x, y of points.
 #' @importFrom graphics hist barplot plot
 #' @export
 #' @examples

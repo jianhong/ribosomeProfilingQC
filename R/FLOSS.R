@@ -7,13 +7,14 @@
 #' of annotated protein-coding genes. Cell Rep. 2014 Sep 11;8(5):1365-79. doi:
 #' 10.1016/j.celrep.2014.07.045. Epub 2014 Aug 21. PubMed PMID: 25159147; PubMed
 #' Central PMCID: PMC4216110.
-#' @param reads output of \link{getPsiteCoordinates}
-#' @param ref refercence id list
-#' @param CDS output of \link{prepareCDS}
-#' @param readLengths read length used for calculation
-#' @param level transcript or gene level
-#' @param draw plot FLOSS vs total reads or not.
-#' @return a data frame with colnames as id, FLOSS, totalReads,
+#' @param reads Output of \link{getPsiteCoordinates}
+#' @param ref Refercence id list. If level is set to tx, the id should be
+#' transcript names. If level is set to gene, the id should be gene id.
+#' @param CDS Output of \link{prepareCDS}
+#' @param readLengths Read length used for calculation
+#' @param level Transcript or gene level
+#' @param draw Plot FLOSS vs total reads or not.
+#' @return A data frame with colnames as id, FLOSS, totalReads,
 #' wilcox.test.pval, cook's distance.
 #' @importFrom IRanges findOverlaps
 #' @importFrom S4Vectors queryHits subjectHits

@@ -1,13 +1,13 @@
-#' extract counts for gene level or transcript level
+#' Extract counts for gene level or transcript level
 #' @description Calculate the reads counts or coverage rate for gene level or
 #' transcript level.
 #' Coverage is determined by measuring the proportion of in-frame CDS
 #'  positions with >= 1 reads.
-#' @param reads output of \link{assignReadingFrame}.
-#' @param level transcript or gene level
-#' @param frame0only only count for reading frame 0 or not
-#' @param coverageRate calculate for coverage or not
-#' @return numeric vector with reads counts.
+#' @param reads Output of \link{assignReadingFrame}.
+#' @param level Transcript or gene level
+#' @param frame0only Only count for reading frame 0 or not
+#' @param coverageRate Calculate for coverage or not
+#' @return A numeric vector with reads counts.
 #' @importFrom methods as is
 #' @export
 #' @examples

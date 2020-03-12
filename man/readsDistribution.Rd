@@ -2,7 +2,7 @@
 % Please edit documentation in R/readsDistribution.R
 \name{readsDistribution}
 \alias{readsDistribution}
-\title{plot reads distribution in genomic elements}
+\title{Plot reads distribution in genomic elements}
 \usage{
 readsDistribution(
   reads,
@@ -14,19 +14,19 @@ readsDistribution(
 )
 }
 \arguments{
-\item{reads}{output of \link{getPsiteCoordinates}}
+\item{reads}{Output of \link{getPsiteCoordinates}}
 
-\item{txdb}{an TxDb object}
+\item{txdb}{A TxDb object}
 
-\item{upstreamRegion, downstreamRegion}{the range for promoter region and
+\item{upstreamRegion, downstreamRegion}{The range for promoter region and
 downstream region.}
 
-\item{plot}{plot the distribution or not}
+\item{plot}{Plot the distribution or not}
 
-\item{...}{not use.}
+\item{...}{Not use.}
 }
 \value{
-the reads with distribution assignment
+The reads with distribution assignment
 }
 \description{
 Plot the percentage of reads in CDS, 5'UTR, 3'UTR, introns, and

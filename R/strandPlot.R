@@ -1,11 +1,11 @@
-#' plot the distribution of reads in sense and antisense strand
-#' @description plot the distribution of reads in sense and antisense strand to
+#' Plot the distribution of reads in sense and antisense strand
+#' @description Plot the distribution of reads in sense and antisense strand to
 #' check the mapping is correct.
-#' @param reads output of \link{getPsiteCoordinates}
-#' @param CDS output of \link{prepareCDS}
-#' @param col coloar for sense and antisense strand.
-#' @param ... parameter passed to barplot
-#' @return ggplot object.
+#' @param reads Output of \link{getPsiteCoordinates}
+#' @param CDS Output of \link{prepareCDS}
+#' @param col Coloar for sense and antisense strand.
+#' @param ... Parameter passed to barplot
+#' @return A ggplot object.
 #' @import GenomicRanges
 #' @importFrom methods as is
 #' @importFrom graphics barplot

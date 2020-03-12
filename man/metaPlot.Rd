@@ -2,7 +2,7 @@
 % Please edit documentation in R/metaPlot.R
 \name{metaPlot}
 \alias{metaPlot}
-\title{metagene analysis plot}
+\title{Metagene analysis plot}
 \usage{
 metaPlot(
   UTR5coverage,
@@ -15,20 +15,20 @@ metaPlot(
 )
 }
 \arguments{
-\item{UTR5coverage, CDScoverage, UTR3coverage}{coverages of UTR5, CDS, and
+\item{UTR5coverage, CDScoverage, UTR3coverage}{Coverages of UTR5, CDS, and
 UTR3 region.
 Output of \link{coverageDepth}}
 
 \item{sample}{character(1). Sample name to plot.}
 
-\item{xaxis}{what to plot for x-axis.}
+\item{xaxis}{What to plot for x-axis.}
 
-\item{bins}{bins for UTR5, CDS and UTR3.}
+\item{bins}{Bins for UTR5, CDS and UTR3.}
 
-\item{...}{parameter pass to plot.}
+\item{...}{Parameter pass to plot.}
 }
 \value{
-a list contain the data for plot.
+A list contain the data for plot.
 }
 \description{
 Plot the average coverage of UTR5, CDS and UTR3.

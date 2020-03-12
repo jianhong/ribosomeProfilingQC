@@ -1,10 +1,10 @@
-#' get FPKM values for counts
+#' Get FPKM values for counts
 #' @description Calculate Fragments Per Kilobase of transcript per
 #' Million mapped reads (FPKM) for counts.
-#' @param counts output of \link{countReads} or \link{normByRUVs}
+#' @param counts Output of \link{countReads} or \link{normByRUVs}
 #' @param gtf GTF file name for annotation.
-#' @param level transcript or gene level.
-#' @return a list with FPKMs
+#' @param level Transcript or gene level.
+#' @return A list with FPKMs
 #' @export
 #' @examples
 #' path <- system.file("extdata", package="ribosomeProfilingQC")

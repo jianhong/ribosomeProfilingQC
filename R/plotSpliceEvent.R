@@ -1,16 +1,16 @@
-#' plot splice event
+#' Plot splice event
 #' @description Plot the splice event
-#' @param se output of \link{spliceEvent}
-#' @param tx_name transcript name.
-#' @param coverage coverages of feature region with extensions.
+#' @param se Output of \link{spliceEvent}
+#' @param tx_name Transcript name.
+#' @param coverage Coverages of feature region with extensions.
 #' Output of \link{coverageDepth}
-#' @param group1,group2 the sample names of group 1 and group 2
-#' @param cutoffFDR cutoff of FDR
-#' @param resetIntronWidth logical value. If set to true,
+#' @param group1,group2 The sample names of group 1 and group 2
+#' @param cutoffFDR Cutoff of FDR
+#' @param resetIntronWidth logical(1). If set to true,
 #' reset the region with no read to minimal width.
 #' @importFrom ggplot2 geom_segment geom_rect theme element_blank
 #' @export
-#' @return a ggplot object.
+#' @return A ggplot object.
 #' @examples
 #' \dontrun{
 #' path <- system.file("extdata", package="ribosomeProfilingQC")

@@ -1,10 +1,10 @@
 #' Metaplot of P site distribution
 #' @description Metaplot of P site distribution in all the CDS aligned by
 #' the start codon or stop codon.
-#' @param reads output of \link{assignReadingFrame} or \link{shiftReadsByFrame}.
-#' @param genome a BSgenome object.
-#' @param plot plot the motif or not.
-#' @return a \link[motifStack:pcm-class]{pcm} object
+#' @param reads Output of \link{assignReadingFrame} or \link{shiftReadsByFrame}.
+#' @param genome A BSgenome object.
+#' @param plot Plot the motif or not.
+#' @return A \link[motifStack:pcm-class]{pcm} object
 #' @importFrom IRanges promoters
 #' @importFrom Rsamtools getSeq
 #' @importFrom Biostrings consensusMatrix AA_STANDARD translate

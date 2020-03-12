@@ -1,10 +1,10 @@
-#' simulate function
-#' @description simulate the RPFs reads in CDS, 5'UTR and 3'UTR
-#' @param txdb TxDb object
-#' @param outPath output folder for the bam files
-#' @param genome BSgenome object
+#' Simulation function
+#' @description Simulate the RPFs reads in CDS, 5'UTR and 3'UTR
+#' @param txdb A TxDb object
+#' @param outPath Output folder for the bam files
+#' @param genome A BSgenome object
 #' @param samples Total samples to simulate.
-#' @param group1,group2 numeric to index the sample groups.
+#' @param group1,group2 Numeric to index the sample groups.
 #' @param readsPerSample Total reads number per sample.
 #' @param readsLen Reads length, default 100bp.
 #' @param psite P-site position. default 13.
@@ -12,11 +12,11 @@
 #' frame0, frame1 and frame2
 #' @param DEregions The regions with differential reads in exon,
 #' utr5 and utr3.
-#' @param size dispersion parameter. Must be strictly positive.
-#' @param sd standard deviations.
-#' @param minDElevel minimal differential level. default: log2(2).
-#' @param includeReadsSeq logical. Include reads sequence or not.
-#' @return an invisible list of GAlignments.
+#' @param size Dispersion parameter. Must be strictly positive.
+#' @param sd Standard deviations.
+#' @param minDElevel Minimal differential level. default: log2(2).
+#' @param includeReadsSeq logical(1). Include reads sequence or not.
+#' @return An invisible list of GAlignments.
 #' @importFrom rtracklayer export
 #' @importFrom GenomicAlignments sequenceLayer cigar GAlignments
 #' @importFrom BSgenome getSeq

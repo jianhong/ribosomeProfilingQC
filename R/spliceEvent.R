@@ -1,11 +1,11 @@
-#' get splicing events
+#' Get splicing events
 #' @description Get differentical usage of alternative
 #' Translation Initiation Sites,
 #' alternative Polyadenylation Sites or
 #' alternative splicing sites
-#' @param coverage coverages of feature region with extensions.
+#' @param coverage Coverages of feature region with extensions.
 #' Output of \link{coverageDepth}
-#' @param group1,group2 the sample names of group 1 and group 2
+#' @param group1,group2 The sample names of group 1 and group 2
 #' @importFrom cluster silhouette
 #' @importFrom stats fisher.test dist kmeans p.adjust
 #' @export

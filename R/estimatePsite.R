@@ -1,12 +1,11 @@
-#' estimate P site position
+#' Estimate P site position
 #' @description Estimate P site postion from a subset reads.
 #' @rdname estimatePsite
-#' @param bamfile an BamFile object.
-#' @param CDS output of \link{prepareCDS}
-#' @param genome a BSgenome object.
+#' @param bamfile A BamFile object.
+#' @param CDS Output of \link{prepareCDS}
+#' @param genome A BSgenome object.
 #' @param anchor 5end or 3end. Default is 5end.
-#' @return A list with strart codon position, stop codon position from 5 end of
-#' the reads, and summary of positions.
+#' @return A best P site position.
 #' @references
 #' 1: Bazzini AA, Johnstone TG, Christiano R, Mackowiak SD, Obermayer B,
 #' Fleming ES, Vejnar CE, Lee MT, Rajewsky N, Walther TC, Giraldez AJ.

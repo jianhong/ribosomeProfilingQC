@@ -1,10 +1,11 @@
-#' assign reading frame
-#' @description set reading frame for each reads in CDS region
-#' @param reads output of \link{getPsiteCoordinates}
-#' @param CDS output of \link{prepareCDS}
-#' @param txdb an TxDb object. If it is set, assign reading frame for all reads.
+#' Assign reading frame
+#' @description Set reading frame for each reads in CDS region to frame0,
+#' frame1 and frame2.
+#' @param reads Output of \link{getPsiteCoordinates}
+#' @param CDS Output of \link{prepareCDS}
+#' @param txdb A TxDb object. If it is set, assign reading frame for all reads.
 #' Default missing, only assign rading frame for reads in CDS.
-#' @return reads with reading frame information
+#' @return An GRanges object of reads with reading frame information.
 #' @import GenomicRanges
 #' @importFrom methods as is
 #' @importFrom S4Vectors subjectHits queryHits

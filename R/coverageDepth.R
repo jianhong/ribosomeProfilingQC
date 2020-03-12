@@ -1,20 +1,20 @@
-#' extract coverage depth for gene level or transcript level
+#' Extract coverage depth for gene level or transcript level
 #' @description Calculate the coverage depth for gene level or transcript level.
 #' Coverage for RPFs will be the best P site coverage.
 #' Coverage for RNAs will be the coverage for 5'end of reads.
 #' @param RPFs Bam file names of RPFs.
 #' @param RNAs Bam file names of RNAseq.
 #' @param gtf GTF file name for annotation or a TxDb object.
-#' @param level transcript or gene level.
+#' @param level Transcript or gene level.
 #' @param bestpsite P site postion.
-#' @param readsLen reads length to keep.
+#' @param readsLen Reads length to keep.
 #' @param anchor 5end or 3end. Default is 5end.
-#' @param region annotation region. It could be "cds", "utr5", "utr3",
+#' @param region Annotation region. It could be "cds", "utr5", "utr3",
 #' "exon", "transcripts", "feature with extension".
-#' @param ext extesion region for "feature with extension".
-#' @param ... parameters pass to
+#' @param ext Extesion region for "feature with extension".
+#' @param ... Parameters pass to
 #' \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}
-#' @return a list with reads counts.
+#' @return A cvgd object with coverage depth.
 #' @importFrom methods as is
 #' @importFrom GenomicFeatures makeTxDbFromGFF coverageByTranscript transcripts
 #' @importFrom Rsamtools BamFile

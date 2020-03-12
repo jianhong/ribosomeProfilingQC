@@ -12,16 +12,16 @@ plotDistance2Codon(
 )
 }
 \arguments{
-\item{reads}{output of \link{assignReadingFrame}}
+\item{reads}{Output of \link{assignReadingFrame}}
 
-\item{start}{plot for start codon or stop codon}
+\item{start}{Plot for start codon or stop codon}
 
-\item{anchor}{xlim position for plot}
+\item{anchor}{The maximal xlim position for plot}
 
-\item{col}{colors for different reading frame.}
+\item{col}{Colors for different reading frame.}
 }
 \value{
-invisible height of the barplot.
+Invisible height of the barplot.
 }
 \description{
 Metaplot of P site distribution in all the CDS aligned by

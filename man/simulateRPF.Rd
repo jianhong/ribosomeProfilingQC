@@ -2,7 +2,7 @@
 % Please edit documentation in R/simulateRPF.R
 \name{simulateRPF}
 \alias{simulateRPF}
-\title{simulate function}
+\title{Simulation function}
 \usage{
 simulateRPF(
   txdb,
@@ -25,15 +25,15 @@ simulateRPF(
 )
 }
 \arguments{
-\item{txdb}{TxDb object}
+\item{txdb}{A TxDb object}
 
-\item{outPath}{output folder for the bam files}
+\item{outPath}{Output folder for the bam files}
 
-\item{genome}{BSgenome object}
+\item{genome}{A BSgenome object}
 
 \item{samples}{Total samples to simulate.}
 
-\item{group1, group2}{numeric to index the sample groups.}
+\item{group1, group2}{Numeric to index the sample groups.}
 
 \item{readsPerSample}{Total reads number per sample.}
 
@@ -47,19 +47,19 @@ frame0, frame1 and frame2}
 \item{DEregions}{The regions with differential reads in exon,
 utr5 and utr3.}
 
-\item{size}{dispersion parameter. Must be strictly positive.}
+\item{size}{Dispersion parameter. Must be strictly positive.}
 
-\item{sd}{standard deviations.}
+\item{sd}{Standard deviations.}
 
-\item{minDElevel}{minimal differential level. default: log2(2).}
+\item{minDElevel}{Minimal differential level. default: log2(2).}
 
-\item{includeReadsSeq}{logical. Include reads sequence or not.}
+\item{includeReadsSeq}{logical(1). Include reads sequence or not.}
 }
 \value{
-an invisible list of GAlignments.
+An invisible list of GAlignments.
 }
 \description{
-simulate the RPFs reads in CDS, 5'UTR and 3'UTR
+Simulate the RPFs reads in CDS, 5'UTR and 3'UTR
 }
 \examples{
 library(GenomicFeatures)

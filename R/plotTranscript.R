@@ -1,9 +1,9 @@
-#' plot reads P site abundance for a specific transcript
+#' Plot reads P site abundance for a specific transcript
 #' @description Plot the bundances of P site on a transcript.
-#' @param reads output of \link{assignReadingFrame}
-#' @param tx_name transcript name.
-#' @param col colors for reading frames
-#' @return invisible heights of the barplot.
+#' @param reads Output of \link{assignReadingFrame}
+#' @param tx_name Transcript names.
+#' @param col Colors for reading frames
+#' @return Invisible heights of the barplot.
 #' @importFrom methods as is
 #' @importFrom graphics barplot legend par
 #' @export

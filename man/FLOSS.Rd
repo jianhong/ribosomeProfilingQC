@@ -14,20 +14,21 @@ FLOSS(
 )
 }
 \arguments{
-\item{reads}{output of \link{getPsiteCoordinates}}
+\item{reads}{Output of \link{getPsiteCoordinates}}
 
-\item{ref}{refercence id list}
+\item{ref}{Refercence id list. If level is set to tx, the id should be
+transcript names. If level is set to gene, the id should be gene id.}
 
-\item{CDS}{output of \link{prepareCDS}}
+\item{CDS}{Output of \link{prepareCDS}}
 
-\item{readLengths}{read length used for calculation}
+\item{readLengths}{Read length used for calculation}
 
-\item{level}{transcript or gene level}
+\item{level}{Transcript or gene level}
 
-\item{draw}{plot FLOSS vs total reads or not.}
+\item{draw}{Plot FLOSS vs total reads or not.}
 }
 \value{
-a data frame with colnames as id, FLOSS, totalReads,
+A data frame with colnames as id, FLOSS, totalReads,
 wilcox.test.pval, cook's distance.
 }
 \description{

@@ -1,13 +1,13 @@
-#' plot reads distribution in genomic elements
+#' Plot reads distribution in genomic elements
 #' @description Plot the percentage of reads in CDS, 5'UTR, 3'UTR, introns, and
 #'  other elements.
-#' @param reads output of \link{getPsiteCoordinates}
-#' @param txdb an TxDb object
-#' @param upstreamRegion,downstreamRegion the range for promoter region and
+#' @param reads Output of \link{getPsiteCoordinates}
+#' @param txdb A TxDb object
+#' @param upstreamRegion,downstreamRegion The range for promoter region and
 #'  downstream region.
-#' @param plot plot the distribution or not
-#' @param ... not use.
-#' @return the reads with distribution assignment
+#' @param plot Plot the distribution or not
+#' @param ... Not use.
+#' @return The reads with distribution assignment
 #' @importFrom GenomicFeatures cds fiveUTRsByTranscript threeUTRsByTranscript
 #' exons genes promoters
 #' @import GenomicRanges

@@ -1,14 +1,14 @@
 #' Ribosome Release Score (RRS)
 #' @description RRS is calculated as the ratio of translational efficiency in
 #'  the CDS with RPFs in the 3'UTR.
-#' @param cdsTE,utr3TE translational efficiency of CDS and UTR3 region.
+#' @param cdsTE,utr3TE Translational efficiency of CDS and UTR3 region.
 #'  Output of \link{translationalEfficiency}
-#' @param CDSsampleOrder,UTR3sampleOrder sample order of cdsTE and utr3TE.
+#' @param CDSsampleOrder,UTR3sampleOrder Sample order of cdsTE and utr3TE.
 #'  The parameters are used to make sure that the order of CDS and UTR3 in TE
 #'   is corresponding samples.
-#' @param pseudocount the number will be add to sum of reads count to avoid X/0.
+#' @param pseudocount The number will be add to sum of reads count to avoid X/0.
 #' @param log2 Do log2 transform or not.
-#' @return a vector of RRS.
+#' @return A vector of RRS.
 #' @export
 #' @examples
 #'

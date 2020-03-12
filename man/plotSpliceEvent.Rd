@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotSpliceEvent.R
 \name{plotSpliceEvent}
 \alias{plotSpliceEvent}
-\title{plot splice event}
+\title{Plot splice event}
 \usage{
 plotSpliceEvent(
   se,
@@ -15,22 +15,22 @@ plotSpliceEvent(
 )
 }
 \arguments{
-\item{se}{output of \link{spliceEvent}}
+\item{se}{Output of \link{spliceEvent}}
 
-\item{tx_name}{transcript name.}
+\item{tx_name}{Transcript name.}
 
-\item{coverage}{coverages of feature region with extensions.
+\item{coverage}{Coverages of feature region with extensions.
 Output of \link{coverageDepth}}
 
-\item{group1, group2}{the sample names of group 1 and group 2}
+\item{group1, group2}{The sample names of group 1 and group 2}
 
-\item{cutoffFDR}{cutoff of FDR}
+\item{cutoffFDR}{Cutoff of FDR}
 
-\item{resetIntronWidth}{logical value. If set to true,
+\item{resetIntronWidth}{logical(1). If set to true,
 reset the region with no read to minimal width.}
 }
 \value{
-a ggplot object.
+A ggplot object.
 }
 \description{
 Plot the splice event

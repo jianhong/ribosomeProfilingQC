@@ -1,6 +1,6 @@
-#' get P site coordinates
-#' @description read in all reads from a bamfile and extract P site coordinates.
-#' @param bamfile an BamFile object.
+#' Get P site coordinates
+#' @description Extract P site coordinates from a bam file to a GRanges object.
+#' @param bamfile A BamFile object.
 #' @param bestpsite P site postion. See \link{estimatePsite}
 #' @param anchor 5end or 3end. Default is 5end.
 #' @return A GRanges object with qwidth metadata which indicates the width

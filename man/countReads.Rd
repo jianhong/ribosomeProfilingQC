@@ -2,7 +2,7 @@
 % Please edit documentation in R/countReads.R
 \name{countReads}
 \alias{countReads}
-\title{extract counts for RPFs and RNAs}
+\title{Extract counts for RPFs and RNAs}
 \usage{
 countReads(
   RPFs,
@@ -22,7 +22,7 @@ countReads(
 
 \item{gtf}{GTF file name for annotation.}
 
-\item{level}{transcript or gene level.}
+\item{level}{Transcript or gene level.}
 
 \item{bestpsite}{numeric(1). P site postion.}
 
@@ -30,10 +30,10 @@ countReads(
 
 \item{anchor}{5end or 3end. Default is 5end.}
 
-\item{...}{parameters pass to \link[Rsubread:featureCounts]{featureCounts}}
+\item{...}{Parameters pass to \link[Rsubread:featureCounts]{featureCounts}}
 }
 \value{
-a list with reads counts.
+A list with reads counts.
 }
 \description{
 Calculate the reads counts for gene level or transcript level.

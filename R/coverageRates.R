@@ -1,14 +1,14 @@
-#' calculate coverage rate
+#' Calculate coverage rate
 #' @description Coverage is a measure as percentage of position
 #' with reads along the CDS.
 #' Coverage rate calculate coverage rate for RPFs and mRNAs
 #' Coverage will be calculated based on best P sites
 #' for RPFs and 5'end for RNA-seq.
-#' @param cvgs output of \link{coverageDepth}
-#' @param RPFsampleOrder,mRNAsampleOrder sample order of RPFs and mRNAs.
+#' @param cvgs Output of \link{coverageDepth}
+#' @param RPFsampleOrder,mRNAsampleOrder Sample order of RPFs and mRNAs.
 #' The parameters are used to make sure that the order of RPFs and mRNAs
 #' in cvgs is corresponding samples.
-#' @return a list with coverage rate
+#' @return A list with coverage rate.
 #' @export
 #' @examples
 #' path <- system.file("extdata", package="ribosomeProfilingQC")

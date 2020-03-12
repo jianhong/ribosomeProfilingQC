@@ -2,7 +2,7 @@
 % Please edit documentation in R/readsEndPlot.R
 \name{readsEndPlot}
 \alias{readsEndPlot}
-\title{plot start/stop windows}
+\title{Plot start/stop windows}
 \usage{
 readsEndPlot(
   bamfile,
@@ -14,23 +14,23 @@ readsEndPlot(
 )
 }
 \arguments{
-\item{bamfile}{an BamFile object.}
+\item{bamfile}{A BamFile object.}
 
-\item{CDS}{output of \link{prepareCDS}}
+\item{CDS}{Output of \link{prepareCDS}}
 
-\item{toStartCodon}{start or end codon}
+\item{toStartCodon}{What to search: start or end codon}
 
-\item{fiveEnd}{five or three ends of the reads}
+\item{fiveEnd}{Search from five or three ends of the reads}
 
-\item{window}{the window of CDS region to plot}
+\item{window}{The window of CDS region to plot}
 
-\item{readLen}{the reads length used to plot}
+\item{readLen}{The reads length used to plot}
 }
 \value{
-the invisible counts numbers.
+The invisible counts numbers.
 }
 \description{
-plot the reads shifted from start/stop position of CDS.
+Plot the reads shifted from start/stop position of CDS.
 }
 \examples{
 library(Rsamtools)

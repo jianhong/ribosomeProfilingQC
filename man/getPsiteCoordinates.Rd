@@ -2,12 +2,12 @@
 % Please edit documentation in R/getPsiteCoordinates.R
 \name{getPsiteCoordinates}
 \alias{getPsiteCoordinates}
-\title{get P site coordinates}
+\title{Get P site coordinates}
 \usage{
 getPsiteCoordinates(bamfile, bestpsite, anchor = "5end")
 }
 \arguments{
-\item{bamfile}{an BamFile object.}
+\item{bamfile}{A BamFile object.}
 
 \item{bestpsite}{P site postion. See \link{estimatePsite}}
 
@@ -18,7 +18,7 @@ A GRanges object with qwidth metadata which indicates the width
 of reads.
 }
 \description{
-read in all reads from a bamfile and extract P site coordinates.
+Extract P site coordinates from a bam file to a GRanges object.
 }
 \examples{
 library(Rsamtools)

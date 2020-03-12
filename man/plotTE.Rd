@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotTE.R
 \name{plotTE}
 \alias{plotTE}
-\title{plot translational efficiency}
+\title{Plot translational efficiency}
 \usage{
 plotTE(
   TE,
@@ -15,22 +15,22 @@ plotTE(
 )
 }
 \arguments{
-\item{TE}{output of \link{translationalEfficiency}}
+\item{TE}{Output of \link{translationalEfficiency}}
 
 \item{sample}{character(1). Sample name to plot.}
 
-\item{xaxis}{what to plot for x-axis.}
+\item{xaxis}{What to plot for x-axis.}
 
 \item{removeZero}{Remove the 0 values from plots.}
 
-\item{log2}{do log2 transform or not.}
+\item{log2}{Do log2 transform or not.}
 
-\item{breaks.length}{length of breaks for histogram.}
+\item{breaks.length}{Length of breaks for histogram.}
 
-\item{...}{parameters pass to \link[graphics:plot]{plot}.}
+\item{...}{Parameters pass to \link[graphics:plot]{plot}.}
 }
 \value{
-invisible data.frame with x, y of points.
+A invisible data.frame with x, y of points.
 }
 \description{
 Scatterplot of RNA/RPFs level compared to the

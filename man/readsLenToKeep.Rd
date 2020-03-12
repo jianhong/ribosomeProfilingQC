@@ -2,20 +2,20 @@
 % Please edit documentation in R/readsLenToKeep.R
 \name{readsLenToKeep}
 \alias{readsLenToKeep}
-\title{get reads length to keep by cutoff percentage}
+\title{Get reads length to keep by cutoff percentage}
 \usage{
 readsLenToKeep(readsLengthDensity, cutoff = 0.8)
 }
 \arguments{
-\item{readsLengthDensity}{output of \link{summaryReadsLength}}
+\item{readsLengthDensity}{Output of \link{summaryReadsLength}}
 
-\item{cutoff}{cutoff value.}
+\item{cutoff}{Cutoff value.}
 }
 \value{
-reads length to be kept.
+Reads length to be kept.
 }
 \description{
-set the percentage to cut the reads
+Set the percentage to filter the reads.
 }
 \examples{
 reads <- GRanges("chr1", ranges=IRanges(seq.int(100), width=1),

@@ -14,19 +14,19 @@ ribosomeReleaseScore(
 )
 }
 \arguments{
-\item{cdsTE, utr3TE}{translational efficiency of CDS and UTR3 region.
+\item{cdsTE, utr3TE}{Translational efficiency of CDS and UTR3 region.
 Output of \link{translationalEfficiency}}
 
-\item{CDSsampleOrder, UTR3sampleOrder}{sample order of cdsTE and utr3TE.
+\item{CDSsampleOrder, UTR3sampleOrder}{Sample order of cdsTE and utr3TE.
 The parameters are used to make sure that the order of CDS and UTR3 in TE
  is corresponding samples.}
 
-\item{pseudocount}{the number will be add to sum of reads count to avoid X/0.}
+\item{pseudocount}{The number will be add to sum of reads count to avoid X/0.}
 
 \item{log2}{Do log2 transform or not.}
 }
 \value{
-a vector of RRS.
+A vector of RRS.
 }
 \description{
 RRS is calculated as the ratio of translational efficiency in

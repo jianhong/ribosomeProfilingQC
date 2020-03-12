@@ -1,9 +1,9 @@
-#' filter CDS by size
-#' @description filter CDS by CDS size.
-#' @param CDS output of preparedCDS
-#' @param sizeCutoff cutoff size for CDS.
+#' Filter CDS by size
+#' @description Filter CDS by CDS size.
+#' @param CDS Output of preparedCDS
+#' @param sizeCutoff numeric(1). Cutoff size for CDS.
 #' If the size of CDS is less than the cutoff, it will be filtered out.
-#' @return an GRanges object with filtered CDS.
+#' @return A GRanges object with filtered CDS.
 #' @export
 #' @import GenomicRanges
 #' @importFrom methods as is

@@ -1,4 +1,4 @@
-#' calculate ORFscore
+#' Calculate ORFscore
 #' @description  To calculate the ORFscore, reads were counnted at each position
 #' within the ORF.
 #' \deqn{ORFscore = log_2((\sum_{n=1}^{3}\frac{(F_i-\bar{F})^2}{\bar{F}}) + 1)}
@@ -15,8 +15,8 @@
 #' EMBO J. 2014 May 2;33(9):981-93.
 #' doi: 10.1002/embj.201488411. Epub 2014 Apr 4.
 #' PubMed PMID: 24705786; PubMed Central PMCID: PMC4193932.
-#' @param reads output of \link{getPsiteCoordinates}
-#' @return numeric vector with ORFscore.
+#' @param reads Output of \link{getPsiteCoordinates}
+#' @return A numeric vector with ORFscore.
 #' @importFrom methods as is
 #' @export
 #' @examples

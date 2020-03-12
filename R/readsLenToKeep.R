@@ -1,8 +1,8 @@
-#' get reads length to keep by cutoff percentage
-#' @description set the percentage to cut the reads
-#' @param readsLengthDensity output of \link{summaryReadsLength}
-#' @param cutoff cutoff value.
-#' @return reads length to be kept.
+#' Get reads length to keep by cutoff percentage
+#' @description Set the percentage to filter the reads.
+#' @param readsLengthDensity Output of \link{summaryReadsLength}
+#' @param cutoff Cutoff value.
+#' @return Reads length to be kept.
 #' @importFrom methods as is
 #' @export
 #' @examples

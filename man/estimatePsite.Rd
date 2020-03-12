@@ -2,22 +2,21 @@
 % Please edit documentation in R/estimatePsite.R
 \name{estimatePsite}
 \alias{estimatePsite}
-\title{estimate P site position}
+\title{Estimate P site position}
 \usage{
 estimatePsite(bamfile, CDS, genome, anchor = "5end")
 }
 \arguments{
-\item{bamfile}{an BamFile object.}
+\item{bamfile}{A BamFile object.}
 
-\item{CDS}{output of \link{prepareCDS}}
+\item{CDS}{Output of \link{prepareCDS}}
 
-\item{genome}{a BSgenome object.}
+\item{genome}{A BSgenome object.}
 
 \item{anchor}{5end or 3end. Default is 5end.}
 }
 \value{
-A list with strart codon position, stop codon position from 5 end of
-the reads, and summary of positions.
+A best P site position.
 }
 \description{
 Estimate P site postion from a subset reads.

@@ -2,15 +2,15 @@
 % Please edit documentation in R/spliceEvent.R
 \name{spliceEvent}
 \alias{spliceEvent}
-\title{get splicing events}
+\title{Get splicing events}
 \usage{
 spliceEvent(coverage, group1, group2)
 }
 \arguments{
-\item{coverage}{coverages of feature region with extensions.
+\item{coverage}{Coverages of feature region with extensions.
 Output of \link{coverageDepth}}
 
-\item{group1, group2}{the sample names of group 1 and group 2}
+\item{group1, group2}{The sample names of group 1 and group 2}
 }
 \value{
 A GRanges object of splice events.

@@ -1,10 +1,10 @@
 #' Normalization by RUVSeq
 #' @description Normalization by RUVSeq:RUVs methods
-#' @param counts output of \link{countReads}
-#' @param RPFgroup,mRNAgroup groups for RPF and mRNA files
+#' @param counts Output of \link{countReads}
+#' @param RPFgroup,mRNAgroup Groups for RPF and mRNA files
 #' @param k The number of factor of unwanted variation to be estimated from
 #' the data. See \link[RUVSeq:RUVs]{RUVs}
-#' @return normalized counts list
+#' @return Normalized counts list
 #' @importFrom RUVSeq RUVs makeGroups
 #' @importFrom EDASeq betweenLaneNormalization newSeqExpressionSet counts
 #'  normCounts

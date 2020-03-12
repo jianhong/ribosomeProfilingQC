@@ -2,24 +2,24 @@
 % Please edit documentation in R/summaryReadsLength.R
 \name{summaryReadsLength}
 \alias{summaryReadsLength}
-\title{summary the reads lengths}
+\title{Summary the reads lengths}
 \usage{
 summaryReadsLength(reads, widthRange = c(20:35), plot = TRUE, ...)
 }
 \arguments{
-\item{reads}{output of getPsiteCoordinates}
+\item{reads}{Output of getPsiteCoordinates}
 
-\item{widthRange}{the reads range to be plot}
+\item{widthRange}{The reads range to be plot}
 
-\item{plot}{do plot or not}
+\item{plot}{Do plot or not}
 
-\item{...}{not use.}
+\item{...}{Not use.}
 }
 \value{
-the reads length distribution
+The reads length distribution
 }
 \description{
-plot the reads length distribution
+Plot the reads length distribution
 }
 \examples{
 reads <- GRanges("chr1", ranges=IRanges(seq.int(100), width=1),

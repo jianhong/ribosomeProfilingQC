@@ -2,15 +2,15 @@
 % Please edit documentation in R/getORFscore.R
 \name{getORFscore}
 \alias{getORFscore}
-\title{calculate ORFscore}
+\title{Calculate ORFscore}
 \usage{
 getORFscore(reads)
 }
 \arguments{
-\item{reads}{output of \link{getPsiteCoordinates}}
+\item{reads}{Output of \link{getPsiteCoordinates}}
 }
 \value{
-numeric vector with ORFscore.
+A numeric vector with ORFscore.
 }
 \description{
 To calculate the ORFscore, reads were counnted at each position

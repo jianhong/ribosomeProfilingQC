@@ -1,12 +1,12 @@
-#' plot start/stop windows
-#' @description plot the reads shifted from start/stop position of CDS.
-#' @param bamfile an BamFile object.
-#' @param CDS output of \link{prepareCDS}
-#' @param toStartCodon start or end codon
-#' @param fiveEnd five or three ends of the reads
-#' @param window the window of CDS region to plot
-#' @param readLen the reads length used to plot
-#' @return the invisible counts numbers.
+#' Plot start/stop windows
+#' @description Plot the reads shifted from start/stop position of CDS.
+#' @param bamfile A BamFile object.
+#' @param CDS Output of \link{prepareCDS}
+#' @param toStartCodon What to search: start or end codon
+#' @param fiveEnd Search from five or three ends of the reads
+#' @param window The window of CDS region to plot
+#' @param readLen The reads length used to plot
+#' @return The invisible counts numbers.
 #' @importFrom Rsamtools ScanBamParam scanBamFlag scanBamHeader
 #' @importFrom GenomicAlignments readGAlignments qwidth njunc
 #' @importFrom methods as is

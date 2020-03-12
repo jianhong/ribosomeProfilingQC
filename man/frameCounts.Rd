@@ -2,7 +2,7 @@
 % Please edit documentation in R/frameCounts.R
 \name{frameCounts}
 \alias{frameCounts}
-\title{extract counts for gene level or transcript level}
+\title{Extract counts for gene level or transcript level}
 \usage{
 frameCounts(
   reads,
@@ -12,16 +12,16 @@ frameCounts(
 )
 }
 \arguments{
-\item{reads}{output of \link{assignReadingFrame}.}
+\item{reads}{Output of \link{assignReadingFrame}.}
 
-\item{level}{transcript or gene level}
+\item{level}{Transcript or gene level}
 
-\item{frame0only}{only count for reading frame 0 or not}
+\item{frame0only}{Only count for reading frame 0 or not}
 
-\item{coverageRate}{calculate for coverage or not}
+\item{coverageRate}{Calculate for coverage or not}
 }
 \value{
-numeric vector with reads counts.
+A numeric vector with reads counts.
 }
 \description{
 Calculate the reads counts or coverage rate for gene level or

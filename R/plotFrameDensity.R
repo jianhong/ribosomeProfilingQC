@@ -1,9 +1,9 @@
-#' plot density for each reading frame
-#' @description plot density for each reading frame
-#' @param reads output of \link{assignReadingFrame}
-#' @param density plot density or counts
-#' @param col colors for reading frames
-#' @return reading frame density
+#' Plot density for each reading frame
+#' @description Plot density for each reading frame.
+#' @param reads Output of \link{assignReadingFrame}
+#' @param density Plot density or counts
+#' @param col Colors for reading frames
+#' @return Reading frame density
 #' @importFrom methods as is
 #' @export
 #' @examples

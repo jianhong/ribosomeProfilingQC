@@ -7,14 +7,14 @@
 PAmotif(reads, genome, plot = TRUE)
 }
 \arguments{
-\item{reads}{output of \link{assignReadingFrame} or \link{shiftReadsByFrame}.}
+\item{reads}{Output of \link{assignReadingFrame} or \link{shiftReadsByFrame}.}
 
-\item{genome}{a BSgenome object.}
+\item{genome}{A BSgenome object.}
 
-\item{plot}{plot the motif or not.}
+\item{plot}{Plot the motif or not.}
 }
 \value{
-a \link[motifStack:pcm-class]{pcm} object
+A \link[motifStack:pcm-class]{pcm} object
 }
 \description{
 Metaplot of P site distribution in all the CDS aligned by

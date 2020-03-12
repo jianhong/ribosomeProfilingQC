@@ -1,8 +1,8 @@
-#' prepare CDS
-#' @description prepare CDS library from a TxDb object.
-#' @param txdb an TxDb object.
-#' @param withUTR including UTR information or not.
-#' @return an GRanges object with metadata which include:
+#' Prepare CDS
+#' @description Prepare CDS library from a TxDb object.
+#' @param txdb A TxDb object.
+#' @param withUTR Including UTR information or not.
+#' @return A GRanges object with metadata which include:
 #' tx_id: transcript id;
 #' tx_name: transcript name;
 #' gene_id: gene id;

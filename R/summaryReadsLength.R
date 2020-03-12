@@ -1,10 +1,10 @@
-#' summary the reads lengths
-#' @description plot the reads length distribution
-#' @param reads output of getPsiteCoordinates
-#' @param widthRange the reads range to be plot
-#' @param plot do plot or not
-#' @param ... not use.
-#' @return the reads length distribution
+#' Summary the reads lengths
+#' @description Plot the reads length distribution
+#' @param reads Output of getPsiteCoordinates
+#' @param widthRange The reads range to be plot
+#' @param plot Do plot or not
+#' @param ... Not use.
+#' @return The reads length distribution
 #' @importFrom methods as is
 #' @importFrom graphics barplot
 #' @export

@@ -2,20 +2,20 @@
 % Please edit documentation in R/shiftReadsByFrame.R
 \name{shiftReadsByFrame}
 \alias{shiftReadsByFrame}
-\title{shift reads by reading frame}
+\title{Shift reads by reading frame}
 \usage{
 shiftReadsByFrame(reads, txdb)
 }
 \arguments{
-\item{reads}{output of \link{getPsiteCoordinates}}
+\item{reads}{Output of \link{getPsiteCoordinates}}
 
-\item{txdb}{TxDb object.}
+\item{txdb}{A TxDb object.}
 }
 \value{
-reads with reading frame information
+Reads with reading frame information
 }
 \description{
-shift reads P site position by reading frame. After shifting,
+Shift reads P site position by reading frame. After shifting,
 all reading frame will be set as 0
 }
 \examples{

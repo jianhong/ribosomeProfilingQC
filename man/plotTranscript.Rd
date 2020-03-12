@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotTranscript.R
 \name{plotTranscript}
 \alias{plotTranscript}
-\title{plot reads P site abundance for a specific transcript}
+\title{Plot reads P site abundance for a specific transcript}
 \usage{
 plotTranscript(
   reads,
@@ -11,14 +11,14 @@ plotTranscript(
 )
 }
 \arguments{
-\item{reads}{output of \link{assignReadingFrame}}
+\item{reads}{Output of \link{assignReadingFrame}}
 
-\item{tx_name}{transcript name.}
+\item{tx_name}{Transcript names.}
 
-\item{col}{colors for reading frames}
+\item{col}{Colors for reading frames}
 }
 \value{
-invisible heights of the barplot.
+Invisible heights of the barplot.
 }
 \description{
 Plot the bundances of P site on a transcript.

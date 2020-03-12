@@ -2,19 +2,19 @@
 % Please edit documentation in R/coverageRates.R
 \name{coverageRates}
 \alias{coverageRates}
-\title{calculate coverage rate}
+\title{Calculate coverage rate}
 \usage{
 coverageRates(cvgs, RPFsampleOrder, mRNAsampleOrder)
 }
 \arguments{
-\item{cvgs}{output of \link{coverageDepth}}
+\item{cvgs}{Output of \link{coverageDepth}}
 
-\item{RPFsampleOrder, mRNAsampleOrder}{sample order of RPFs and mRNAs.
+\item{RPFsampleOrder, mRNAsampleOrder}{Sample order of RPFs and mRNAs.
 The parameters are used to make sure that the order of RPFs and mRNAs
 in cvgs is corresponding samples.}
 }
 \value{
-a list with coverage rate
+A list with coverage rate.
 }
 \description{
 Coverage is a measure as percentage of position

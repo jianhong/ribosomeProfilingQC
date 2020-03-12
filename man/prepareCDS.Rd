@@ -2,17 +2,17 @@
 % Please edit documentation in R/prepareCDS.R
 \name{prepareCDS}
 \alias{prepareCDS}
-\title{prepare CDS}
+\title{Prepare CDS}
 \usage{
 prepareCDS(txdb, withUTR = FALSE)
 }
 \arguments{
-\item{txdb}{an TxDb object.}
+\item{txdb}{A TxDb object.}
 
-\item{withUTR}{including UTR information or not.}
+\item{withUTR}{Including UTR information or not.}
 }
 \value{
-an GRanges object with metadata which include:
+A GRanges object with metadata which include:
 tx_id: transcript id;
 tx_name: transcript name;
 gene_id: gene id;
@@ -23,7 +23,7 @@ wid.cumsu: cumulative sums of number of bases in CDS;
 internalPos: offset position from 1 base;
 }
 \description{
-prepare CDS library from a TxDb object.
+Prepare CDS library from a TxDb object.
 }
 \examples{
 library(GenomicFeatures)

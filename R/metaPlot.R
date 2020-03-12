@@ -1,13 +1,13 @@
-#' metagene analysis plot
+#' Metagene analysis plot
 #' @description Plot the average coverage of UTR5, CDS and UTR3.
-#' @param UTR5coverage,CDScoverage,UTR3coverage coverages of UTR5, CDS, and
+#' @param UTR5coverage,CDScoverage,UTR3coverage Coverages of UTR5, CDS, and
 #' UTR3 region.
 #' Output of \link{coverageDepth}
 #' @param sample character(1). Sample name to plot.
-#' @param xaxis what to plot for x-axis.
-#' @param bins bins for UTR5, CDS and UTR3.
-#' @param ... parameter pass to plot.
-#' @return a list contain the data for plot.
+#' @param xaxis What to plot for x-axis.
+#' @param bins Bins for UTR5, CDS and UTR3.
+#' @param ... Parameter pass to plot.
+#' @return A list contain the data for plot.
 #' @importFrom IRanges viewMeans Views
 #' @importFrom graphics plot
 #' @export

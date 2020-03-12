@@ -1,11 +1,11 @@
 #' Metaplot of P site distribution
 #' @description Metaplot of P site distribution in all the CDS aligned by
 #' the start codon or stop codon.
-#' @param reads output of \link{assignReadingFrame}
-#' @param start plot for start codon or stop codon
-#' @param anchor xlim position for plot
-#' @param col colors for different reading frame.
-#' @return invisible height of the barplot.
+#' @param reads Output of \link{assignReadingFrame}
+#' @param start Plot for start codon or stop codon
+#' @param anchor The maximal xlim position for plot
+#' @param col Colors for different reading frame.
+#' @return Invisible height of the barplot.
 #' @importFrom methods as is
 #' @importFrom graphics barplot axis legend segments
 #' @export

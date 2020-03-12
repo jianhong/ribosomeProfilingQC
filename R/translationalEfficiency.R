@@ -1,17 +1,19 @@
 #' Translational Efficiency
-#' @description calculate translational efficiency.
-#' @param x output of \link{getFPKM} or \link{normByRUVs}.
+#' @description Calculate Translational Efficiency (TE). TE is defined as
+#' the ratios of the absolute level of ribosome occupancy devided by RNA levels
+#' for transcripts.
+#' @param x Output of \link{getFPKM} or \link{normByRUVs}.
 #' if window is set, it must be output of \link{coverageDepth}.
 #' @param window numeric(1). window size for maximal counts.
-#' @param RPFsampleOrder,mRNAsampleOrder sample order of RPFs and mRNAs.
+#' @param RPFsampleOrder,mRNAsampleOrder Sample order of RPFs and mRNAs.
 #' The parameters are used to make sure that the order of RPFs and mRNAs in
 #' cvgs is corresponding samples.
-#' @param pseudocount the number will be add to sum of reads count to avoid X/0.
+#' @param pseudocount The number will be add to sum of reads count to avoid X/0.
 #' @param log2 Do log2 transform or not.
-#' @param normByLibSize normlization by library size or not.
+#' @param normByLibSize Normlization by library size or not.
 #' If window size is provied and normByLibSize is set to TRUE,
 #' the coverage will be normalized by library size.
-#' @return a list with RPFs, mRNA levels and TE as a matrix with
+#' @return A list with RPFs, mRNA levels and TE as a matrix with
 #' translational efficiency
 #' @importFrom IRanges RleList IRanges IRangesList viewSums slidingWindows
 #' @export

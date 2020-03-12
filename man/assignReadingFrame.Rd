@@ -2,23 +2,24 @@
 % Please edit documentation in R/assignReadingFrame.R
 \name{assignReadingFrame}
 \alias{assignReadingFrame}
-\title{assign reading frame}
+\title{Assign reading frame}
 \usage{
 assignReadingFrame(reads, CDS, txdb)
 }
 \arguments{
-\item{reads}{output of \link{getPsiteCoordinates}}
+\item{reads}{Output of \link{getPsiteCoordinates}}
 
-\item{CDS}{output of \link{prepareCDS}}
+\item{CDS}{Output of \link{prepareCDS}}
 
-\item{txdb}{an TxDb object. If it is set, assign reading frame for all reads.
+\item{txdb}{A TxDb object. If it is set, assign reading frame for all reads.
 Default missing, only assign rading frame for reads in CDS.}
 }
 \value{
-reads with reading frame information
+An GRanges object of reads with reading frame information.
 }
 \description{
-set reading frame for each reads in CDS region
+Set reading frame for each reads in CDS region to frame0,
+frame1 and frame2.
 }
 \examples{
 library(Rsamtools)

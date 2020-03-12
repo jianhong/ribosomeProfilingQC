@@ -1,3 +1,8 @@
+# CHANGES IN VERSION 0.99.4
+
+* update the description in DESCRIPTION.
+* update help files.
+
 # CHANGES IN VERSION 0.99.3
 
 * change the link from AtomicList to AtomicList-class and RUVs-methods to RUVs.

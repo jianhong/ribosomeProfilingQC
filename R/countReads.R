@@ -1,14 +1,14 @@
-#' extract counts for RPFs and RNAs
+#' Extract counts for RPFs and RNAs
 #' @description Calculate the reads counts for gene level or transcript level.
 #' @param RPFs Bam file names of RPFs.
 #' @param RNAs Bam file names of RNAseq.
 #' @param gtf GTF file name for annotation.
-#' @param level transcript or gene level.
+#' @param level Transcript or gene level.
 #' @param bestpsite numeric(1). P site postion.
 #' @param readsLen numeric(1). reads length to keep.
 #' @param anchor 5end or 3end. Default is 5end.
-#' @param ... parameters pass to \link[Rsubread:featureCounts]{featureCounts}
-#' @return a list with reads counts.
+#' @param ... Parameters pass to \link[Rsubread:featureCounts]{featureCounts}
+#' @return A list with reads counts.
 #' @importFrom methods as is
 #' @importFrom Rsubread featureCounts
 #' @importFrom GenomicFeatures makeTxDbFromGFF

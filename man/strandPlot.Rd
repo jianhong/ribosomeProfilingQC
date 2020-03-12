@@ -2,24 +2,24 @@
 % Please edit documentation in R/strandPlot.R
 \name{strandPlot}
 \alias{strandPlot}
-\title{plot the distribution of reads in sense and antisense strand}
+\title{Plot the distribution of reads in sense and antisense strand}
 \usage{
 strandPlot(reads, CDS, col = c("#009E73", "#D55E00"), ...)
 }
 \arguments{
-\item{reads}{output of \link{getPsiteCoordinates}}
+\item{reads}{Output of \link{getPsiteCoordinates}}
 
-\item{CDS}{output of \link{prepareCDS}}
+\item{CDS}{Output of \link{prepareCDS}}
 
-\item{col}{coloar for sense and antisense strand.}
+\item{col}{Coloar for sense and antisense strand.}
 
-\item{...}{parameter passed to barplot}
+\item{...}{Parameter passed to barplot}
 }
 \value{
-ggplot object.
+A ggplot object.
 }
 \description{
-plot the distribution of reads in sense and antisense strand to
+Plot the distribution of reads in sense and antisense strand to
 check the mapping is correct.
 }
 \examples{

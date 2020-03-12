@@ -2,19 +2,19 @@
 % Please edit documentation in R/getFPKM.R
 \name{getFPKM}
 \alias{getFPKM}
-\title{get FPKM values for counts}
+\title{Get FPKM values for counts}
 \usage{
 getFPKM(counts, gtf, level = c("gene", "tx"))
 }
 \arguments{
-\item{counts}{output of \link{countReads} or \link{normByRUVs}}
+\item{counts}{Output of \link{countReads} or \link{normByRUVs}}
 
 \item{gtf}{GTF file name for annotation.}
 
-\item{level}{transcript or gene level.}
+\item{level}{Transcript or gene level.}
 }
 \value{
-a list with FPKMs
+A list with FPKMs
 }
 \description{
 Calculate Fragments Per Kilobase of transcript per

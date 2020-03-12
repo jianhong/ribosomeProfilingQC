@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotFrameDensity.R
 \name{plotFrameDensity}
 \alias{plotFrameDensity}
-\title{plot density for each reading frame}
+\title{Plot density for each reading frame}
 \usage{
 plotFrameDensity(
   reads,
@@ -11,17 +11,17 @@ plotFrameDensity(
 )
 }
 \arguments{
-\item{reads}{output of \link{assignReadingFrame}}
+\item{reads}{Output of \link{assignReadingFrame}}
 
-\item{density}{plot density or counts}
+\item{density}{Plot density or counts}
 
-\item{col}{colors for reading frames}
+\item{col}{Colors for reading frames}
 }
 \value{
-reading frame density
+Reading frame density
 }
 \description{
-plot density for each reading frame
+Plot density for each reading frame.
 }
 \examples{
 pcs <- readRDS(system.file("extdata", "samplePc.rds",

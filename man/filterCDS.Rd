@@ -2,21 +2,21 @@
 % Please edit documentation in R/filterCDS.R
 \name{filterCDS}
 \alias{filterCDS}
-\title{filter CDS by size}
+\title{Filter CDS by size}
 \usage{
 filterCDS(CDS, sizeCutoff = 100L)
 }
 \arguments{
-\item{CDS}{output of preparedCDS}
+\item{CDS}{Output of preparedCDS}
 
-\item{sizeCutoff}{cutoff size for CDS.
+\item{sizeCutoff}{numeric(1). Cutoff size for CDS.
 If the size of CDS is less than the cutoff, it will be filtered out.}
 }
 \value{
-an GRanges object with filtered CDS.
+A GRanges object with filtered CDS.
 }
 \description{
-filter CDS by CDS size.
+Filter CDS by CDS size.
 }
 \examples{
 #library(GenomicFeatures)

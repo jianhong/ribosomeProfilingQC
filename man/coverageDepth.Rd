@@ -2,7 +2,7 @@
 % Please edit documentation in R/coverageDepth.R
 \name{coverageDepth}
 \alias{coverageDepth}
-\title{extract coverage depth for gene level or transcript level}
+\title{Extract coverage depth for gene level or transcript level}
 \usage{
 coverageDepth(
   RPFs,
@@ -24,24 +24,24 @@ coverageDepth(
 
 \item{gtf}{GTF file name for annotation or a TxDb object.}
 
-\item{level}{transcript or gene level.}
+\item{level}{Transcript or gene level.}
 
 \item{bestpsite}{P site postion.}
 
-\item{readsLen}{reads length to keep.}
+\item{readsLen}{Reads length to keep.}
 
 \item{anchor}{5end or 3end. Default is 5end.}
 
-\item{region}{annotation region. It could be "cds", "utr5", "utr3",
+\item{region}{Annotation region. It could be "cds", "utr5", "utr3",
 "exon", "transcripts", "feature with extension".}
 
-\item{ext}{extesion region for "feature with extension".}
+\item{ext}{Extesion region for "feature with extension".}
 
-\item{...}{parameters pass to
+\item{...}{Parameters pass to
 \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}}
 }
 \value{
-a list with reads counts.
+A cvgd object with coverage depth.
 }
 \description{
 Calculate the coverage depth for gene level or transcript level.

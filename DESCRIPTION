@@ -1,14 +1,20 @@
 Package: ribosomeProfilingQC
 Type: Package
 Title: Ribosome Profiling Quality Control
-Version: 0.99.3
+Version: 0.99.4
 Authors@R: c(person(given="Jianhong", family="Ou", email="jianhong.ou@duke.edu", 
         role=c("aut", "cre"), comment=c(ORCID="0000-0002-8652-2488")))
-Description: An R package for quality assessment of ribosome profiling. 
+Description: Ribo-Seq (also named ribosome profiling or footprinting) 
+        measures translatome (unlike RNA-Seq, which sequences the transcriptome)
+        by direct quantification of the ribosome-protected fragments (RPFs). 
+        This package provides the tools for quality assessment of ribosome 
+        profiling. In addition, it can preprocess Ribo-Seq data for subsequent
+        differential analysis. 
 License: GPL (>=3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
-biocViews: RiboSeq, Sequencing, GeneRegulation, QualityControl, Visualization, Coverage
+biocViews: RiboSeq, Sequencing, GeneRegulation, QualityControl, 
+           Visualization, Coverage
 VignetteBuilder: knitr
 RoxygenNote: 7.0.2
 Depends: R (>= 4.0), GenomicRanges
