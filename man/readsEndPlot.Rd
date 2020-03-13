@@ -9,6 +9,7 @@ readsEndPlot(
   CDS,
   toStartCodon = TRUE,
   fiveEnd = TRUE,
+  shift = 0,
   window = c(-29, 30),
   readLen = 25:30
 )
@@ -20,7 +21,10 @@ readsEndPlot(
 
 \item{toStartCodon}{What to search: start or end codon}
 
-\item{fiveEnd}{Search from five or three ends of the reads}
+\item{fiveEnd}{Search from five or three ends of the reads.}
+
+\item{shift}{number(1). Search from 5' end or 3' end of given number.
+if fiveEnd set to false, please set the shift as a negative number.}
 
 \item{window}{The window of CDS region to plot}
 
@@ -50,7 +54,9 @@ library(BSgenome.Drerio.UCSC.danRer10)
 CDS <- readRDS(system.file("extdata", "CDS.rds",
                            package="ribosomeProfilingQC"))
 readsEndPlot(bamfile, CDS, toStartCodon=TRUE)
-readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
+#readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
 #readsEndPlot(bamfile, CDS, toStartCodon=FALSE)
 #readsEndPlot(bamfile, CDS, toStartCodon=FALSE, fiveEnd=FALSE)
+readsEndPlot(bamfile, CDS, shift=13)
+#readsEndPlot(bamfile, CDS, fiveEnd=FALSE, shift=-16)
 }

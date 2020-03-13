@@ -1,3 +1,10 @@
+# CHANGES IN VERSION 0.99.5
+
+* update ggBar function to accept more colors.
+* update readsEndPlot function with shift parameter.
+* update plotDistance2Codon function with a range of plot window
+* add codonUsage function.
+
 # CHANGES IN VERSION 0.99.4
 
 * update the description in DESCRIPTION.

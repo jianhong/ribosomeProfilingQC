@@ -3,7 +3,9 @@
 #' @param bamfile A BamFile object.
 #' @param CDS Output of \link{prepareCDS}
 #' @param toStartCodon What to search: start or end codon
-#' @param fiveEnd Search from five or three ends of the reads
+#' @param fiveEnd Search from five or three ends of the reads.
+#' @param shift number(1). Search from 5' end or 3' end of given number.
+#' if fiveEnd set to false, please set the shift as a negative number.
 #' @param window The window of CDS region to plot
 #' @param readLen The reads length used to plot
 #' @return The invisible counts numbers.
@@ -31,13 +33,19 @@
 #' CDS <- readRDS(system.file("extdata", "CDS.rds",
 #'                            package="ribosomeProfilingQC"))
 #' readsEndPlot(bamfile, CDS, toStartCodon=TRUE)
-#' readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
+#' #readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
 #' #readsEndPlot(bamfile, CDS, toStartCodon=FALSE)
 #' #readsEndPlot(bamfile, CDS, toStartCodon=FALSE, fiveEnd=FALSE)
+#' readsEndPlot(bamfile, CDS, shift=13)
+#' #readsEndPlot(bamfile, CDS, fiveEnd=FALSE, shift=-16)
 readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
-                         fiveEnd=TRUE, window=c(-29, 30),
+                         fiveEnd=TRUE, shift=0, window=c(-29, 30),
                          readLen=25:30){
   stopifnot(is(bamfile, "BamFile"))
+  stopifnot(is(fiveEnd, "logical"))
+  stopifnot(is(shift, "numeric"))
+  stopifnot(is(window, "numeric"))
+  stopifnot(is(readLen, "numeric"))
   stopifnot(is(CDS, "GRanges"))
   if(length(CDS$internalPos)!=length(CDS) ||
      length(CDS$isFirstExonInCDS)!=length(CDS) ||
@@ -87,13 +95,20 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
     seqlevelsStyle(reads) <- seqlevelsStyle(CDS)[1]
     seqlevelsStyle(which) <- seqlevelsStyle(CDS)[1]
   }
-  if(fiveEnd){
+  if(fiveEnd[1]){
     x <- promoters(reads, upstream = 0, downstream = 1)
+    if(shift[1] != 0){
+      x <- shift(x, shift = shift[1]-1)
+    }
   }else{
     x <- switch.strand(reads)
     x <- promoters(x, upstream = 0, downstream = 1)
     x <- switch.strand(x)
+    if(shift[1] != 0){
+      x <- shift(x, shift = shift[1]+1)
+    }
   }
+
   cvg <- coverage(x)
   w <- split(which, seqnames(which))
   cvg.sub <- unlist(lapply(cvg, sum))

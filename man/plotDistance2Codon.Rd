@@ -12,11 +12,11 @@ plotDistance2Codon(
 )
 }
 \arguments{
-\item{reads}{Output of \link{assignReadingFrame}}
+\item{reads}{Output of \link{assignReadingFrame}.}
 
-\item{start}{Plot for start codon or stop codon}
+\item{start}{Plot for start codon or stop codon.}
 
-\item{anchor}{The maximal xlim position for plot}
+\item{anchor}{The maximal xlim or (min, max) position for plot.}
 
 \item{col}{Colors for different reading frame.}
 }
@@ -32,5 +32,5 @@ pcs <- readRDS(system.file("extdata", "samplePc.rds",
                package="ribosomeProfilingQC"))
 plotDistance2Codon(pcs)
 plotDistance2Codon(pcs, start=FALSE)
-
+plotDistance2Codon(pcs, anchor=c(-10, 20))
 }

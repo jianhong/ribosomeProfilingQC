@@ -6,6 +6,7 @@
 #' @param postfix Postfix of text labled in top of bar.
 #' @return ggplot object.
 #' @importFrom ggplot2 ggplot geom_bar theme_classic geom_text aes xlab ylab
+#' scale_fill_manual
 #' @importFrom ggfittext geom_bar_text
 #' @examples
 #' ribosomeProfilingQC:::ggBar(sample.int(100, 3))
@@ -29,10 +30,12 @@ ggBar <- function(height, fill="gray80", draw=TRUE, xlab, ylab, postfix){
   }else{
     postfix <- FALSE
   }
-  plot <- ggplot(data=df, aes(x=x, y=y)) +
-    geom_bar(stat = "identity", fill=fill) +
+  colValues <- as.character(unique(fill))
+  plot <- ggplot(data=df, aes(x=x, y=y, fill=fill)) +
+    geom_bar(stat = "identity") +
+    scale_fill_manual(values = colValues, breaks = colValues, guide=FALSE) +
     theme_classic()
-  if(!missing(postfix)) suppressWarnings(
+  if(postfix) suppressWarnings(
     plot <- plot +
       geom_bar_text(aes(label=label), grow = FALSE, contrast = TRUE))
   if(!missing(xlab)) plot <- plot+xlab(xlab)

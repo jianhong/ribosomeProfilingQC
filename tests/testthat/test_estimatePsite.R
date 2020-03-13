@@ -89,3 +89,14 @@ test_that("readsDistribution works not correct", {
   }
 })
 
+
+test_that("codonUsage works not correct", {
+  for(psite in c(12, 13, 14)){
+    startcodon <- codonUsage(pcs[[as.character(psite)]],
+                             start = TRUE, genome = Drerio)
+    expect_true(names(startcodon)[1] == "ATG")
+    stopcodon <- codonUsage(pcs[[as.character(psite)]],
+                            start = FALSE, genome = Drerio)
+    expect_true(names(stopcodon)[1] %in% c("TAG", "TAA", "TGA"))
+  }
+})
