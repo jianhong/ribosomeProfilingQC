@@ -73,8 +73,9 @@ test_that("assignReadingFrame works not correct", {
     expect_gt(m["0"], m["2"])
     m <- plotFrameDensity(pcs[[as.character(psite)]])
     m <- round(m)
-    expect_true(abs(m[2]-m[3])<=1)
-    expect_true(abs(m[2]-5)<=1)
+    expect_equal(unname(m['0']), 90, tolerance=1)
+    expect_equal(unname(m['1']), 5, tolerance=1)
+    expect_equal(unname(m['2']), 5, tolerance=1)
   }
 })
 

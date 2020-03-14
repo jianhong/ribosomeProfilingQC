@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 0.99.9
+
+* reset the test_estimatePsite.
+
 # CHANGES IN VERSION 0.99.8
 
 * decrease the testing time.
