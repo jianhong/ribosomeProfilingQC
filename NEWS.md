@@ -1,5 +1,9 @@
 # CHANGES IN VERSION 0.99.6
 
+* decrease the testing time.
+
+# CHANGES IN VERSION 0.99.6
+
 * fix the warning missing link of plot in plotTE.
 
 # CHANGES IN VERSION 0.99.5
