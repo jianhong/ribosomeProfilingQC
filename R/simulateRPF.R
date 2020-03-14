@@ -27,18 +27,14 @@
 #' @export
 #' @examples
 #' library(GenomicFeatures)
-#' library(BSgenome.Drerio.UCSC.danRer10)
-#' txdb <- makeTxDbFromGFF(system.file("extdata",
-#'           "Danio_rerio.GRCz10.91.chr1.gtf.gz",
-#'           package="ribosomeProfilingQC"),
-#'           organism = "Danio rerio",
-#'           chrominfo = seqinfo(Drerio)["chr1"],
-#'           taxonomyId = 7955)
+#' txdb_file <- system.file("extdata", "Biomart_Ensembl_sample.sqlite",
+#'                          package="GenomicFeatures")
+#' txdb <- loadDb(txdb_file)
 #' simulateRPF(txdb, samples=1, readsPerSample = 1e3)
 #' \dontrun{
 #' cds <- prepareCDS(txdb, withUTR = TRUE)
 #' cds <- cds[width(cds)>200]
-#' DEregions <- cds[sample(seq_along(cds), 500)]
+#' DEregions <- cds[sample(seq_along(cds), 10)]
 #' simulateRPF(txdb, samples=6, readsPerSample = 1e5, DEregions=DEregions)
 #' }
 

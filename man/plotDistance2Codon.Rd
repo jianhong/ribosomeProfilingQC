@@ -31,6 +31,6 @@ the start codon or stop codon.
 pcs <- readRDS(system.file("extdata", "samplePc.rds",
                package="ribosomeProfilingQC"))
 plotDistance2Codon(pcs)
-plotDistance2Codon(pcs, start=FALSE)
-plotDistance2Codon(pcs, anchor=c(-10, 20))
+#plotDistance2Codon(pcs, start=FALSE)
+#plotDistance2Codon(pcs, anchor=c(-10, 20))
 }

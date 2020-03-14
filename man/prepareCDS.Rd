@@ -27,13 +27,9 @@ Prepare CDS library from a TxDb object.
 }
 \examples{
 library(GenomicFeatures)
-library(BSgenome.Drerio.UCSC.danRer10)
-txdb <- makeTxDbFromGFF(system.file("extdata",
-          "Danio_rerio.GRCz10.91.chr1.gtf.gz",
-          package="ribosomeProfilingQC"),
-          organism = "Danio rerio",
-          chrominfo = seqinfo(Drerio)["chr1"],
-          taxonomyId = 7955)
+txdb_file <- system.file("extdata", "Biomart_Ensembl_sample.sqlite",
+                         package="GenomicFeatures")
+txdb <- loadDb(txdb_file)
 CDS <- prepareCDS(txdb)
 
 }

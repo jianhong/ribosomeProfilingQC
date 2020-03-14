@@ -1,4 +1,4 @@
-# CHANGES IN VERSION 0.99.6
+# CHANGES IN VERSION 0.99.8
 
 * decrease the testing time.
 

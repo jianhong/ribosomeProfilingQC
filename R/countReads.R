@@ -19,7 +19,7 @@
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
 #' RPFs <- dir(path, "RPF.*?.[12].bam$", full.names=TRUE)
 #' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
-#' cnts <- countReads(RPFs[1], gtf=gtf, level="gene")
+#' cnts <- countReads(RPFs[1], gtf=gtf, level="gene", readsLen=29)
 #'
 
 countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
