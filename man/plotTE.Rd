@@ -27,7 +27,7 @@ plotTE(
 
 \item{breaks.length}{Length of breaks for histogram.}
 
-\item{...}{Parameters pass to \link[graphics:plot]{plot}.}
+\item{...}{Parameters pass to plot.}
 }
 \value{
 A invisible data.frame with x, y of points.

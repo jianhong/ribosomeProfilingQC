@@ -7,7 +7,7 @@
 #' @param removeZero Remove the 0 values from plots.
 #' @param log2 Do log2 transform or not.
 #' @param breaks.length Length of breaks for histogram.
-#' @param ... Parameters pass to \link[graphics:plot]{plot}.
+#' @param ... Parameters pass to plot.
 #' @return A invisible data.frame with x, y of points.
 #' @importFrom graphics hist barplot plot
 #' @export

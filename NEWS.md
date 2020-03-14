@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 0.99.6
+
+* fix the warning missing link of plot in plotTE.
+
 # CHANGES IN VERSION 0.99.5
 
 * update ggBar function to accept more colors.
