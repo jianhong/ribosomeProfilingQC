@@ -1,7 +1,7 @@
 Package: ribosomeProfilingQC
 Type: Package
 Title: Ribosome Profiling Quality Control
-Version: 0.99.99
+Version: 0.99.9
 Authors@R: c(person(given="Jianhong", family="Ou", email="jianhong.ou@duke.edu", 
         role=c("aut", "cre"), comment=c(ORCID="0000-0002-8652-2488")))
 Description: Ribo-Seq (also named ribosome profiling or footprinting) 
@@ -17,7 +17,7 @@ biocViews: RiboSeq, Sequencing, GeneRegulation, QualityControl,
            Visualization, Coverage
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0
-Depends: R (>= 3.6), GenomicRanges
+Depends: R (>= 4.0), GenomicRanges
 Imports: AnnotationDbi, BiocGenerics, Biostrings, BSgenome, EDASeq,
          GenomicAlignments, GenomicFeatures, GenomeInfoDb,
          IRanges, methods, motifStack, rtracklayer, Rsamtools, RUVSeq, Rsubread,
