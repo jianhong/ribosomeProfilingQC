@@ -143,6 +143,9 @@ txdb <- TxDb.Mmusculus.UCSC.mm10.knownGene ## give it a short name
 CDS <- prepareCDS(txdb)
 ```
 
+You can also create a TxDb object from a gtf file by _GenomicFeatures::makeTxDbFromGFF_ function.
+To get GTF file, you can download it from [ensembl](http://useast.ensembl.org/info/data/ftp/index.html)
+or get the online file info via [_AnnotationHub_](#count-for-rpfs).
 Here we use a prepared TxDb object for testing.
 
 ```{r}
@@ -178,6 +181,11 @@ library(Rsamtools)
 bamfilename <- system.file("extdata", "RPF.WT.1.bam",
                            package="ribosomeProfilingQC")
 ## For your own data, please set bamfilename as your file path.
+## For example, your bam file is located at C:\mydata\a.bam
+## you want to set bamfilename = "C:\\mydata\\a.bam"
+## or you can change your working directory by
+## setwd("C:\\mydata")
+## and then set bamfilename = "a.bam"
 yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 ```
@@ -200,6 +208,8 @@ when searching from the 5' end.
 estimatePsite(bamfile, CDS, genome)
 ```
 
+It has been shown that for certain enzymes, such as MNase, 
+estimating the P site from the 3’ end works much better[@mohammad2019systematically].
 The `estimatePsite` will use 15, 16 or 17 as best P site candidates 
 when searching from the 3' end.
 
@@ -294,8 +304,6 @@ A metagene plot can indicate the reads distribution in 5'UTR, CDS and
 3'UTR region.
 
 ```{r, fig.width=5, fig.height=4}
-gtf <- system.file("extdata", "Danio_rerio.GRCz10.91.chr1.gtf.gz", 
-                   package="ribosomeProfilingQC")
 cvgs.utr5 <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="utr5")
 cvgs.CDS <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="cds")
 cvgs.utr3 <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="utr3")
@@ -433,7 +441,7 @@ gtf <- mcols(mm10)$sourceurl
 ### Differentail analysis only for RPFs
 
 ```{r}
-library(edgeR)
+library(edgeR)  ## install edgeR by BiocManager::install("edgeR")
 gp <- c("KD", "KD", "CTL", "CTL")
 y <- DGEList(counts = cnts$RPFs, group = gp)
 y <- calcNormFactors(y)

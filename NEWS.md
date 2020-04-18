@@ -1,3 +1,8 @@
+# CHANGES IN VERSION 0.99.91
+
+* change Y-axis lable from Frequence to Frequency for plot Distance2Codon.
+* update vignette.
+
 # CHANGES IN VERSION 0.99.9
 
 * reset the test_estimatePsite.

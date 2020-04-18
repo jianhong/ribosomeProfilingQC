@@ -51,7 +51,7 @@ plotDistance2Codon <- function(reads, start=TRUE, anchor=50,
   position[is.na(position)] <- .01
   names(position) <- idx
   barplot(height=position,
-          ylab="Frequence",
+          ylab="Frequency",
           xlab=paste("P site relative to", ifelse(start, "start", "stop")),
           col=this.col[abs(as.numeric(names(position)) %% 3) + 1],
           xlim = xlim,
