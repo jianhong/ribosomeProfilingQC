@@ -13,6 +13,13 @@ output:
   BiocStyle::html_document
 ---
 
+<style>
+    pre.vig {
+        background-color: #FEFBF5!important;
+        border: 1px solid #FFE4AD!important;
+    }
+</style>
+
 ```{r, echo=FALSE, results="hide", warning=FALSE, message=FALSE}
 suppressPackageStartupMessages({
   library(ribosomeProfilingQC)
@@ -55,7 +62,10 @@ to check the mapping quality and frameshifts. In addition, it can preprocess
 ribosome profiling data for subsequent differential analysis. 
 
 Please note that all following analyses are based on known Open Reading Frame 
-(ORF) annotation.
+(ORF) annotation. 
+This sample data is mapped to Zebrafish UCSC danRer10 assembly, 
+all code related to this assembly will be **highlighted in 
+light yellow background**.
 
 # Quick start
 
@@ -84,7 +94,7 @@ BiocManager::install(c("ribosomeProfilingQC",
 ```
 
 
-```{r}
+```{r loadLibrary, class.source='vig'}
 ## load library
 library(ribosomeProfilingQC)
 library(AnnotationDbi)
@@ -94,7 +104,7 @@ library(Rsamtools)
 
 In this manual, we will use the fish genome.
 
-```{r}
+```{r loadGenome, class.source='vig'}
 library(BSgenome.Drerio.UCSC.danRer10)
 ## set genome, Drerio is a shortname for BSgenome.Drerio.UCSC.danRer10
 genome <- Drerio
@@ -148,7 +158,7 @@ To get GTF file, you can download it from [ensembl](http://useast.ensembl.org/in
 or get the online file info via [_AnnotationHub_](#count-for-rpfs).
 Here we use a prepared TxDb object for testing.
 
-```{r}
+```{r loadTxDb, class.source='vig'}
 ## Create a small TxDb object which only contain chr1 information.
 library(GenomicFeatures)
 txdb <- makeTxDbFromGFF(system.file("extdata",
@@ -175,7 +185,7 @@ genome assembly by tophat2 with following parameters:
 Because the library type of ribo-seq is usally strand-specific, 
 please make sure to map the reads with correct library type.
 
-```{r}
+```{r inputBamFile, class.source='vig'}
 library(Rsamtools)
 ## input the bamFile from the ribosomeProfilingQC package 
 bamfilename <- system.file("extdata", "RPF.WT.1.bam",
@@ -204,7 +214,7 @@ The `estimatePsite` will only use 12, 13 or 14 as best P site candidates
 when searching from the 5' end.
 
 
-```{r}
+```{r estimatePsite, class.source='vig'}
 estimatePsite(bamfile, CDS, genome)
 ```
 
@@ -213,7 +223,7 @@ estimating the P site from the 3’ end works much better[@mohammad2019systemati
 The `estimatePsite` will use 15, 16 or 17 as best P site candidates 
 when searching from the 3' end.
 
-```{r}
+```{r estimatePsite3end, class.source='vig'}
 estimatePsite(bamfile, CDS, genome, anchor = "3end")
 ```
 
@@ -234,7 +244,7 @@ start position and most of the reads length are 28 nt.
 ![Ribosome docking at TSS](TSSdocking.png)
 
 
-```{r, fig.height=4, fig.width=6}
+```{r readsEndPlot, fig.height=4, fig.width=6, class.source='vig'}
 readsEndPlot(bamfile, CDS, toStartCodon=TRUE)
 readsEndPlot(bamfile, CDS, toStartCodon=TRUE, fiveEnd=FALSE)
 ```
@@ -244,13 +254,19 @@ active expression.
 
 ![Active expression](activeExpression.jpg)
 
+If you see warning or error message complain about the disagreement of
+chromosome sequences, Please make sure you are using the TxDb object with
+correct genome assembly. 
+If this warning message is for the patch chromosomes you are not interested,
+you can ignore the warning messages.
+
 ## Read all P site coordinates
 
 The `getPsiteCoordinates` function is used to read all P site coordinates. 
 Ideally, the bestpsite should be 13. 
 To test the data quality, we set bestpsite = 13.
 
-```{r}
+```{r getPsiteCoordinates, class.source='vig'}
 pc <- getPsiteCoordinates(bamfile, bestpsite = 13)
 ```
 
@@ -259,7 +275,7 @@ pc <- getPsiteCoordinates(bamfile, bestpsite = 13)
 Ribosome-protected fragments should ideally be 27 to 29-nt long. 
 To check the fragment size distribution, use the following function:
 
-```{r}
+```{r readsLen, class.source='vig'}
 readsLen <- summaryReadsLength(pc)
 ```
 
@@ -268,7 +284,7 @@ readsLen <- summaryReadsLength(pc)
 To filter reads by their length for downstream analysis, 
 use the following script:
 
-```{r}
+```{r filterSize, class.source='vig'}
 ## for QC we only use reads length 28-29
 pc.sub <- pc[pc$qwidth %in% c(28, 29)]
 ```
@@ -279,7 +295,7 @@ pc.sub <- pc[pc$qwidth %in% c(28, 29)]
 Most of the reads should be mapped to sense strand 
 because the ribo-seq library is strand-specific.
 
-```{r, fig.width=2,fig.height=3}
+```{r strandPlot, fig.width=2,fig.height=3, class.source='vig'}
 strandPlot(pc.sub, CDS)
 ```
 
@@ -294,7 +310,7 @@ of alternative polyAdenylation sites usage from annotation data.
 A high percentage in intronic regions indicates the possibility of 
 intron-retaining transcripts.
 
-```{r, fig.width=7, fig.height=4}
+```{r readsDistribution, fig.width=7, fig.height=4, class.source='vig'}
 pc.sub <- readsDistribution(pc.sub, txdb, las=2)
 ```
 
@@ -303,7 +319,7 @@ pc.sub <- readsDistribution(pc.sub, txdb, las=2)
 A metagene plot can indicate the reads distribution in 5'UTR, CDS and
 3'UTR region.
 
-```{r, fig.width=5, fig.height=4}
+```{r metaPlotUTR5cdsUTR3, fig.width=5, fig.height=4, class.source='vig'}
 cvgs.utr5 <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="utr5")
 cvgs.CDS <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="cds")
 cvgs.utr3 <- coverageDepth(RPFs = bamfilename, gtf = txdb, region="utr3")
@@ -323,17 +339,17 @@ or not.
 If it is correct, most of the reads should be assigned to frame0.
 
 
-```{r, fig.width=5, fig.height=3}
+```{r assignReadingFrame, fig.width=5, fig.height=3, class.source='vig'}
 pc.sub <- assignReadingFrame(pc.sub, CDS)
 plotDistance2Codon(pc.sub)
 ```
-```{r, fig.width=2.5,fig.height=3}
+```{r plotFrameDensity, fig.width=2.5,fig.height=3, class.source='vig'}
 plotFrameDensity(pc.sub)
 ```
 
 To determine how many of raw reads are mapping with P sites in frame 0.
 
-```{r, fig.width=2.5,fig.height=3}
+```{r allReadFrame, fig.width=2.5,fig.height=3, class.source='vig'}
 pc <- assignReadingFrame(pc, CDS)
 plotFrameDensity(pc)
 ```
@@ -343,7 +359,7 @@ plotFrameDensity(pc)
 Function `plotTranscript` can be used to view the reading frame distribution
 for given transcripts.
 
-```{r, fig.width=8, fig.height=6}
+```{r plotTranscript, fig.width=8, fig.height=6, class.source='vig'}
 plotTranscript(pc.sub, c("ENSDART00000161781", "ENSDART00000166968",
                          "ENSDART00000040204", "ENSDART00000124837"))
 ```
@@ -358,9 +374,11 @@ Coverage is determined by measuring the proportion of in-frame CDS positions
 with >= 1 reads.
 If coverage is about 1, the whole CDS is covered by active ribosomes.
 
-```{r, eval=FALSE}
+```{r ORFscore, eval=FALSE, class.source='vig'}
 cvg <- frameCounts(pc.sub, coverageRate=TRUE)
 ORFscore <- getORFscore(pc.sub)
+## Following code will plot the ORFscores vs coerage.
+## Try it by removing the '#'. 
 #plot(cvg[names(ORFscore)], ORFscore,
 #     xlab="coverage ORF1", ylab="ORF score",
 #     type="p", pch=16, cex=.5, xlim=c(0, 1))
@@ -371,7 +389,7 @@ ORFscore <- getORFscore(pc.sub)
 Here we show ribosome footprinting data that is poor quality data and 
 should not bed used for downstream analyses. 
 
-```{r, fig.width=2,fig.height=3}
+```{r badStrandPlot, fig.width=2,fig.height=3, class.source='vig'}
 bamfilename <- system.file("extdata", "RPF.chr1.bad.bam",
                            package="ribosomeProfilingQC")
 yieldSize <- 10000000
@@ -382,18 +400,18 @@ pc.sub <- pc[pc$qwidth %in% c(27, 28, 29)]
 ## which indicate that there may have some issue in mapping step
 strandPlot(pc.sub, CDS)
 ```
-```{r, fig.width=7, fig.height=4}
+```{r badReadsDistribution, fig.width=7, fig.height=4, class.source='vig'}
 ## here will show most of the reads mapped to inter-genic region 
 pc.sub <- readsDistribution(pc.sub, txdb, las=2)
 ```
-```{r, fig.width=5, fig.height=4}
+```{r badAssignReadingFrame, fig.width=5, fig.height=4, class.source='vig'}
 ## If we assign wrong P site postion
 pc <- getPsiteCoordinates(bamfile, 12)
 pc.sub <- pc[pc$qwidth %in% c(27, 28, 29)]
 pc.sub <- assignReadingFrame(pc.sub, CDS)
 plotDistance2Codon(pc.sub)
 ```
-```{r, fig.width=2.5,fig.height=3}
+```{r badPlotFrameDensity, fig.width=2.5,fig.height=3, class.source='vig'}
 plotFrameDensity(pc.sub)
 ```
 
@@ -410,7 +428,7 @@ Function `frameCounts` will generate a count vector for each transcript or gene,
 which can be used for differential analysis.
 `countReads` can be used for count multiple files of ribo-seq.
 
-```{r}
+```{r countReads, class.source='vig'}
 library(ribosomeProfilingQC)
 library(AnnotationDbi)
 path <- system.file("extdata", package="ribosomeProfilingQC")
@@ -418,12 +436,16 @@ RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
 cnts <- countReads(RPFs, gtf=gtf, level="gene",
                    bestpsite=13, readsLen=c(28,29))
+head(cnts$RPFs)
+## To save the cnts, please try following codes by removing '#'
+# write.csv(cbind(cnts$annotation, cnts$RPFs, cnts$mRNA),
+#           "counts.csv")
 ```
 
 To get GTF file, you can download it from [ensembl](http://useast.ensembl.org/info/data/ftp/index.html)
 or get the online file info via `AnnotationHub`.
 
-```{r eval=FALSE}
+```{r prePareGTF, eval=FALSE}
 BiocManager::install("AnnotationHub")
 library(AnnotationHub)
 ah = AnnotationHub()
@@ -438,11 +460,11 @@ gtf <- mcols(mm10)$sourceurl
 ```
 
 
-### Differentail analysis only for RPFs
+### Differential analysis only for RPFs
 
-```{r}
+```{r differentialByEdgeR, class.source='vig'}
 library(edgeR)  ## install edgeR by BiocManager::install("edgeR")
-gp <- c("KD", "KD", "CTL", "CTL")
+gp <- c("KD", "KD", "CTL", "CTL") ## sample groups: KD:knockdown; CTL:Control
 y <- DGEList(counts = cnts$RPFs, group = gp)
 y <- calcNormFactors(y)
 design <- model.matrix(~0+gp)
@@ -451,25 +473,25 @@ y <- estimateDisp(y, design)
 ## To perform quasi-likelihood F-tests:
 fit <- glmQLFit(y, design)
 qlf <- glmQLFTest(fit)
-topTags(qlf, n=3)
+topTags(qlf, n=3) # set n=nrow(qlf) to pull all results.
 ## To perform likelihood ratio tests:
 fit <- glmFit(y, design)
 lrt <- glmLRT(fit)
-topTags(lrt, n=3)
+topTags(lrt, n=3) # set n=nrow(lrt) to pull all results.
 ```
 
 ### Alternative splicing, translation initiation and polyadenylation
 
 
-```{r, fig.width=6, fig.height=4}
+```{r alternativeSplicing, fig.width=6, fig.height=4, class.source='vig'}
 coverage <- coverageDepth(RPFs[grepl("KD1|WT", RPFs)], 
                           gtf=txdb, 
                           level="gene",
                           region="feature with extension")
 group1 <- c("RPF.KD1.1", "RPF.KD1.2")
 group2 <- c("RPF.WT.1", "RPF.WT.2")
-## subset the data
-coverage <- lapply(coverage, function(.ele){# do not run this step for real data
+## subset the data, for sample run only
+coverage <- lapply(coverage, function(.ele){##do not run this for real data
   .ele$coverage <- lapply(.ele$coverage, `[`, i=seq.int(50))
   .ele$granges <- .ele$granges[seq.int(50)]
   .ele
@@ -489,15 +511,18 @@ plotSpliceEvent(se, se$feature[1], coverage, group1, group2)
 The `countReads` function can be used to count multiple files of ribo-seq and 
 RNA-seq data.
 
-```{r}
+```{r countRPFandRNA, class.source='vig'}
 path <- system.file("extdata", package="ribosomeProfilingQC")
 RPFs <- dir(path, "RPF.*?\\.[12].bam$", full.names=TRUE)
 RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
 ```
-```{r,eval=FALSE}
+```{r countReadsRPFandRNA,eval=FALSE, class.source='vig'}
 ## make sure that the order or RPFs is corresponded to RNAs.
 cnts <- countReads(RPFs, RNAs, gtf, level="tx")
+## To save the cnts, please try following codes by removing '#'
+# write.csv(cbind(cnts$annotation, cnts$RPFs, cnts$mRNA),
+#           "counts.csv")
 ```
 ```{r,include=FALSE}
 cnts <- readRDS(file.path(path, "cnts.rds"))
@@ -515,12 +540,12 @@ A common normalization method is using
 Fragments Per Kilobase of transcript per Million mapped reads (FPKM).
 
 
-```{r}
+```{r translationalEfficiency, class.source='vig'}
 fpkm <- getFPKM(cnts)
 TE <- translationalEfficiency(fpkm)
 ```
 
-#### Differentail analysis for TE
+#### Differential analysis for TE
 
 We suppose that the log2 transformed translational efficiency that 
 we calculated by the ratios of RPFs to mRNAs 
@@ -528,9 +553,9 @@ has a linear correlation with real translational efficiency.
 We then use the _limma_ package to test the differential 
 translational efficiency.
 
-```{r}
+```{r differentialTEbyLimma, class.source='vig'}
 library(limma)
-gp <- c("KD", "KD", "CTL", "CTL")
+gp <- c("KD", "KD", "CTL", "CTL") ## sample groups: KD:knockdown; CTL:Control
 TE.log2 <- log2(TE$TE + 1)
 #plot(TE.log2[, 1], TE.log2[, 3], 
 #     xlab=colnames(TE.log2)[1], ylab=colnames(TE.log2)[3],
@@ -539,7 +564,7 @@ design <- model.matrix(~0+gp)
 colnames(design) <- sub("gp", "", colnames(design))
 fit <- lmFit(TE.log2, design)
 fit2 <- eBayes(fit)
-topTable(fit2, number=3)
+topTable(fit2, number=3) ## set number=nrow(fit2) to pull all results
 ```
 
 
@@ -553,7 +578,7 @@ we will find that TE is not well normalized.
 It shows a higher value in lowly expressed transcripts 
 and a low value in highly expressed transcripts.
 
-```{r}
+```{r plotTE, class.source='vig'}
 plotTE(TE, sample=2, xaxis="mRNA", log2=TRUE, pch=16, cex=.5)
 #plotTE(TE, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
 ```
@@ -562,11 +587,11 @@ This issue can be fixed by calculating the maximum value (TE max) in the most
 highly ribosome-occupied 90 nt window within a feature[@ingolia2009genome]. 
 Please note that the normalization method for TE max is not FPKM any more.
 
-```{r}
+```{r plotTE90, class.source='vig'}
 cvgs <- coverageDepth(RPFs, RNAs, txdb)
 TE90 <- translationalEfficiency(cvgs, window = 90, normByLibSize=TRUE)
 plotTE(TE90, sample=2, xaxis="mRNA", log2=TRUE, pch=16, cex=.5)
-#plotTE(TE90, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
+plotTE(TE90, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
 ```
 
 Above examples are TE90 for CDS region. Following codes show how to 
@@ -576,9 +601,11 @@ calculate TE90 for 3'UTR regions.
 cvgs.utr3 <- coverageDepth(RPFs, RNAs, txdb, region="utr3")
 ```
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source='vig'}
 cvgs.utr3 <- coverageDepth(RPFs, RNAs, txdb, region="utr3")
 TE90.utr3 <- translationalEfficiency(cvgs.utr3, window = 90)
+## Following code will plot the TE90 for 3'UTR regions.
+## Try it by removing the '#'. 
 #plotTE(TE90.utr3, sample=2, xaxis="mRNA", log2=TRUE, pch=16, cex=.5)
 #plotTE(TE90.utr3, sample=2, xaxis="RPFs", log2=TRUE, pch=16, cex=.5)
 ```
@@ -591,11 +618,15 @@ the CDS to RPFs in the 3'UTR.
 Because it is hard to define the CDS region for non-coding RNAs, 
 RRS of non-coding RNAs can not be calculated by Function `ribosomeReleaseScore`.
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, class.source='vig'}
 RRS <- ribosomeReleaseScore(TE90, TE90.utr3, log2 = TRUE)
+## Following code will compare RSS for 2 samples.
+## Try it by removing the '#'. 
 #plot(RRS[, 1], RRS[, 3],
 #     xlab="log2 transformed RRS of KD1", 
 #     ylab="log2 transformed RRS of WT1")
+## Following code will show RSS along TE90.
+## Try it by removing the '#'. 
 #plot(RRS[, 1], log2(TE90$TE[rownames(RRS), 1]),
 #     xlab="log2 transformed RSS of KD1", 
 #     ylab="log2 transformed TE of KD1")
@@ -605,8 +636,10 @@ RRS <- ribosomeReleaseScore(TE90, TE90.utr3, log2 = TRUE)
 
 Plot metagene coverage for CDS, 5'UTR and 3'UTR.
 
-```{r}
+```{r metaPlot, class.source='vig'}
 cvgs.utr5 <- coverageDepth(RPFs, RNAs, txdb, region="utr5")
+## set sample to different number to plot metagene analysis 
+## for different samples
 #metaPlot(cvgs.utr5, cvgs, cvgs.utr3, sample=2, xaxis = "RPFs")
 metaPlot(cvgs.utr5, cvgs, cvgs.utr3, sample=2, xaxis = "mRNA")
 ```
@@ -690,12 +723,16 @@ danrer10.annotations <- list(protein=unique(protein),
                              sncRNA=unique(sncRNA),
                              pseudogene=unique(pseudogene))
 ```
-```{r echo=FALSE,include=FALSE,eval=TRUE}
-danrer10.annotations <- readRDS(system.file("extdata", "danrer10.annotations.rds",
-                                            package = "ribosomeProfilingQC"))
+
+Here we load the pre-saved chr1 annotations for sample codes.
+```{r loadPresavedAnnotations, class.source='vig'}
+danrer10.annotations <- 
+  readRDS(system.file("extdata",
+                      "danrer10.annotations.rds",
+                      package = "ribosomeProfilingQC"))
 ```
 
-```{r, fig.width=4, fig.height=4}
+```{r, fig.width=4, fig.height=4, class.source='vig'}
 library(ribosomeProfilingQC)
 library(GenomicFeatures)
 ## prepare CDS annotation

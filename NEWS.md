@@ -1,3 +1,8 @@
+# CHANGES IN VERSION 1.1.1
+
+* update vignette by adding background colors for better understanding 
+the pipeline.
+
 # CHANGES IN VERSION 0.99.91
 
 * change Y-axis lable from Frequence to Frequency for plot Distance2Codon.
