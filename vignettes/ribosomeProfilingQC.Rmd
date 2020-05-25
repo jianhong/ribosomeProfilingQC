@@ -40,8 +40,8 @@ measures translation by direct quantification of the coding sequence
 currently bound by the 80S ribosome 
 (ribosome-protected fragments, RPFs) [@bazzini2014identification]. 
 In eukaryotes, the size of RPFs is around 28-nt, 
-where the P-site of the ribosome is typically in position 13 from 5' reads.
-In bacteria, Allen et. al. get more accurate ID of P-site 
+where the P-site of the ribosome is typically in position 13 from the 5' end of reads.
+In bacteria, Allen et. al. were able to more accurately identify the P-site 
 from 3' end of reads[@mohammad2019systematically].
 
 ![Schematic representation of ribosome profiling.](schematic.ribosome.prof.jpg)
@@ -50,22 +50,23 @@ There are several packages available in Bioconductor already, including,
 _riboSeqR_ [@chung2015use], _RiboProfiling_ [@popa2016riboprofiling] and
 _ORFik_[@tjeldnes2018atlas].
 These packages are powerful in analyzing the ribosome footprinting data. 
-_ORFik_ package can also seek the new transcription start site using 
+The _ORFik_ package can also be used to find new transcription start sites using 
 CageSeq data. 
 _RiboWaltz_[@lauria2018ribowaltz] is another popular package which is based on 
 R and Bioconductor.
 
 To help researchers quickly assess the quality of their ribosome profiling data,
 we have developed the ribosomeProfilingQC package. 
-The _ribosomeProfilingQC_ package can be sued to easily make diagnostic plots 
+The _ribosomeProfilingQC_ package can be used to easily make diagnostic plots 
 to check the mapping quality and frameshifts. In addition, it can preprocess 
 ribosome profiling data for subsequent differential analysis. 
+We have tried to make this package as user-friendly as possible and the only input needed is a bam file of your ribosome footprinting and RNAseq data mapped to the genome.
 
 Please note that all following analyses are based on known Open Reading Frame 
 (ORF) annotation. 
-This sample data is mapped to Zebrafish UCSC danRer10 assembly, 
+The sample data provided in the package is mapped to Zebrafish UCSC danRer10 assembly; 
 all code related to this assembly will be **highlighted in 
-light yellow background**.
+light yellow background** for clarity.
 
 # Quick start
 
@@ -254,8 +255,8 @@ active expression.
 
 ![Active expression](activeExpression.jpg)
 
-If you see warning or error message complain about the disagreement of
-chromosome sequences, Please make sure you are using the TxDb object with
+If you see a warning or error message complaining about the disagreement of
+chromosome sequences, please verify you are using the TxDb object with
 correct genome assembly. 
 If this warning message is for the patch chromosomes you are not interested,
 you can ignore the warning messages.
@@ -285,7 +286,7 @@ To filter reads by their length for downstream analysis,
 use the following script:
 
 ```{r filterSize, class.source='vig'}
-## for QC we only use reads length 28-29
+## for this QC demo, we will only use reads length of 28-29 nt.
 pc.sub <- pc[pc$qwidth %in% c(28, 29)]
 ```
 
@@ -330,7 +331,7 @@ metaPlot(cvgs.utr5, cvgs.CDS, cvgs.utr3, sample=1)
 ## Reading frame
 
 Function `assignReadingFrame` is used to set the reading frame for the P sites
-located within known the annotated CDS.
+located within the known annotated CDS.
 The `plotDistance2Codon` function can be used to plot the reading frame usage 
 in transcription initiation or termination sites.
 Function `plotFrameDensity` can be used to collapse all the RPFs in each frame.
@@ -377,7 +378,7 @@ If coverage is about 1, the whole CDS is covered by active ribosomes.
 ```{r ORFscore, eval=FALSE, class.source='vig'}
 cvg <- frameCounts(pc.sub, coverageRate=TRUE)
 ORFscore <- getORFscore(pc.sub)
-## Following code will plot the ORFscores vs coerage.
+## Following code will plot the ORFscores vs coverage.
 ## Try it by removing the '#'. 
 #plot(cvg[names(ORFscore)], ORFscore,
 #     xlab="coverage ORF1", ylab="ORF score",
@@ -386,7 +387,7 @@ ORFscore <- getORFscore(pc.sub)
 
 # Bad case
 
-Here we show ribosome footprinting data that is poor quality data and 
+Here, we show ribosome footprinting data that is poor quality data and 
 should not bed used for downstream analyses. 
 
 ```{r badStrandPlot, fig.width=2,fig.height=3, class.source='vig'}
@@ -396,16 +397,20 @@ yieldSize <- 10000000
 bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 pc <- getPsiteCoordinates(bamfile, bestpsite = 13)
 pc.sub <- pc[pc$qwidth %in% c(27, 28, 29)]
-## here will show most of the reads mapped to antisense strand
-## which indicate that there may have some issue in mapping step
+## in this example, most of the reads mapped to the antisense strand
+## which may indicate that there are some issues in the mapping step
 strandPlot(pc.sub, CDS)
 ```
 ```{r badReadsDistribution, fig.width=7, fig.height=4, class.source='vig'}
-## here will show most of the reads mapped to inter-genic region 
+## in this exaple, most of the reads mapped to inter-genic regions
+## rather than the CDS, which could indicate that ribosome protected
+## fragments are not being properly isolated/selected
 pc.sub <- readsDistribution(pc.sub, txdb, las=2)
 ```
 ```{r badAssignReadingFrame, fig.width=5, fig.height=4, class.source='vig'}
-## If we assign wrong P site postion
+## Selection of the proper P site is also critical.
+## If we assign the wrong P site position the frame mapping will 
+## likely be impacted. 
 pc <- getPsiteCoordinates(bamfile, 12)
 pc.sub <- pc[pc$qwidth %in% c(27, 28, 29)]
 pc.sub <- assignReadingFrame(pc.sub, CDS)
@@ -438,7 +443,7 @@ cnts <- countReads(RPFs, gtf=gtf, level="gene",
                    bestpsite=13, readsLen=c(28,29))
 head(cnts$RPFs)
 ## To save the cnts, please try following codes by removing '#'
-# write.csv(cbind(cnts$annotation, cnts$RPFs, cnts$mRNA),
+# write.csv(cbind(cnts$annotation[rownames(cnts$RPFs), ], cnts$RPFs),
 #           "counts.csv")
 ```
 
@@ -518,10 +523,14 @@ RNAs <- dir(path, "mRNA.*?\\.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
 ```
 ```{r countReadsRPFandRNA,eval=FALSE, class.source='vig'}
-## make sure that the order or RPFs is corresponded to RNAs.
+## make sure that the order of the genes listed in the bam files for RPFs
+## and RNAseq data is the same.
 cnts <- countReads(RPFs, RNAs, gtf, level="tx")
 ## To save the cnts, please try following codes by removing '#'
-# write.csv(cbind(cnts$annotation, cnts$RPFs, cnts$mRNA),
+# rn <- cnts$annotation$GeneID
+# write.csv(cbind(cnts$annotation, 
+#                 cnts$RPFs[match(rn, rownames(cnts$RPFs)), ],
+#                 cnts$mRNA[match(rn, rownames(cnts$mRNA)), ]),
 #           "counts.csv")
 ```
 ```{r,include=FALSE}
@@ -635,6 +644,9 @@ RRS <- ribosomeReleaseScore(TE90, TE90.utr3, log2 = TRUE)
 #### Metagene analysis plot
 
 Plot metagene coverage for CDS, 5'UTR and 3'UTR.
+You will notice that the coverage for the RPF data is 
+much more enriched in the CDS as compared to the 
+corresponding RNAseq data
 
 ```{r metaPlot, class.source='vig'}
 cvgs.utr5 <- coverageDepth(RPFs, RNAs, txdb, region="utr5")

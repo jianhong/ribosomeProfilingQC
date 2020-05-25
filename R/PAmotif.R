@@ -8,7 +8,7 @@
 #' @importFrom IRanges promoters
 #' @importFrom Rsamtools getSeq
 #' @importFrom Biostrings consensusMatrix AA_STANDARD translate
-#' @importClassFrom motifStack pcm
+#' @importClassesFrom motifStack pcm
 #' @importFrom motifStack plotMotifLogo
 #' @importFrom grid grid.draw grid.newpage
 #' @export
@@ -16,7 +16,7 @@
 #' pcs <- readRDS(system.file("extdata", "samplePc.rds",
 #'                package="ribosomeProfilingQC"))
 #' library(BSgenome.Drerio.UCSC.danRer10)
-#' PAmotif(pcs, Drerio)
+#' #PAmotif(pcs, Drerio)
 #'
 PAmotif <- function(reads, genome, plot=TRUE){
   stopifnot(is(reads, "GRanges"))

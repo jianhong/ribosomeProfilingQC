@@ -1,3 +1,8 @@
+# CHANGES IN VERSION 1.1.2
+
+* update vignette to fix the typos.
+* update plotTranscript to give more informative warning message. 
+
 # CHANGES IN VERSION 1.1.1
 
 * update vignette by adding background colors for better understanding 

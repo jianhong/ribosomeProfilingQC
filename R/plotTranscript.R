@@ -31,7 +31,14 @@ plotTranscript <- function(reads, tx_name,
   for(i in tx_name){
     x.sub <- reads[reads$tx_name %in% i]
     if(length(x.sub)<1){
-      warning("No reads in ", i)
+      adist <- adist(reads$tx_name, i)
+      adist.min <- min(adist, na.rm = TRUE)
+      possibleTxName <- 
+        unique(reads$tx_name[adist==adist.min & 
+                               !is.na(reads$tx_name)])
+      warning("No reads in ", i, ".",
+              "The closest transcripts are: ",
+              paste(possibleTxName, collapse = ", "))
       heights[[i]] <- numeric()
     }else{
       d <- table(mcols(x.sub)[, c("readingFrame", "position")])
