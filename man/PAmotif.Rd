@@ -24,6 +24,6 @@ the start codon or stop codon.
 pcs <- readRDS(system.file("extdata", "samplePc.rds",
                package="ribosomeProfilingQC"))
 library(BSgenome.Drerio.UCSC.danRer10)
-PAmotif(pcs, Drerio)
+#PAmotif(pcs, Drerio)
 
 }

@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.0.2
+
+* update vignette to fix the typos.
+
 # CHANGES IN VERSION 1.0.1
 
 * update vignette by adding background colors for better understanding the pipeline.
