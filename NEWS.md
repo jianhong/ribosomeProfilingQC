@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.0.3
+
+* Fix the error "CIGAR is empty after qnarrowing".
+
 # CHANGES IN VERSION 1.0.2
 
 * update vignette to fix the typos.

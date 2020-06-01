@@ -53,6 +53,7 @@ shiftReads <- function(x, shift=12L, anchor="5end"){
   stopifnot(round(shift)==shift)
   stopifnot(is(x, "GAlignments"))
   anchor <- match.arg(anchor, choices = c("5end", "3end"))
+  x <- x[width(x)>shift]
   if(shift==0){
     return(x)
   }
