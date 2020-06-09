@@ -1,9 +1,11 @@
 Package: ribosomeProfilingQC
 Type: Package
 Title: Ribosome Profiling Quality Control
-Version: 1.0.3
+Version: 1.0.4
 Authors@R: c(person(given="Jianhong", family="Ou", email="jianhong.ou@duke.edu", 
-        role=c("aut", "cre"), comment=c(ORCID="0000-0002-8652-2488")))
+        role=c("aut", "cre"), comment=c(ORCID="0000-0002-8652-2488")),
+        person(given="Mariah", family="Hoye", email="mariah.hoye@duke.edu",
+        role=c("aut")))
 Description: Ribo-Seq (also named ribosome profiling or footprinting) 
         measures translatome (unlike RNA-Seq, which sequences the transcriptome)
         by direct quantification of the ribosome-protected fragments (RPFs). 
