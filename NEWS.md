@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.1.4
+
+* Update authorship.
+
 # CHANGES IN VERSION 1.1.3
 
 * Fix the error "CIGAR is empty after qnarrowing".
