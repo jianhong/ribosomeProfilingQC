@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.1.5
+
+* Update documentation about the R version requirement.
+
 # CHANGES IN VERSION 1.1.4
 
 * Update authorship.

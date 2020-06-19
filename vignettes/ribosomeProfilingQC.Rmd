@@ -60,7 +60,9 @@ we have developed the ribosomeProfilingQC package.
 The _ribosomeProfilingQC_ package can be used to easily make diagnostic plots 
 to check the mapping quality and frameshifts. In addition, it can preprocess 
 ribosome profiling data for subsequent differential analysis. 
-We have tried to make this package as user-friendly as possible and the only input needed is a bam file of your ribosome footprinting and RNAseq data mapped to the genome.
+We have tried to make this package as user-friendly as possible and 
+the only input needed is a bam file of your ribosome footprinting and 
+RNAseq data mapped to the genome.
 
 Please note that all following analyses are based on known Open Reading Frame 
 (ORF) annotation. 
@@ -94,6 +96,11 @@ BiocManager::install(c("ribosomeProfilingQC",
                        "motifStack"))
 ```
 
+If you have trouble in install _ribosomeProfilingQC_, please check your R
+version first. The _ribosomeProfilingQC_ package require R >= 4.0.
+```{r}
+R.version
+```
 
 ```{r loadLibrary, class.source='vig'}
 ## load library
@@ -209,8 +216,7 @@ However, in different experiments, the P site may be shifted due to various
 experimental conditions such as the choice of enzyme and the cell type.
 The `estimatePsite` function can be used to check the P site. 
 The `estimatePsite` function will search start/stop codons that occur in the 
-reads and the `bestPsite` function will meta-plot the distribution for 
-each position.
+reads.
 The `estimatePsite` will only use 12, 13 or 14 as best P site candidates 
 when searching from the 5' end.
 
