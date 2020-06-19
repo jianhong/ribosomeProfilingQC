@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.0.5
+
+* update vignette for the R version requirement.
+
 # CHANGES IN VERSION 1.0.4
 
 * update authorship

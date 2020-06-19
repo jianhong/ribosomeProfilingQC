@@ -19,7 +19,7 @@ A list with coverage rate.
 \description{
 Coverage is a measure as percentage of position
 with reads along the CDS.
-Coverage rate calculate coverage rate for RPFs and mRNAs
+Coverage rate calculate coverage rate for RPFs and mRNAs in gene level.
 Coverage will be calculated based on best P sites
 for RPFs and 5'end for RNA-seq.
 }
@@ -28,4 +28,5 @@ path <- system.file("extdata", package="ribosomeProfilingQC")
 RPFs <- dir(path, "RPF.*?\\\\.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
 cvgs <- coverageDepth(RPFs[1], gtf=gtf, level="gene")
+cr <- coverageRates(cvgs)
 }
