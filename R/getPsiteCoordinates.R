@@ -8,7 +8,7 @@
 #' @import GenomicRanges
 #' @importFrom Rsamtools ScanBamParam scanBamFlag
 #' @importFrom GenomicAlignments readGAlignments cigar cigarNarrow
-#' cigarQNarrow GAlignments
+#' cigarQNarrow GAlignments qwidth
 #' @importFrom methods as is
 #' @importFrom S4Vectors metadata<-
 #' @importClassesFrom Rsamtools BamFile
@@ -53,7 +53,7 @@ shiftReads <- function(x, shift=12L, anchor="5end"){
   stopifnot(round(shift)==shift)
   stopifnot(is(x, "GAlignments"))
   anchor <- match.arg(anchor, choices = c("5end", "3end"))
-  x <- x[width(x)>shift]
+  x <- x[qwidth(x)>shift]
   if(shift==0){
     return(x)
   }

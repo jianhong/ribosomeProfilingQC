@@ -73,6 +73,10 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
     which <- which[as.character(seqnames(which)) %in% names(seqs)]
     seqlevels(which) <-
       seqlevels(which)[seqlevels(which) %in% names(seqs)]
+  }else{
+    which <- which[as.character(seqnames(which)) %in% names(seqs)]
+    seqlevels(which) <-
+      seqlevels(which)[seqlevels(which) %in% names(seqs)]
   }
   param <-
     ScanBamParam(what=c("qwidth"),
