@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.1.6
+
+* fix the issue in shiftReads for reads width and readsEndPlot for seqlevels.
+
 # CHANGES IN VERSION 1.1.5
 
 * Update documentation about the R version requirement.
