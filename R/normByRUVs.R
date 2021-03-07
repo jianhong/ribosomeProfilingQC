@@ -39,6 +39,7 @@ normByRUVs <- function(counts, RPFgroup, mRNAgroup=RPFgroup, k=1){
   }
   if(!missing(RPFgroup)){
     if("RPFs" %in% names(counts)){
+      counts$RPFsRawCounts <- counts$RPFs
       RPFs <- counts$RPFs
       if(length(RPFgroup)!=ncol(RPFs)){
         stop("length of RPFgroup is not identical to number of RPF samples")
@@ -50,6 +51,7 @@ normByRUVs <- function(counts, RPFgroup, mRNAgroup=RPFgroup, k=1){
   }
   if(!missing(mRNAgroup)){
     if("mRNA" %in% names(counts)){
+      counts$mRNARawCounts <- counts$mRNA
       mRNA <- counts$mRNA
       if(length(mRNAgroup)!=ncol(mRNA)){
         stop("length of mRNAgroup is not identical to number of mRNA samples")

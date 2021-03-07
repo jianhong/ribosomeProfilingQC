@@ -7,7 +7,8 @@
 #' @param bestpsite numeric(1). P site postion.
 #' @param readsLen numeric(1). reads length to keep.
 #' @param anchor 5end or 3end. Default is 5end.
-#' @param ... Parameters pass to \link[Rsubread:featureCounts]{featureCounts}
+#' @param ... Parameters pass to \link[Rsubread:featureCounts]{featureCounts} 
+#' except isGTFAnnotationFile, GTF.attrType, and annot.ext.
 #' @return A list with reads counts.
 #' @importFrom methods as is
 #' @importFrom Rsubread featureCounts
@@ -19,8 +20,9 @@
 #' path <- system.file("extdata", package="ribosomeProfilingQC")
 #' RPFs <- dir(path, "RPF.*?.[12].bam$", full.names=TRUE)
 #' gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
+#' RNAs <- dir(path, "mRNA.*?.[12].bam$", full.names = TRUE)
 #' cnts <- countReads(RPFs[1], gtf=gtf, level="gene", readsLen=29)
-#'
+#' #cnts <- countReads(RPFs[1], RNAs[1], gtf=gtf, level="gene", readsLen=29)
 
 countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
                        bestpsite=13, readsLen=c(28,29), anchor="5end",
@@ -59,6 +61,16 @@ countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
       stop("RNAs or RPFs is required.")
     }
     counts[["annotation"]] <- getFeatureLen(txdb, level)
+  }
+  if(!missing(RPFs) && !missing(RNAs)){
+    ids <- intersect(rownames(counts[["RPFs"]]), rownames(counts[["mRNA"]]))
+    counts[["RPFs"]] <- 
+      counts[["RPFs"]][match(ids, rownames(counts[["RPFs"]])), , drop=FALSE]
+    counts[["mRNA"]] <- 
+      counts[["mRNA"]][match(ids, rownames(counts[["mRNA"]])), , drop=FALSE]
+    counts[["annotation"]] <- 
+      counts[["annotation"]][match(ids, counts[["annotation"]][, 1]), , 
+                             drop=FALSE]
   }
   counts
 }

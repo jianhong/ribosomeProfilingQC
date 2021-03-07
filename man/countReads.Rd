@@ -30,7 +30,8 @@ countReads(
 
 \item{anchor}{5end or 3end. Default is 5end.}
 
-\item{...}{Parameters pass to \link[Rsubread:featureCounts]{featureCounts}}
+\item{...}{Parameters pass to \link[Rsubread:featureCounts]{featureCounts} 
+except isGTFAnnotationFile, GTF.attrType, and annot.ext.}
 }
 \value{
 A list with reads counts.
@@ -42,6 +43,7 @@ Calculate the reads counts for gene level or transcript level.
 path <- system.file("extdata", package="ribosomeProfilingQC")
 RPFs <- dir(path, "RPF.*?.[12].bam$", full.names=TRUE)
 gtf <- file.path(path, "Danio_rerio.GRCz10.91.chr1.gtf.gz")
+RNAs <- dir(path, "mRNA.*?.[12].bam$", full.names = TRUE)
 cnts <- countReads(RPFs[1], gtf=gtf, level="gene", readsLen=29)
-
+#cnts <- countReads(RPFs[1], RNAs[1], gtf=gtf, level="gene", readsLen=29)
 }

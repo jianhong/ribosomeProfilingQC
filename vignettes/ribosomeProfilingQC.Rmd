@@ -582,6 +582,35 @@ fit2 <- eBayes(fit)
 topTable(fit2, number=3) ## set number=nrow(fit2) to pull all results
 ```
 
+A different way is that we can use raw counts to test whether the 
+change is coming from translation level but not transcription level.
+
+```{r, class.source='vig'}
+library(edgeR)
+gp <- c("KD", "KD", "CTL", "CTL")
+design <- model.matrix(~0+gp)
+colnames(design) <- sub("gp", "", colnames(design))
+y <- lapply(cnts[c("RPFs", "mRNA")], function(.cnt){
+  .y <- DGEList(counts = .cnt, 
+             samples = data.frame(gp=gp))
+  .y <- calcNormFactors(.y)
+  .y <- estimateDisp(.y, design)
+  .y
+})
+
+## To perform likelihood ratio tests:
+fit <- lapply(y, glmFit, design = design)
+lrt <- lapply(fit, glmLRT)
+topTags(lrt[["RPFs"]], n=3) # difference between CTL and KD for RPFs
+topTags(lrt[["mRNA"]], n=3) # difference between CTL and KD for mRNA
+results <- lapply(lrt, topTags, p.value = 0.05, n = nrow(lrt[[1]]))
+RPFs_unique <- setdiff(rownames(results[["RPFs"]]),
+                       rownames(results[["mRNA"]]))
+mRNA_zero <- rownames(cnts[["mRNA"]])[rowSums(cnts[["mRNA"]]) == 0]
+RPFs_unique <- RPFs_unique[!RPFs_unique %in% mRNA_zero]
+head(results[["RPFs"]][RPFs_unique, ], n=3) ## top 3 events for translation level
+```
+
 
 ### By coverage
 

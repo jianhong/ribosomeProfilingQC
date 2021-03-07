@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.3.1
+
+* keep the raw counts for countReads.
+
 # CHANGES IN VERSION 1.1.6
 
 * fix the issue in shiftReads for reads width and readsEndPlot for seqlevels.

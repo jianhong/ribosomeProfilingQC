@@ -34,9 +34,33 @@ getFPKM <- function(counts, gtf, level=c("gene", "tx")){
   fpkm <- list()
   if("RPFs" %in% names(counts)){
     fpkm[["RPFs"]] <- FPKM(counts$RPFs, annotation)
+    if(is.null(fpkm$RPFsRawCounts)) fpkm[["RPFsRawCounts"]]=counts$RPFs
   }
   if("mRNA" %in% names(counts)){
     fpkm[["mRNA"]] <- FPKM(counts$mRNA, annotation)
+    if(is.null(fpkm$mRNARawCounts)) fpkm[["mRNARawCounts"]]=counts$mRNA
+  }
+  if(all(c("RPFs", "mRNA") %in% names(fpkm))){
+    if(!identical(rownames(fpkm[["RPFs"]]), rownames(fpkm[["RPFs"]]))){
+      ids <- intersect(rownames(fpkm[["RPFs"]]), rownames(fpkm[["mRNA"]]))
+      fpkm[["RPFs"]] <- 
+        fpkm[["RPFs"]][match(ids, rownames(fpkm[["RPFs"]])), , drop=FALSE]
+      fpkm[["mRNA"]] <- 
+        fpkm[["mRNA"]][match(ids, rownames(fpkm[["mRNA"]])), , drop=FALSE]
+      fpkm[["RPFsRawCounts"]] <- 
+        fpkm[["RPFsRawCounts"]][match(ids, rownames(fpkm[["RPFsRawCounts"]])), 
+                                , drop=FALSE]
+      fpkm[["mRNARawCounts"]] <- 
+        fpkm[["mRNARawCounts"]][match(ids, rownames(fpkm[["mRNARawCounts"]])),
+                                , drop=FALSE]
+      fpkm[["RPFs"]][is.na(fpkm[["RPFs"]])] <- 0
+      fpkm[["mRNA"]][is.na(fpkm[["mRNA"]])] <- 0
+      fpkm[["RPFsRawCounts"]][is.na(fpkm[["RPFsRawCounts"]])] <- 0
+      fpkm[["mRNARawCounts"]][is.na(fpkm[["mRNARawCounts"]])] <- 0
+      fpkm[["annotation"]] <- 
+        fpkm[["annotation"]][match(ids, fpkm[["annotation"]][, 1]), , 
+                               drop=FALSE]
+    }
   }
   fpkm
 }
