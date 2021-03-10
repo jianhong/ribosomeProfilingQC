@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.2.1
+
+* fix the issue in shiftReads for reads width is smaller than shift range.
+
 # CHANGES IN VERSION 1.1.6
 
 * fix the issue in shiftReads for reads width and readsEndPlot for seqlevels.
