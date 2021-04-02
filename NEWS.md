@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.3.3
+
+* add github action.
+
 # CHANGES IN VERSION 1.3.2
 
 * fix the issue if there is softclip in the mapping reads and the reads length
