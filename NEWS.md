@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.3.4
+
+* add rmarkdown as suggest package.
+
 # CHANGES IN VERSION 1.3.3
 
 * add github action.

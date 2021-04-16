@@ -67,7 +67,7 @@ setReplaceMethod("$", "cvgd",
 
 #' @rdname cvgd-class
 #' @exportMethod `[[`
-#' @param i,j indices specifying elements to extract or replace.
+#' @param i,j indexes specifying elements to extract or replace.
 #' @param exact see \link[base]{Extract}
 setMethod("[[", "cvgd", function(x, i, j, ..., exact=TRUE) slot(x, i))
 #' @rdname cvgd-class

@@ -33,7 +33,7 @@ cvgd(...)
 
 \item{value}{value to replace.}
 
-\item{i, j}{indices specifying elements to extract or replace.}
+\item{i, j}{indexes specifying elements to extract or replace.}
 
 \item{exact}{see \link[base]{Extract}}
 
