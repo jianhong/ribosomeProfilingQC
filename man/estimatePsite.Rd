@@ -19,7 +19,7 @@ estimatePsite(bamfile, CDS, genome, anchor = "5end")
 A best P site position.
 }
 \description{
-Estimate P site postion from a subset reads.
+Estimate P site position from a subset reads.
 }
 \examples{
 library(Rsamtools)

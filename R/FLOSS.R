@@ -57,9 +57,7 @@ FLOSS <- function(reads, ref, CDS, readLengths=c(26:34),
      length(CDS$gene_id)!=length(CDS)){
     stop("CDS must be output of prepareCDS")
   }
-  if(length(intersect(seqlevelsStyle(reads), seqlevels(CDS)))==0){
-    seqlevelsStyle(reads) <- seqlevelsStyle(CDS)[1]
-  }
+  reads <- fixSeqlevelsStyle(reads, CDS)
   stopifnot(is.numeric(readLengths))
   readLengths <- as.integer(readLengths)
   reads <- reads[reads$qwidth>=min(readLengths) &

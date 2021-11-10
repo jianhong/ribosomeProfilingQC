@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.6.1
+
+* replace stop by message for different seqlevelsStyles.
+
 # CHANGES IN VERSION 1.3.4
 
 * add rmarkdown as suggest package.

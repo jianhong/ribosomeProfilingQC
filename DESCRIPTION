@@ -1,7 +1,7 @@
 Package: ribosomeProfilingQC
 Type: Package
 Title: Ribosome Profiling Quality Control
-Version: 1.6.0
+Version: 1.6.1
 Authors@R: c(person(given="Jianhong", family="Ou", email="jianhong.ou@duke.edu", 
         role=c("aut", "cre"), comment=c(ORCID="0000-0002-8652-2488")),
         person(given="Mariah", family="Hoye", email="mariah.hoye@duke.edu",
@@ -18,7 +18,7 @@ LazyData: true
 biocViews: RiboSeq, Sequencing, GeneRegulation, QualityControl, 
            Visualization, Coverage
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Depends: R (>= 4.0), GenomicRanges
 Imports: AnnotationDbi, BiocGenerics, Biostrings, BSgenome, EDASeq,
          GenomicAlignments, GenomicFeatures, GenomeInfoDb,

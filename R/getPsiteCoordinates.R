@@ -36,6 +36,8 @@ getPsiteCoordinates <- function(bamfile, bestpsite, anchor='5end'){
   reads <- GAlignments()
   open(bamfile)
   while(length(chunk <- readGAlignments(bamfile, param=param))){
+    chunk <- narrow(chunk) ## remove the soft and Hard clips
+    chunk <- chunk[njunc(chunk)==0] ## remove the junctions
     reads <- c(reads, shiftReads(chunk, shift = offset, anchor=anchor))
   }
   close(bamfile)

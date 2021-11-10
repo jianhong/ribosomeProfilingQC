@@ -1,5 +1,5 @@
 #' Estimate P site position
-#' @description Estimate P site postion from a subset reads.
+#' @description Estimate P site position from a subset reads.
 #' @rdname estimatePsite
 #' @param bamfile A BamFile object.
 #' @param CDS Output of \link{prepareCDS}
@@ -16,7 +16,7 @@
 #' @import GenomicRanges
 #' @importFrom BSgenome getSeq
 #' @importFrom Rsamtools ScanBamParam scanBamFlag
-#' @importFrom GenomicAlignments readGAlignments qwidth njunc
+#' @importFrom GenomicAlignments readGAlignments qwidth njunc narrow
 #' @importFrom Biostrings vmatchPattern
 #' @importFrom BiocGenerics table
 #' @importFrom methods as is
@@ -45,6 +45,7 @@
 #'
 
 estimatePsite <- function(bamfile, CDS, genome, anchor='5end'){
+  readLen <- c(25:30)
   stopifnot(is(bamfile, "BamFile"))
   anchor <- match.arg(anchor, choices = c("5end", "3end"))
   stopifnot(is(CDS, "GRanges"))
@@ -66,13 +67,12 @@ estimatePsite <- function(bamfile, CDS, genome, anchor='5end'){
   open(bamfile)
   reads <- readGAlignments(bamfile, param = param)
   close(bamfile)
-
-  reads <- reads[qwidth(reads) %in% c(25:30)]
+  
   reads <- reads[njunc(reads)==0] ## remove junctions
+  reads <- narrow(reads) ## remove the soft and hard clips,
+  reads <- reads[qwidth(reads) %in% readLen]
   x <- as(reads, "GRanges")
-  if(length(intersect(seqlevelsStyle(x), seqlevels(CDS)))==0){
-    seqlevelsStyle(x) <- seqlevelsStyle(CDS)[1]
-  }
+  x <- fixSeqlevelsStyle(x, CDS)
   if(anchor=="3end"){
     x <- switch.strand(x)
     x <- promoters(x, upstream = 0, downstream = 1)
