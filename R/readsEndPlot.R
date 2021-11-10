@@ -67,17 +67,10 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   }
   h <- scanBamHeader(bamfile)
   seqs <- h$targets
-  if(length(intersect(seqlevelsStyle(names(seqs)),
-                      seqlevelsStyle(which)))==0){
-    seqlevelsStyle(which) <- seqlevelsStyle(names(seqs))[1]
-    which <- which[as.character(seqnames(which)) %in% names(seqs)]
-    seqlevels(which) <-
-      seqlevels(which)[seqlevels(which) %in% names(seqs)]
-  }else{
-    which <- which[as.character(seqnames(which)) %in% names(seqs)]
-    seqlevels(which) <-
-      seqlevels(which)[seqlevels(which) %in% names(seqs)]
-  }
+  which <- fixSeqlevelsStyle(which, names(seqs))
+  which <- which[as.character(seqnames(which)) %in% names(seqs)]
+  seqlevels(which) <-
+    seqlevels(which)[seqlevels(which) %in% names(seqs)]
   param <-
     ScanBamParam(what=c("qwidth"),
                  tag=character(0),
@@ -91,14 +84,13 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   open(bamfile)
   reads <- readGAlignments(bamfile, param = param)
   close(bamfile)
-
-  reads <- reads[qwidth(reads) %in% readLen]
+  
   reads <- reads[njunc(reads)==0]
+  reads <- narrow(reads) ## remove the soft and hard clips
+  reads <- reads[qwidth(reads) %in% readLen]
   reads <- as(reads, "GRanges")
-  if(length(intersect(seqlevelsStyle(reads), seqlevels(CDS)))==0){
-    seqlevelsStyle(reads) <- seqlevelsStyle(CDS)[1]
-    seqlevelsStyle(which) <- seqlevelsStyle(CDS)[1]
-  }
+  reads <- fixSeqlevelsStyle(reads, CDS)
+  which <- fixSeqlevelsStyle(which, CDS)
   if(fiveEnd[1]){
     x <- promoters(reads, upstream = 0, downstream = 1)
     if(shift[1] != 0){

@@ -4,7 +4,7 @@
 \alias{estimatePsite}
 \title{Estimate P site position}
 \usage{
-estimatePsite(bamfile, CDS, genome, anchor = "5end")
+estimatePsite(bamfile, CDS, genome, anchor = "5end", readLen = c(25:30))
 }
 \arguments{
 \item{bamfile}{A BamFile object.}
@@ -14,12 +14,14 @@ estimatePsite(bamfile, CDS, genome, anchor = "5end")
 \item{genome}{A BSgenome object.}
 
 \item{anchor}{5end or 3end. Default is 5end.}
+
+\item{readLen}{The reads length used to estimate.}
 }
 \value{
 A best P site position.
 }
 \description{
-Estimate P site postion from a subset reads.
+Estimate P site position from a subset reads.
 }
 \examples{
 library(Rsamtools)

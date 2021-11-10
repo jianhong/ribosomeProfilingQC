@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.7.1
+
+* export `readLen` for `estimatePsite`.
+
 # CHANGES IN VERSION 1.3.4
 
 * add rmarkdown as suggest package.

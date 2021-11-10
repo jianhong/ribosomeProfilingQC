@@ -33,7 +33,7 @@ ggBar <- function(height, fill="gray80", draw=TRUE, xlab, ylab, postfix){
   colValues <- as.character(unique(fill))
   plot <- ggplot(data=df, aes(x=x, y=y, fill=fill)) +
     geom_bar(stat = "identity") +
-    scale_fill_manual(values = colValues, breaks = colValues, guide=FALSE) +
+    scale_fill_manual(values = colValues, breaks = colValues, guide="none") +
     theme_classic()
   if(postfix) suppressWarnings(
     plot <- plot +

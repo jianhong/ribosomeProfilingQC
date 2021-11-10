@@ -33,9 +33,7 @@
 strandPlot <- function(reads, CDS, col=c("#009E73", "#D55E00"), ...){
   stopifnot(is(reads, "GRanges"))
   stopifnot(is(CDS, "GRanges"))
-  if(length(intersect(seqlevelsStyle(reads), seqlevels(CDS)))==0){
-    seqlevelsStyle(reads) <- seqlevelsStyle(CDS)[1]
-  }
+  reads <- fixSeqlevelsStyle(reads, CDS)
   ## reads mapped to sense strand
   ol <- findOverlaps(reads, CDS, ignore.strand=FALSE)
   a <- unique(queryHits(ol))

@@ -45,9 +45,7 @@ assignReadingFrame <- function(reads, CDS, txdb){
     stop("CDS must be output of prepareCDS")
   }
   stopifnot(is(reads, "GRanges"))
-  if(length(intersect(seqlevelsStyle(reads), seqlevels(CDS)))==0){
-    seqlevelsStyle(reads) <- seqlevelsStyle(CDS)[1]
-  }
+  reads <-fixSeqlevelsStyle(reads, CDS)
   reads$readingFrame <- NA
   reads$position <- NA
   reads$offsetPercentage <- NA
