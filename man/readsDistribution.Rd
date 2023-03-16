@@ -10,6 +10,7 @@ readsDistribution(
   upstreamRegion = 3000,
   downstreamRegion = 3000,
   plot = TRUE,
+  precedence = NULL,
   ...
 )
 }
@@ -22,6 +23,14 @@ readsDistribution(
 downstream region.}
 
 \item{plot}{Plot the distribution or not}
+
+\item{precedence}{If no precedence specified, double count will be enabled,
+which means that if the reads overlap with both CDS and 5'UTR, both
+CDS and 5'UTR will be incremented. If a precedence order is specified,
+for example, if promoter is specified before 5'UTR, then only promoter will
+be incremented for the same example.  The values could be any combinations
+of "CDS", "UTR5", "UTR3", "OtherExon", "Intron", "upstream", "downstreama"
+and "InterGenic", Default=NULL}
 
 \item{...}{Not use.}
 }
@@ -49,4 +58,10 @@ txdb <- makeTxDbFromGFF(system.file("extdata",
           chrominfo = seqinfo(Drerio)["chr1"],
           taxonomyId = 7955)
 pc.sub <- readsDistribution(pc.sub, txdb, las=2)
+pc.sub <- readsDistribution(pc.sub, txdb, las=2,
+              precedence=c(
+              "CDS", "UTR5", "UTR3", "OtherExon",
+              "Intron", "upstream", "downstream",
+              "InterGenic"
+              ))
 }

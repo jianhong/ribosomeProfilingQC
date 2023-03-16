@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.11.1
+
+* add precedence parameter to readsDistribution
+
 # CHANGES IN VERSION 1.7.1
 
 * export `readLen` for `estimatePsite`.
