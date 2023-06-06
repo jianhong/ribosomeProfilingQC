@@ -4,7 +4,13 @@
 \alias{strandPlot}
 \title{Plot the distribution of reads in sense and antisense strand}
 \usage{
-strandPlot(reads, CDS, col = c("#009E73", "#D55E00"), ...)
+strandPlot(
+  reads,
+  CDS,
+  col = c("#009E73", "#D55E00"),
+  ignore.seqlevelStyle = FALSE,
+  ...
+)
 }
 \arguments{
 \item{reads}{Output of \link{getPsiteCoordinates}}
@@ -12,6 +18,8 @@ strandPlot(reads, CDS, col = c("#009E73", "#D55E00"), ...)
 \item{CDS}{Output of \link{prepareCDS}}
 
 \item{col}{Coloar for sense and antisense strand.}
+
+\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
 
 \item{...}{Parameter passed to barplot}
 }

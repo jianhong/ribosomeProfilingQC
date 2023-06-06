@@ -4,7 +4,14 @@
 \alias{estimatePsite}
 \title{Estimate P site position}
 \usage{
-estimatePsite(bamfile, CDS, genome, anchor = "5end", readLen = c(25:30))
+estimatePsite(
+  bamfile,
+  CDS,
+  genome,
+  anchor = "5end",
+  readLen = c(25:30),
+  ignore.seqlevelStyle = FALSE
+)
 }
 \arguments{
 \item{bamfile}{A BamFile object.}
@@ -16,6 +23,8 @@ estimatePsite(bamfile, CDS, genome, anchor = "5end", readLen = c(25:30))
 \item{anchor}{5end or 3end. Default is 5end.}
 
 \item{readLen}{The reads length used to estimate.}
+
+\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
 }
 \value{
 A best P site position.

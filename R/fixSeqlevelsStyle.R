@@ -1,4 +1,7 @@
-fixSeqlevelsStyle <- function(x, CDS){
+fixSeqlevelsStyle <- function(x, CDS, ignore.seqlevelStyle=FALSE){
+  if(ignore.seqlevelStyle){
+    return(x)
+  }
   if(length(intersect(seqlevelsStyle(x), seqlevelsStyle(CDS)))==0){
     try_res <- try({seqlevelsStyle(x) <- seqlevelsStyle(CDS)[1]})
     if(inherits(try_res, "try-error")){

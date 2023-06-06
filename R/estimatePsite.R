@@ -6,6 +6,7 @@
 #' @param genome A BSgenome object.
 #' @param anchor 5end or 3end. Default is 5end.
 #' @param readLen The reads length used to estimate.
+#' @param ignore.seqlevelStyle Ignore the sequence name style detection or not.
 #' @return A best P site position.
 #' @references
 #' 1: Bazzini AA, Johnstone TG, Christiano R, Mackowiak SD, Obermayer B,
@@ -46,7 +47,7 @@
 #'
 
 estimatePsite <- function(bamfile, CDS, genome, anchor='5end',
-                          readLen=c(25:30)){
+                          readLen=c(25:30), ignore.seqlevelStyle=FALSE){
   stopifnot(is(bamfile, "BamFile"))
   anchor <- match.arg(anchor, choices = c("5end", "3end"))
   stopifnot(is(CDS, "GRanges"))
@@ -73,7 +74,7 @@ estimatePsite <- function(bamfile, CDS, genome, anchor='5end',
   reads <- narrow(reads) ## remove the soft and hard clips
   reads <- reads[qwidth(reads) %in% readLen]
   x <- as(reads, "GRanges")
-  x <- fixSeqlevelsStyle(x, CDS)
+  x <- fixSeqlevelsStyle(x, CDS, ignore.seqlevelStyle)
   if(anchor=="3end"){
     x <- switch.strand(x)
     x <- promoters(x, upstream = 0, downstream = 1)

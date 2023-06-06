@@ -14,6 +14,7 @@
 #' @param readLengths Read length used for calculation
 #' @param level Transcript or gene level
 #' @param draw Plot FLOSS vs total reads or not.
+#' @param ignore.seqlevelStyle Ignore the sequence name style detection or not.
 #' @return A data frame with colnames as id, FLOSS, totalReads,
 #' wilcox.test.pval, cook's distance.
 #' @importFrom IRanges findOverlaps
@@ -47,7 +48,8 @@
 #' fl <- FLOSS(pc, ref, CDS, level="gene")
 
 FLOSS <- function(reads, ref, CDS, readLengths=c(26:34),
-                  level=c("tx", "gene"), draw=FALSE){
+                  level=c("tx", "gene"), draw=FALSE,
+                  ignore.seqlevelStyle=FALSE){
   stopifnot(is(reads, "GRanges"))
   stopifnot(length(reads$qwidth)==length(reads))
   level <- match.arg(level)
@@ -57,7 +59,7 @@ FLOSS <- function(reads, ref, CDS, readLengths=c(26:34),
      length(CDS$gene_id)!=length(CDS)){
     stop("CDS must be output of prepareCDS")
   }
-  reads <- fixSeqlevelsStyle(reads, CDS)
+  reads <- fixSeqlevelsStyle(reads, CDS, ignore.seqlevelStyle)
   stopifnot(is.numeric(readLengths))
   readLengths <- as.integer(readLengths)
   reads <- reads[reads$qwidth>=min(readLengths) &

@@ -4,6 +4,7 @@
 #' @param reads Output of \link{assignReadingFrame} or \link{shiftReadsByFrame}.
 #' @param genome A BSgenome object.
 #' @param plot Plot the motif or not.
+#' @param ignore.seqlevelStyle Ignore the sequence name style detection or not.
 #' @return A \link[motifStack:pcm-class]{pcm} object
 #' @importFrom IRanges promoters
 #' @importFrom Rsamtools getSeq
@@ -18,7 +19,7 @@
 #' library(BSgenome.Drerio.UCSC.danRer10)
 #' #PAmotif(pcs, Drerio)
 #'
-PAmotif <- function(reads, genome, plot=TRUE){
+PAmotif <- function(reads, genome, plot=TRUE, ignore.seqlevelStyle=FALSE){
   stopifnot(is(reads, "GRanges"))
   if(length(reads$tx_name)!=length(reads) ||
      length(reads$position)!=length(reads) ||
@@ -28,7 +29,7 @@ PAmotif <- function(reads, genome, plot=TRUE){
     stop("reads must be a result of assignReadingFrame or shiftReadsByFrame")
   }
   stopifnot(is(genome, "BSgenome"))
-  reads <- fixSeqlevelsStyle(reads, genome)
+  reads <- fixSeqlevelsStyle(reads, genome, ignore.seqlevelStyle)
   reads <- promoters(reads, upstream = 6, downstream = 12)
   seq <- getSeq(genome, reads)
   seq <- translate(seq)

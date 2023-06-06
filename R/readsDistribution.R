@@ -13,6 +13,7 @@
 #' be incremented for the same example.  The values could be any combinations
 #' of "CDS", "UTR5", "UTR3", "OtherExon", "Intron", "upstream", "downstreama"
 #' and "InterGenic", Default=NULL
+#' @param ignore.seqlevelStyle Ignore the sequence name style detection or not.
 #' @param ... Not use.
 #' @return The reads with distribution assignment
 #' @importFrom GenomicFeatures cds fiveUTRsByTranscript threeUTRsByTranscript
@@ -50,6 +51,7 @@ readsDistribution <- function(reads, txdb,
                               downstreamRegion=3000,
                               plot=TRUE,
                               precedence=NULL,
+                              ignore.seqlevelStyle=FALSE,
                               ...){
   stopifnot(is(txdb, "TxDb"))
   stopifnot(is(reads, "GRanges"))
@@ -59,7 +61,7 @@ readsDistribution <- function(reads, txdb,
                                     "InterGenic")))
   }
   
-  reads <- fixSeqlevelsStyle(reads, txdb)
+  reads <- fixSeqlevelsStyle(reads, txdb, ignore.seqlevelStyle)
   cdss <- cds(txdb)
   utr5 <- unlist(fiveUTRsByTranscript(txdb))
   utr3 <- unlist(threeUTRsByTranscript(txdb))

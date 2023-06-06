@@ -10,7 +10,8 @@ FLOSS(
   CDS,
   readLengths = c(26:34),
   level = c("tx", "gene"),
-  draw = FALSE
+  draw = FALSE,
+  ignore.seqlevelStyle = FALSE
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ transcript names. If level is set to gene, the id should be gene id.}
 \item{level}{Transcript or gene level}
 
 \item{draw}{Plot FLOSS vs total reads or not.}
+
+\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
 }
 \value{
 A data frame with colnames as id, FLOSS, totalReads,

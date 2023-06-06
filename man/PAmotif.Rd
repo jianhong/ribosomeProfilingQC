@@ -4,7 +4,7 @@
 \alias{PAmotif}
 \title{Metaplot of P site distribution}
 \usage{
-PAmotif(reads, genome, plot = TRUE)
+PAmotif(reads, genome, plot = TRUE, ignore.seqlevelStyle = FALSE)
 }
 \arguments{
 \item{reads}{Output of \link{assignReadingFrame} or \link{shiftReadsByFrame}.}
@@ -12,6 +12,8 @@ PAmotif(reads, genome, plot = TRUE)
 \item{genome}{A BSgenome object.}
 
 \item{plot}{Plot the motif or not.}
+
+\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
 }
 \value{
 A \link[motifStack:pcm-class]{pcm} object

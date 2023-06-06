@@ -11,6 +11,7 @@ readsDistribution(
   downstreamRegion = 3000,
   plot = TRUE,
   precedence = NULL,
+  ignore.seqlevelStyle = FALSE,
   ...
 )
 }
@@ -31,6 +32,8 @@ for example, if promoter is specified before 5'UTR, then only promoter will
 be incremented for the same example.  The values could be any combinations
 of "CDS", "UTR5", "UTR3", "OtherExon", "Intron", "upstream", "downstreama"
 and "InterGenic", Default=NULL}
+
+\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
 
 \item{...}{Not use.}
 }

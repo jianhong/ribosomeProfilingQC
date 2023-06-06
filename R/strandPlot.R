@@ -4,6 +4,7 @@
 #' @param reads Output of \link{getPsiteCoordinates}
 #' @param CDS Output of \link{prepareCDS}
 #' @param col Coloar for sense and antisense strand.
+#' @param ignore.seqlevelStyle Ignore the sequence name style detection or not.
 #' @param ... Parameter passed to barplot
 #' @return A ggplot object.
 #' @import GenomicRanges
@@ -30,10 +31,11 @@
 #' CDS <- prepareCDS(txdb)
 #' strandPlot(pc.sub, CDS)
 #'
-strandPlot <- function(reads, CDS, col=c("#009E73", "#D55E00"), ...){
+strandPlot <- function(reads, CDS, col=c("#009E73", "#D55E00"),
+                       ignore.seqlevelStyle=FALSE, ...){
   stopifnot(is(reads, "GRanges"))
   stopifnot(is(CDS, "GRanges"))
-  reads <- fixSeqlevelsStyle(reads, CDS)
+  reads <- fixSeqlevelsStyle(reads, CDS, ignore.seqlevelStyle)
   ## reads mapped to sense strand
   ol <- findOverlaps(reads, CDS, ignore.strand=FALSE)
   a <- unique(queryHits(ol))
