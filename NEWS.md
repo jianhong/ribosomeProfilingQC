@@ -1,6 +1,6 @@
 # CHANGES IN VERSION 1.13.1
 
-* add ignore.seqlevelStyle parameter to provide the flexibility of seqlevels.
+* add ignore.seqlevelsStyle parameter to provide the flexibility of seqlevels.
 
 # CHANGES IN VERSION 1.11.1
 

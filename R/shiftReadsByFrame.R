@@ -3,7 +3,7 @@
 #' all reading frame will be set as 0
 #' @param reads Output of \link{getPsiteCoordinates}
 #' @param txdb A TxDb object.
-#' @param ignore.seqlevelStyle Ignore the sequence name style detection or not.
+#' @param ignore.seqlevelsStyle Ignore the sequence name style detection or not.
 #' @return Reads with reading frame information
 #' @export
 #' @examples
@@ -24,13 +24,13 @@
 #'           taxonomyId = 7955)
 #' pc.sub <- shiftReadsByFrame(pc.sub, txdb)
 #'
-shiftReadsByFrame <- function(reads, txdb, ignore.seqlevelStyle=FALSE){
+shiftReadsByFrame <- function(reads, txdb, ignore.seqlevelsStyle=FALSE){
   stopifnot(is(txdb, "TxDb"))
   stopifnot(is(reads, "GRanges"))
   if(length(reads$Psite)!=length(reads)){
     stop("reads must be output of getPsiteCoordinates.")
   }
-  reads <- fixSeqlevelsStyle(reads, txdb, ignore.seqlevelStyle)
+  reads <- fixSeqlevelsStyle(reads, txdb, ignore.seqlevelsStyle)
   reads <- assignReadingFrame(reads, txdb=txdb)
   nstr <- as.character(strand(reads)) == "-"
   pstr <- !nstr & !is.na(reads$readingFrame)

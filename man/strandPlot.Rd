@@ -8,7 +8,7 @@ strandPlot(
   reads,
   CDS,
   col = c("#009E73", "#D55E00"),
-  ignore.seqlevelStyle = FALSE,
+  ignore.seqlevelsStyle = FALSE,
   ...
 )
 }
@@ -19,7 +19,7 @@ strandPlot(
 
 \item{col}{Coloar for sense and antisense strand.}
 
-\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
+\item{ignore.seqlevelsStyle}{Ignore the sequence name style detection or not.}
 
 \item{...}{Parameter passed to barplot}
 }

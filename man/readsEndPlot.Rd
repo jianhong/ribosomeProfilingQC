@@ -12,7 +12,7 @@ readsEndPlot(
   shift = 0,
   window = c(-29, 30),
   readLen = 25:30,
-  ignore.seqlevelStyle = FALSE
+  ignore.seqlevelsStyle = FALSE
 )
 }
 \arguments{
@@ -31,7 +31,7 @@ if fiveEnd set to false, please set the shift as a negative number.}
 
 \item{readLen}{The reads length used to plot}
 
-\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
+\item{ignore.seqlevelsStyle}{Ignore the sequence name style detection or not.}
 }
 \value{
 The invisible counts numbers.

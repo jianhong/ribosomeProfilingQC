@@ -5,7 +5,7 @@
 #' @param CDS Output of \link{prepareCDS}
 #' @param txdb A TxDb object. If it is set, assign reading frame for all reads.
 #' Default missing, only assign rading frame for reads in CDS.
-#' @param ignore.seqlevelStyle Ignore the sequence name style detection or not.
+#' @param ignore.seqlevelsStyle Ignore the sequence name style detection or not.
 #' @return An GRanges object of reads with reading frame information.
 #' @import GenomicRanges
 #' @importFrom methods as is
@@ -33,7 +33,7 @@
 #'                            package="ribosomeProfilingQC"))
 #' pc.sub <- assignReadingFrame(pc.sub, CDS)
 
-assignReadingFrame <- function(reads, CDS, txdb, ignore.seqlevelStyle=FALSE){
+assignReadingFrame <- function(reads, CDS, txdb, ignore.seqlevelsStyle=FALSE){
   if(!missing(txdb)){
     stopifnot(is(txdb, "TxDb"))
     CDS <- prepareCDS(txdb, withUTR=TRUE)
@@ -46,7 +46,7 @@ assignReadingFrame <- function(reads, CDS, txdb, ignore.seqlevelStyle=FALSE){
     stop("CDS must be output of prepareCDS")
   }
   stopifnot(is(reads, "GRanges"))
-  reads <-fixSeqlevelsStyle(reads, CDS, ignore.seqlevelStyle)
+  reads <-fixSeqlevelsStyle(reads, CDS, ignore.seqlevelsStyle)
   reads$readingFrame <- NA
   reads$position <- NA
   reads$offsetPercentage <- NA

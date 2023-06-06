@@ -4,7 +4,7 @@
 \alias{assignReadingFrame}
 \title{Assign reading frame}
 \usage{
-assignReadingFrame(reads, CDS, txdb, ignore.seqlevelStyle = FALSE)
+assignReadingFrame(reads, CDS, txdb, ignore.seqlevelsStyle = FALSE)
 }
 \arguments{
 \item{reads}{Output of \link{getPsiteCoordinates}}
@@ -14,7 +14,7 @@ assignReadingFrame(reads, CDS, txdb, ignore.seqlevelStyle = FALSE)
 \item{txdb}{A TxDb object. If it is set, assign reading frame for all reads.
 Default missing, only assign rading frame for reads in CDS.}
 
-\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
+\item{ignore.seqlevelsStyle}{Ignore the sequence name style detection or not.}
 }
 \value{
 An GRanges object of reads with reading frame information.

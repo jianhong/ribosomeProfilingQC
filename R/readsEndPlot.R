@@ -8,7 +8,7 @@
 #' if fiveEnd set to false, please set the shift as a negative number.
 #' @param window The window of CDS region to plot
 #' @param readLen The reads length used to plot
-#' @param ignore.seqlevelStyle Ignore the sequence name style detection or not.
+#' @param ignore.seqlevelsStyle Ignore the sequence name style detection or not.
 #' @return The invisible counts numbers.
 #' @importFrom Rsamtools ScanBamParam scanBamFlag scanBamHeader
 #' @importFrom GenomicAlignments readGAlignments qwidth njunc
@@ -41,7 +41,7 @@
 #' #readsEndPlot(bamfile, CDS, fiveEnd=FALSE, shift=-16)
 readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
                          fiveEnd=TRUE, shift=0, window=c(-29, 30),
-                         readLen=25:30, ignore.seqlevelStyle=FALSE){
+                         readLen=25:30, ignore.seqlevelsStyle=FALSE){
   stopifnot(is(bamfile, "BamFile"))
   stopifnot(is(fiveEnd, "logical"))
   stopifnot(is(shift, "numeric"))
@@ -68,7 +68,7 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   }
   h <- scanBamHeader(bamfile)
   seqs <- h$targets
-  which <- fixSeqlevelsStyle(which, names(seqs), ignore.seqlevelStyle)
+  which <- fixSeqlevelsStyle(which, names(seqs), ignore.seqlevelsStyle)
   which <- which[as.character(seqnames(which)) %in% names(seqs)]
   seqlevels(which) <-
     seqlevels(which)[seqlevels(which) %in% names(seqs)]
@@ -90,8 +90,8 @@ readsEndPlot <- function(bamfile, CDS, toStartCodon=TRUE,
   reads <- narrow(reads) ## remove the soft and hard clips
   reads <- reads[qwidth(reads) %in% readLen]
   reads <- as(reads, "GRanges")
-  reads <- fixSeqlevelsStyle(reads, CDS, ignore.seqlevelStyle)
-  which <- fixSeqlevelsStyle(which, CDS, ignore.seqlevelStyle)
+  reads <- fixSeqlevelsStyle(reads, CDS, ignore.seqlevelsStyle)
+  which <- fixSeqlevelsStyle(which, CDS, ignore.seqlevelsStyle)
   if(fiveEnd[1]){
     x <- promoters(reads, upstream = 0, downstream = 1)
     if(shift[1] != 0){

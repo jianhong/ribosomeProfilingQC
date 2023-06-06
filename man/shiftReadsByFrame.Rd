@@ -4,14 +4,14 @@
 \alias{shiftReadsByFrame}
 \title{Shift reads by reading frame}
 \usage{
-shiftReadsByFrame(reads, txdb, ignore.seqlevelStyle = FALSE)
+shiftReadsByFrame(reads, txdb, ignore.seqlevelsStyle = FALSE)
 }
 \arguments{
 \item{reads}{Output of \link{getPsiteCoordinates}}
 
 \item{txdb}{A TxDb object.}
 
-\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
+\item{ignore.seqlevelsStyle}{Ignore the sequence name style detection or not.}
 }
 \value{
 Reads with reading frame information

@@ -10,7 +10,7 @@ estimatePsite(
   genome,
   anchor = "5end",
   readLen = c(25:30),
-  ignore.seqlevelStyle = FALSE
+  ignore.seqlevelsStyle = FALSE
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ estimatePsite(
 
 \item{readLen}{The reads length used to estimate.}
 
-\item{ignore.seqlevelStyle}{Ignore the sequence name style detection or not.}
+\item{ignore.seqlevelsStyle}{Ignore the sequence name style detection or not.}
 }
 \value{
 A best P site position.

@@ -1,5 +1,5 @@
-fixSeqlevelsStyle <- function(x, CDS, ignore.seqlevelStyle=FALSE){
-  if(ignore.seqlevelStyle){
+fixSeqlevelsStyle <- function(x, CDS, ignore.seqlevelsStyle=FALSE){
+  if(ignore.seqlevelsStyle){
     return(x)
   }
   if(length(intersect(seqlevelsStyle(x), seqlevelsStyle(CDS)))==0){
