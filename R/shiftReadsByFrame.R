@@ -30,8 +30,10 @@ shiftReadsByFrame <- function(reads, txdb, ignore.seqlevelsStyle=FALSE){
   if(length(reads$Psite)!=length(reads)){
     stop("reads must be output of getPsiteCoordinates.")
   }
-  reads <- fixSeqlevelsStyle(reads, txdb, ignore.seqlevelsStyle)
-  reads <- assignReadingFrame(reads, txdb=txdb)
+  reads <- fixSeqlevelsStyle(reads, txdb,
+                             ignore.seqlevelsStyle=ignore.seqlevelsStyle)
+  reads <- assignReadingFrame(reads, txdb=txdb,
+                              ignore.seqlevelsStyle=ignore.seqlevelsStyle)
   nstr <- as.character(strand(reads)) == "-"
   pstr <- !nstr & !is.na(reads$readingFrame)
   nstr <- nstr & !is.na(reads$readingFrame)

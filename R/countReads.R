@@ -7,6 +7,7 @@
 #' @param bestpsite numeric(1). P site postion.
 #' @param readsLen numeric(1). reads length to keep.
 #' @param anchor 5end or 3end. Default is 5end.
+#' @param ignore.seqlevelsStyle Ignore the sequence name style detection or not.
 #' @param ... Parameters pass to \link[Rsubread:featureCounts]{featureCounts} 
 #' except isGTFAnnotationFile, GTF.attrType, and annot.ext.
 #' @return A list with reads counts.
@@ -26,6 +27,7 @@
 
 countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
                        bestpsite=13, readsLen=c(28,29), anchor="5end",
+                       ignore.seqlevelsStyle=FALSE,
                        ...){
   stopifnot(is.character(gtf))
   level <- match.arg(level)
@@ -41,7 +43,8 @@ countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
                                    txdb = txdb, level = level,
                                    bestpsite = bestpsite,
                                    readsLen = readsLen,
-                                   anchor = anchor)
+                                   anchor = anchor,
+                                   ignore.seqlevelsStyle=ignore.seqlevelsStyle)
   }
   if(!missing(RNAs)){
     stopifnot(is.character(RNAs))
@@ -76,14 +79,16 @@ countReads <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
 }
 
 RPFsCounts <- function(files, txdb, level, bestpsite,
-                       readsLen, anchor){
+                       readsLen, anchor,
+                       ignore.seqlevelsStyle=FALSE){
   yieldSize <- 10000000
   cnts <- lapply(files, function(f){
     bamfile <- BamFile(file = f, yieldSize = yieldSize)
     pc <- getPsiteCoordinates(bamfile, bestpsite=bestpsite,
                               anchor = anchor)
     pc.sub <- pc[pc$qwidth %in% readsLen]
-    pc.sub <- shiftReadsByFrame(pc.sub, txdb)
+    pc.sub <- shiftReadsByFrame(pc.sub, txdb,
+                                ignore.seqlevelsStyle=ignore.seqlevelsStyle)
     frameCounts(pc.sub, level=level)
   })
   genes <- unique(unlist(lapply(cnts, names)))

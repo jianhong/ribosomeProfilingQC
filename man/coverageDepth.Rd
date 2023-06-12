@@ -14,6 +14,7 @@ coverageDepth(
   anchor = "5end",
   region = "cds",
   ext = 5000,
+  ignore.seqlevelsStyle = FALSE,
   ...
 )
 }
@@ -36,6 +37,8 @@ coverageDepth(
 "exon", "transcripts", "feature with extension".}
 
 \item{ext}{Extesion region for "feature with extension".}
+
+\item{ignore.seqlevelsStyle}{Ignore the sequence name style detection or not.}
 
 \item{...}{Parameters pass to
 \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}}

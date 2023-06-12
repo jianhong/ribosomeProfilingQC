@@ -12,6 +12,7 @@ countReads(
   bestpsite = 13,
   readsLen = c(28, 29),
   anchor = "5end",
+  ignore.seqlevelsStyle = FALSE,
   ...
 )
 }
@@ -29,6 +30,8 @@ countReads(
 \item{readsLen}{numeric(1). reads length to keep.}
 
 \item{anchor}{5end or 3end. Default is 5end.}
+
+\item{ignore.seqlevelsStyle}{Ignore the sequence name style detection or not.}
 
 \item{...}{Parameters pass to \link[Rsubread:featureCounts]{featureCounts} 
 except isGTFAnnotationFile, GTF.attrType, and annot.ext.}

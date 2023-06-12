@@ -12,6 +12,7 @@
 #' @param region Annotation region. It could be "cds", "utr5", "utr3",
 #' "exon", "transcripts", "feature with extension".
 #' @param ext Extesion region for "feature with extension".
+#' @param ignore.seqlevelsStyle Ignore the sequence name style detection or not.
 #' @param ... Parameters pass to
 #' \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}
 #' @return A cvgd object with coverage depth.
@@ -32,6 +33,7 @@ coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
                           bestpsite=13, readsLen=c(28,29), anchor="5end",
                           region="cds",
                           ext=5000,
+                          ignore.seqlevelsStyle=FALSE,
                           ...){
   stopifnot(is.character(gtf)||is(gtf, "TxDb"))
   level <- match.arg(level)
@@ -65,7 +67,8 @@ coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
                   readsLen = readsLen,
                   anchor = anchor,
                   region = region,
-                  ext = ext)
+                  ext = ext,
+                  ignore.seqlevelsStyle=ignore.seqlevelsStyle)
     cvgs[["RPFs"]] <- cd
   }
   if(!missing(RNAs)){
@@ -73,7 +76,8 @@ coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
     cd <- getCvgs(files = RNAs,
                   txdb = txdb, level = level,
                   region = region,
-                  ext = ext)
+                  ext = ext,
+                  ignore.seqlevelsStyle=ignore.seqlevelsStyle)
     cvgs[["mRNA"]] <- cd
   }
   cvgs
@@ -81,7 +85,8 @@ coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
 
 getCvgs <- function(files, txdb, level,
                     bestpsite, readsLen, anchor,
-                    region, ext){
+                    region, ext,
+                    ignore.seqlevelsStyle=FALSE){
   yieldSize <- 10000000
   if(!missing(bestpsite)){##RPFs
     ignore.strand <- FALSE
@@ -90,7 +95,8 @@ getCvgs <- function(files, txdb, level,
       pc <- getPsiteCoordinates(bamfile, bestpsite=bestpsite,
                                 anchor = anchor)
       pc.sub <- pc[pc$qwidth %in% readsLen]
-      pc.sub <- shiftReadsByFrame(pc.sub, txdb)
+      pc.sub <- shiftReadsByFrame(pc.sub, txdb,
+                                  ignore.seqlevelsStyle=ignore.seqlevelsStyle)
     })
   }else{##mRNA
     ignore.strand <- TRUE

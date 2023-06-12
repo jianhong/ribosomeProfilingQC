@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.13.2
+
+* fix the bug the estimatePsite did not pass ignore.seqlevelsStyle to assignReadingFrame function.
+
 # CHANGES IN VERSION 1.13.1
 
 * add ignore.seqlevelsStyle parameter to provide the flexibility of seqlevels.

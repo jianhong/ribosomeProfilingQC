@@ -80,7 +80,9 @@ estimatePsite <- function(bamfile, CDS, genome, anchor='5end',
     x <- promoters(x, upstream = 0, downstream = 1)
     x <- switch.strand(x)
   }
-  x <- assignReadingFrame(promoters(x, upstream = 0, downstream = 1), CDS)
+  x <- assignReadingFrame(promoters(x, upstream = 0, downstream = 1),
+                          CDS,
+                          ignore.seqlevelsStyle=ignore.seqlevelsStyle)
   x <- table(x$readingFrame)
   x <- names(x)[which.max(x)]
   posMap <- list('5end'=c("0"=13, "1"=12, "2"=14),
