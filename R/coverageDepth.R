@@ -16,6 +16,7 @@
 #' @param ... Parameters pass to
 #' \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}
 #' @return A cvgd object with coverage depth.
+#' @importFrom txdbmaker makeTxDb
 #' @importFrom methods as is
 #' @importFrom GenomicFeatures makeTxDbFromGFF coverageByTranscript transcripts
 #' @importFrom Rsamtools BamFile

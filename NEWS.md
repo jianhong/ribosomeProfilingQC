@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.13.3
+
+* import txdbmaker
+
 # CHANGES IN VERSION 1.13.2
 
 * fix the bug the estimatePsite did not pass ignore.seqlevelsStyle to assignReadingFrame function.

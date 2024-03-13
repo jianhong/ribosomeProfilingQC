@@ -11,6 +11,7 @@
 #' @param ... Parameters pass to \link[Rsubread:featureCounts]{featureCounts} 
 #' except isGTFAnnotationFile, GTF.attrType, and annot.ext.
 #' @return A list with reads counts.
+#' @importFrom txdbmaker makeTxDb
 #' @importFrom methods as is
 #' @importFrom Rsubread featureCounts
 #' @importFrom GenomicFeatures makeTxDbFromGFF
