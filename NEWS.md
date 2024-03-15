@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.14.1
+
+* fix the bug in getFPKM function.
+
 # CHANGES IN VERSION 1.13.2
 
 * fix the bug the estimatePsite did not pass ignore.seqlevelsStyle to assignReadingFrame function.

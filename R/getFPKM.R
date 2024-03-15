@@ -29,7 +29,7 @@ getFPKM <- function(counts, gtf, level=c("gene", "tx")){
   FPKM <- function(cnt, annotation){
     total <- colSums(cnt)
     len <- annotation[match(rownames(cnt), annotation$GeneID), "Length"]
-    cnt*10e9/total/len
+    t(t(cnt)/total)/len*10e9
   }
   fpkm <- list()
   if("RPFs" %in% names(counts)){
