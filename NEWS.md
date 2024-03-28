@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.13.5
+
+* add function codonBias.
+
 # CHANGES IN VERSION 1.13.4
 
 * fix the bug for getFPKM.

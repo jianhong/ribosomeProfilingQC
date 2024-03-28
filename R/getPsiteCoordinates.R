@@ -3,10 +3,11 @@
 #' @param bamfile A BamFile object.
 #' @param bestpsite P site postion. See \link{estimatePsite}
 #' @param anchor 5end or 3end. Default is 5end.
+#' @param param A ScanBamParam object. Please note the 'qwidth' is required.
 #' @return A GRanges object with qwidth metadata which indicates the width
 #' of reads.
 #' @import GenomicRanges
-#' @importFrom Rsamtools ScanBamParam scanBamFlag
+#' @importFrom Rsamtools ScanBamParam scanBamFlag bamWhat
 #' @importFrom GenomicAlignments readGAlignments cigar cigarNarrow
 #' cigarQNarrow GAlignments qwidth cigarWidthAlongReferenceSpace
 #' @importFrom methods as is
@@ -20,27 +21,30 @@
 #' yieldSize <- 10000000
 #' bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 #' pc <- getPsiteCoordinates(bamfile, bestpsite=13)
-getPsiteCoordinates <- function(bamfile, bestpsite, anchor='5end'){
+getPsiteCoordinates <- function(
+    bamfile, bestpsite, anchor='5end',
+    param = ScanBamParam(what=c("qwidth"),
+                         tag=character(0),
+                         flag=scanBamFlag(isSecondaryAlignment = FALSE,
+                                          isUnmappedQuery=FALSE,
+                                          isNotPassingQualityControls = FALSE,
+                                          isSupplementaryAlignment = FALSE))){
   stopifnot(is(bamfile, "BamFile"))
+  stopifnot('qwidth' %in% bamWhat((param)))
   stopifnot(is.numeric(bestpsite))
   anchor <- match.arg(anchor, choices = c("5end", "3end"))
   offset <- round(bestpsite[1]) - 1
-  param <-
-    ScanBamParam(what=c("qwidth"),
-                 tag=character(0),
-                 flag=scanBamFlag(isSecondaryAlignment = FALSE,
-                                  isUnmappedQuery=FALSE,
-                                  isNotPassingQualityControls = FALSE,
-                                  isSupplementaryAlignment = FALSE))
 
   reads <- GAlignments()
   open(bamfile)
+  on.exit(close(bamfile))
   while(length(chunk <- readGAlignments(bamfile, param=param))){
     chunk <- narrow(chunk) ## remove the soft and Hard clips
     chunk <- chunk[njunc(chunk)==0] ## remove the junctions
     reads <- c(reads, shiftReads(chunk, shift = offset, anchor=anchor))
   }
   close(bamfile)
+  on.exit()
   reads <- as(reads, "GRanges")
   reads <- promoters(reads, upstream = 0, downstream = 1)
   reads$Psite <- bestpsite

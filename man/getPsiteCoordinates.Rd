@@ -4,7 +4,14 @@
 \alias{getPsiteCoordinates}
 \title{Get P site coordinates}
 \usage{
-getPsiteCoordinates(bamfile, bestpsite, anchor = "5end")
+getPsiteCoordinates(
+  bamfile,
+  bestpsite,
+  anchor = "5end",
+  param = ScanBamParam(what = c("qwidth"), tag = character(0), flag =
+    scanBamFlag(isSecondaryAlignment = FALSE, isUnmappedQuery = FALSE,
+    isNotPassingQualityControls = FALSE, isSupplementaryAlignment = FALSE))
+)
 }
 \arguments{
 \item{bamfile}{A BamFile object.}
@@ -12,6 +19,8 @@ getPsiteCoordinates(bamfile, bestpsite, anchor = "5end")
 \item{bestpsite}{P site postion. See \link{estimatePsite}}
 
 \item{anchor}{5end or 3end. Default is 5end.}
+
+\item{param}{A ScanBamParam object. Please note the 'qwidth' is required.}
 }
 \value{
 A GRanges object with qwidth metadata which indicates the width

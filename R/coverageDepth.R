@@ -14,11 +14,12 @@
 #' @param ext Extesion region for "feature with extension".
 #' @param ignore.seqlevelsStyle Ignore the sequence name style detection or not.
 #' @param ... Parameters pass to
-#' \link[GenomicFeatures:makeTxDbFromGFF]{makeTxDbFromGFF}
+#' \link[txdbmaker:makeTxDbFromGFF]{makeTxDbFromGFF}
 #' @return A cvgd object with coverage depth.
 #' @importFrom txdbmaker makeTxDb
 #' @importFrom methods as is
-#' @importFrom GenomicFeatures makeTxDbFromGFF coverageByTranscript transcripts
+#' @importFrom txdbmaker makeTxDbFromGFF
+#' @importFrom GenomicFeatures coverageByTranscript transcripts
 #' @importFrom Rsamtools BamFile
 #' @importFrom S4Vectors DataFrame Rle
 #' @importFrom GenomeInfoDb seqnames seqlevels seqlevels<-
@@ -46,18 +47,7 @@ coverageDepth <- function(RPFs, RNAs, gtf, level=c("tx", "gene"),
          transcripts, feature with extension")
   }
   cvgs <- list()
-  txdb <- NULL
-  if(is(gtf, "TxDb")){
-    txdb <- gtf
-  }else{
-    if(is.character(gtf)){
-      gtf <- gtf[1]
-      suppressWarnings(suppressMessages(txdb <- makeTxDbFromGFF(gtf, ...)))
-    }
-  }
-  if(!is(txdb, "TxDb")){
-    stop("Can not determine annotations from gtf parameter.")
-  }
+  txdb <- prepareTxDb(gtf, 'gtf', ...)
   if(!missing(RPFs)){
     stopifnot(is.character(RPFs))
     stopifnot(is.numeric(readsLen))

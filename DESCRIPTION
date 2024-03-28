@@ -1,7 +1,7 @@
 Package: ribosomeProfilingQC
 Type: Package
 Title: Ribosome Profiling Quality Control
-Version: 1.15.4
+Version: 1.15.5
 Authors@R: c(person(given="Jianhong", family="Ou", email="jianhong.ou@duke.edu", 
         role=c("aut", "cre"), comment=c(ORCID="0000-0002-8652-2488")),
         person(given="Mariah", family="Hoye", email="mariah.hoye@duke.edu",

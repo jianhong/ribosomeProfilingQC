@@ -14,7 +14,7 @@
 #' @importFrom txdbmaker makeTxDb
 #' @importFrom methods as is
 #' @importFrom Rsubread featureCounts
-#' @importFrom GenomicFeatures makeTxDbFromGFF
+#' @importFrom txdbmaker makeTxDbFromGFF
 #' @importFrom Rsamtools BamFile
 #' @importFrom S4Vectors DataFrame
 #' @export
