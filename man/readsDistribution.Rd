@@ -61,7 +61,8 @@ txdb <- makeTxDbFromGFF(system.file("extdata",
           chrominfo = seqinfo(Drerio)["chr1"],
           taxonomyId = 7955)
 pc.sub <- readsDistribution(pc.sub, txdb, las=2)
-pc.sub <- readsDistribution(pc.sub, txdb, las=2,
+pc.sub <- readsDistribution(pc[pc$qwidth \%in\% c(29, 30)],
+              txdb, las=2,
               precedence=c(
               "CDS", "UTR5", "UTR3", "OtherExon",
               "Intron", "upstream", "downstream",

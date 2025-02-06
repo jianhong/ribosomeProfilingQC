@@ -1,3 +1,7 @@
+# CHANGES IN VERSION 1.19.2
+
+* Export the reads distribution with considering the precedence. 
+
 # CHANGES IN VERSION 1.19.1
 
 * Update email address. 
