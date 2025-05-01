@@ -14,7 +14,7 @@
 #' bamfile <- BamFile(bamfilename, yieldSize = yieldSize)
 #' pc <- getPsiteCoordinates(bamfile, bestpsite=11)
 #' pc.sub <- pc[pc$qwidth %in% c(29, 30)]
-#' library(GenomicFeatures)
+#' library(txdbmaker)
 #' library(BSgenome.Drerio.UCSC.danRer10)
 #' txdb <- makeTxDbFromGFF(system.file("extdata",
 #'           "Danio_rerio.GRCz10.91.chr1.gtf.gz",

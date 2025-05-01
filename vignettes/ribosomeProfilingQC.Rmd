@@ -24,7 +24,7 @@ output:
 suppressPackageStartupMessages({
   library(ribosomeProfilingQC)
   library(BSgenome.Drerio.UCSC.danRer10)
-  library(GenomicFeatures)
+  library(txdbmaker)
   library(Rsamtools)
   library(AnnotationDbi)
   library(motifStack)
@@ -78,14 +78,14 @@ First install _ribosomeProfilingQC_ and other packages required to run
 the examples.
 Please note that the example dataset used here is from zebrafish. 
 To run analysis with dataset from a different species or different assembly, 
-please install the corresponding Bsgenome and TxDb.
+please install the corresponding BSgenome and TxDb.
 For example, to analyze mouse data aligned to mm10, 
 please install BSgenome.Mmusculus.UCSC.mm10, 
 and TxDb.Mmusculus.UCSC.mm10.knownGene. 
 You can also generate a TxDb object by 
 functions `makeTxDbFromGFF` from a local gff file,
 or `makeTxDbFromUCSC`, `makeTxDbFromBiomart`, and `makeTxDbFromEnsembl`, 
-from online resources in _GenomicFeatures_ package.
+from online resources in _txdbmaker_ package.
 
 ```{r, eval=FALSE}
 library(BiocManager)
@@ -168,14 +168,14 @@ txdb <- TxDb.Mmusculus.UCSC.mm10.knownGene ## give it a short name
 CDS <- prepareCDS(txdb)
 ```
 
-You can also create a TxDb object from a gtf file by _GenomicFeatures::makeTxDbFromGFF_ function.
+You can also create a TxDb object from a gtf file by _txdbmaker::makeTxDbFromGFF_ function.
 To get GTF file, you can download it from [ensembl](http://useast.ensembl.org/info/data/ftp/index.html)
 or get the online file info via [_AnnotationHub_](#count-for-rpfs).
 Here we use a prepared TxDb object for testing.
 
 ```{r loadTxDb, class.source='vig'}
 ## Create a small TxDb object which only contain chr1 information.
-library(GenomicFeatures)
+library(txdbmaker)
 txdb <- makeTxDbFromGFF(system.file("extdata",
                                     "Danio_rerio.GRCz10.91.chr1.gtf.gz",
                                     package="ribosomeProfilingQC"),
@@ -859,7 +859,7 @@ danrer10.annotations <-
 
 ```{r, fig.width=4, fig.height=4, class.source='vig'}
 library(ribosomeProfilingQC)
-library(GenomicFeatures)
+library(txdbmaker)
 ## prepare CDS annotation
 txdb <- makeTxDbFromGFF(system.file("extdata",
                                     "Danio_rerio.GRCz10.91.chr1.gtf.gz",
