@@ -19,7 +19,7 @@ A GRanges object with filtered CDS.
 Filter CDS by CDS size.
 }
 \examples{
-#library(GenomicFeatures)
+#library(txdbmaker)
 library(BSgenome.Drerio.UCSC.danRer10)
 #txdb <- makeTxDbFromGFF(system.file("extdata",
  #         "Danio_rerio.GRCz10.91.chr1.gtf.gz",
