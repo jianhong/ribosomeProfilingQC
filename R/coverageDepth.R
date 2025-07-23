@@ -22,7 +22,7 @@
 #' @importFrom GenomicFeatures coverageByTranscript transcripts
 #' @importFrom Rsamtools BamFile
 #' @importFrom S4Vectors DataFrame Rle
-#' @importFrom GenomeInfoDb seqnames seqlevels seqlevels<-
+#' @importFrom Seqinfo seqnames seqlevels seqlevels<-
 #' @importFrom IRanges disjoin
 #' @export
 #' @examples

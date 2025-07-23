@@ -23,7 +23,7 @@
 #' @importFrom S4Vectors runLength
 #' @importFrom stats rnbinom rnorm runif
 #' @importFrom Biostrings DNAStringSet reverseComplement
-#' @importFrom GenomeInfoDb seqlengths `seqlengths<-`
+#' @importFrom Seqinfo seqlengths `seqlengths<-`
 #' @export
 #' @examples
 #' library(GenomicFeatures)
