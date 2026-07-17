@@ -6,8 +6,7 @@
 #' the data. See \link[RUVSeq:RUVs]{RUVs}
 #' @return Normalized counts list
 #' @importFrom RUVSeq RUVs makeGroups
-#' @importFrom EDASeq betweenLaneNormalization newSeqExpressionSet counts
-#'  normCounts
+#' @importFrom EDASeq betweenLaneNormalization newSeqExpressionSet counts normCounts
 #' @export
 #' @examples
 #' \dontrun{##waiting for EDASeq fix the issue.

@@ -16,8 +16,7 @@
 #' @param ignore.seqlevelsStyle Ignore the sequence name style detection or not.
 #' @param ... Not use.
 #' @return The reads with distribution assignment
-#' @importFrom GenomicFeatures cds fiveUTRsByTranscript threeUTRsByTranscript
-#' exons genes promoters
+#' @importFrom GenomicFeatures cds fiveUTRsByTranscript threeUTRsByTranscript exons genes promoters
 #' @import GenomicRanges
 #' @importFrom methods as is
 #' @importFrom S4Vectors subjectHits queryHits

@@ -20,8 +20,7 @@
 #' @importFrom IRanges findOverlaps
 #' @importFrom S4Vectors queryHits subjectHits
 #' @importFrom stats cooks.distance lm wilcox.test
-#' @importFrom ggplot2 geom_point geom_smooth scale_x_log10 scale_y_log10
-#' annotation_logticks
+#' @importFrom ggplot2 geom_point geom_smooth scale_x_log10 scale_y_log10 annotation_logticks
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom scales trans_breaks trans_format math_format
 #' @export

@@ -5,8 +5,7 @@
 #' @param draw plot or not
 #' @param postfix Postfix of text labled in top of bar.
 #' @return ggplot object.
-#' @importFrom ggplot2 ggplot geom_bar theme_classic geom_text aes xlab ylab
-#' scale_fill_manual
+#' @importFrom ggplot2 ggplot geom_bar theme_classic geom_text aes xlab ylab scale_fill_manual
 #' @importFrom ggfittext geom_bar_text
 #' @examples
 #' ribosomeProfilingQC:::ggBar(sample.int(100, 3))

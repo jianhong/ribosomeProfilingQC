@@ -18,7 +18,8 @@
 #' @param includeReadsSeq logical(1). Include reads sequence or not.
 #' @return An invisible list of GAlignments.
 #' @importFrom rtracklayer export
-#' @importFrom GenomicAlignments sequenceLayer cigar GAlignments
+#' @importFrom GenomicAlignments cigar GAlignments
+#' @importFrom cigarillo project_sequences
 #' @importFrom BSgenome getSeq
 #' @importFrom S4Vectors runLength
 #' @importFrom stats rnbinom rnorm runif
@@ -387,7 +388,7 @@ simulateRPF <- function(txdb, outPath, genome, samples = 6,
         kgr1 <- kgr <- as(reads, "GRanges")
         strand(kgr) <- "*"
         seqs <- getSeq(genome, kgr)
-        seqs <- sequenceLayer(seqs, cigar(reads),
+        seqs <- project_sequences(seqs, cigar(reads),
                               from = "reference",
                               to="query-after-soft-clipping")
         seqs[strand(kgr1)=="-"] <- reverseComplement(seqs[strand(kgr1)=="-"])

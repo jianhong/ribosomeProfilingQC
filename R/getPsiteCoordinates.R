@@ -8,8 +8,8 @@
 #' of reads.
 #' @import GenomicRanges
 #' @importFrom Rsamtools ScanBamParam scanBamFlag bamWhat
-#' @importFrom GenomicAlignments readGAlignments cigar cigarNarrow
-#' cigarQNarrow GAlignments qwidth cigarWidthAlongReferenceSpace
+#' @importFrom GenomicAlignments readGAlignments cigar GAlignments qwidth
+#' @importFrom cigarillo cigar_extent_along_ref narrow_cigars_along_ref narrow_cigars_along_query
 #' @importFrom methods as is
 #' @importFrom S4Vectors metadata<-
 #' @importClassesFrom Rsamtools BamFile
@@ -60,22 +60,22 @@ shiftReads <- function(x, shift=12L, anchor="5end"){
   stopifnot(is(x, "GAlignments"))
   anchor <- match.arg(anchor, choices = c("5end", "3end"))
   x <- x[qwidth(x)>shift & width(x)>shift & 
-           cigarWidthAlongReferenceSpace(cigar(x), 
+           cigar_extent_along_ref(cigar(x), 
                                          N.regions.removed = TRUE)>shift]
   if(shift==0){
     return(x)
   }
   strds <- as.character(strand(x)) == "-"
   cigars <- cigar(x)
-  cigars <- as.character(cigarNarrow(cigars))
+  cigars <- as.character(narrow_cigars_along_ref(cigars))
   if(anchor=="5end"){
-    cigars <- cigarQNarrow(cigars,
+    cigars <- narrow_cigars_along_query(cigars,
                            start=ifelse(strds, 1, shift+1),
                            end=ifelse(strds, -shift-1, -1))
   }else{
     l <- mcols(x)$qwidth
     shift <- l - shift
-    cigars <- cigarQNarrow(cigars,
+    cigars <- narrow_cigars_along_query(cigars,
                            start=ifelse(strds, 1, shift),
                            end=ifelse(strds, -shift, -1))
   }
